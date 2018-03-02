@@ -26,19 +26,20 @@ vector<Point*> makePlane(float size){
 
 void saveFile(vector<Point*> v, string filename){
 
-	string directory = "files3d/" + filename;
 	ofstream file;
 
-	file.open(directory);
+	file.open("files3d/plane.3d", ios_base::app);
 
-	for(int i=0; i<v.size(); ++i){
-		file << v[i]->Point::getX() << ' ';
-		file << v[i]->Point::getY() << ' ';
-		file << v[i]->Point::getZ() << ' ';
-		file << '\n';
-	}
-	
-	file.close();
+
+		for(int i=0; i<v.size(); ++i){
+			file << v[i]->Point::getX() << ' ';
+			file << v[i]->Point::getY() << ' ';
+			file << v[i]->Point::getZ() << endl;
+		}
+
+		file << "--- Novo Plano ---" << endl;
+
+		file.close();
 
 }
 
@@ -56,17 +57,7 @@ int main(int argc, char** argv){
 	if(strcmp(argv[1], "plane") == 0){
 
 		size = atoi(argv[2]);
-
 		v = makePlane(size);
-
-		/*for (vector<Point*>::iterator it = v.begin() ; it != v.end(); ++it)
-			cout << (*it)->print() << endl;
-    		cout << v[i]->Point::getY() << ' ';
-    		cout << v[i]->Point::getZ() << ' ';
-
-    		cout << '\n';
-		}*/
-					
 		saveFile(v, "plane.3d");
 	}
 
