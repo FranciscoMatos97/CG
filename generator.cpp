@@ -24,11 +24,75 @@ vector<Point*> makePlane(float size){
 	return pointsList;
 }
 
+vector<Point*> makeBox(float x, float y, float z){
+
+	vector<Point*> pointsList;
+	float nx = x/2;
+	float ny = y/2;
+	float nz = z/2;
+
+	//face frontal
+	pointsList.push_back(new Point(nx, -ny, nz));
+	pointsList.push_back(new Point(nx, ny, nz));
+	pointsList.push_back(new Point(-nx, ny, nz));
+
+	pointsList.push_back(new Point(nx, -ny, nz));
+	pointsList.push_back(new Point(-nx, ny, nz));
+	pointsList.push_back(new Point(-nx, -ny, nz));
+
+	//face traseira
+	pointsList.push_back(new Point(nx, -ny, -nz));
+	pointsList.push_back(new Point(-nx, -ny, -nz));
+	pointsList.push_back(new Point(-nx, ny, -nz));
+
+	pointsList.push_back(new Point(nx, -ny, -nz));
+	pointsList.push_back(new Point(-nx, ny, -nz));
+	pointsList.push_back(new Point(nx, ny, -nz));
+
+	//face lateral esquerda
+	pointsList.push_back(new Point(-nx, -ny, nz));
+	pointsList.push_back(new Point(-nx, ny, nz));
+	pointsList.push_back(new Point(-nx, ny, -nz));
+
+	pointsList.push_back(new Point(-nx, -ny, nz));
+	pointsList.push_back(new Point(-nx, ny, -nz));
+	pointsList.push_back(new Point(-nx, -ny, -nz));
+
+	//face lateral direita
+	pointsList.push_back(new Point(nx, -ny, nz));
+	pointsList.push_back(new Point(nx, -ny, -nz));
+	pointsList.push_back(new Point(nx, ny, -nz));
+
+	pointsList.push_back(new Point(nx, -ny, nz));
+	pointsList.push_back(new Point(nx, ny, -nz));
+	pointsList.push_back(new Point(nx, ny, nz));
+
+	//base inferior
+	pointsList.push_back(new Point(-nx, -ny, nz));
+	pointsList.push_back(new Point(-nx, -ny, -nz));
+	pointsList.push_back(new Point(nx, -ny, -nz));
+
+	pointsList.push_back(new Point(-nx, -ny, nz));
+	pointsList.push_back(new Point(nx, -ny, -nz));
+	pointsList.push_back(new Point(nx, -ny, nz));
+
+	//base superior
+	pointsList.push_back(new Point(nx, ny, nz));
+	pointsList.push_back(new Point(-nx, ny, -nz));
+	pointsList.push_back(new Point(-nx, ny, nz));
+
+	pointsList.push_back(new Point(nx, ny, nz));
+	pointsList.push_back(new Point(nx, ny, -nz));
+	pointsList.push_back(new Point(-nx, ny, -nz));
+	
+	return pointsList;
+}
+
 void saveFile(vector<Point*> v, string filename){
 
 	ofstream file;
 
-	file.open("files3d/plane.3d", ios_base::app);
+	file.open("files3d/" + filename, ios_base::app);
 
 
 		for(int i=0; i<v.size(); ++i){
@@ -37,7 +101,7 @@ void saveFile(vector<Point*> v, string filename){
 			file << v[i]->Point::getZ() << endl;
 		}
 
-		file << "--- Novo Plano ---" << endl;
+		file << "--- New ---" << endl;
 
 		file.close();
 
@@ -60,6 +124,29 @@ int main(int argc, char** argv){
 		v = makePlane(size);
 		saveFile(v, "plane.3d");
 	}
+
+	if(strcmp(argv[1], "box") == 0){
+
+		float x = atoi(argv[2]);
+		float y = atoi(argv[3]);
+		float z = atoi(argv[4]);
+		v = makeBox(x, y, z);
+		saveFile(v, "box.3d");
+	}
+
+	/*if(strcmp(argv[1], "sphere") == 0){
+
+		size = atoi(argv[2]);
+		v = makeSphere(size);
+		saveFile(v, "sphere.3d");
+	}
+
+	if(strcmp(argv[1], "cone") == 0){
+
+		size = atoi(argv[2]);
+		v = makeCone(size);
+		saveFile(v, "cone.3d");
+	}*/
 
 	return 0;
 }
