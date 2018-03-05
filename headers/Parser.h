@@ -8,14 +8,13 @@
 #include <sstream>
 
 #include "tinyxml2.h"
+#include "Point.h"
 
 using namespace std;
 using namespace tinyxml2;
 
-void exploreElement(XMLElement*);
-vector<Shape*> exploreModels(XMLElement* );
-void readFile(string, vector<Point*>*, vector<Point*>*, vector<Point*>*);
-Group* parseXML(char*);
-
+vector<string> lookupFiles(char* file_name);
+vector<Point*> readFile(string file_name);
+int parseXML(char* file_name);
 
 #endif

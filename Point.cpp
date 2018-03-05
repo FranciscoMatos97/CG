@@ -1,5 +1,7 @@
 #include "headers/Point.h"
 
+float x, y, z;
+
 Point::Point(){
 	x = 0;
 	y = 0;
@@ -35,6 +37,3 @@ void Point::setY(float yy){
 void Point::setZ(float zz){
 	z = zz;
 }
-
-
-
