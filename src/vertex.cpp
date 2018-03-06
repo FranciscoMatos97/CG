@@ -103,15 +103,16 @@ vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
     double tanB = height/radius;
     double h1 = 0, h2, radius2;
     double xc1, zc1, xc2, zc2, xc3, zc3, xc4, zc4;
+    int i, j;
 
-    for(int j=1; j<=stacks; j++){
+    for(j=1; j<=stacks; j++){
         h2 = tmp * j;
         radius2 = (height-h2) / tanB;
         xc1 = radius, zc1 = 0;
         xc3 = radius2, zc3 = 0;
 
         if(j == 1){
-            for(int i=1; i<=slices+1; i++){
+            for(i=1; i<=slices+1; i++){
                 xc2 = radius * sin(i * alpha);
                 zc2 = radius * cos(i * alpha);
                 xc4 = radius2 * sin(i * alpha);
@@ -134,7 +135,7 @@ vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
             }
         }
         else if(j == stacks){
-            for(int i=1; i<=slices+1; i++){
+            for(i=1; i<=slices+1; i++){
                 xc2 = radius * sin(i * alpha);
                 zc2 = radius * cos(i * alpha);
 
@@ -146,7 +147,7 @@ vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
             }
         }
         else {
-            for (int i = 1; i <= slices + 1; i++) {
+            for (i = 1; i <= slices + 1; i++) {
                 xc2 = radius * sin(i * alpha);
                 zc2 = radius * cos(i * alpha);
                 xc4 = radius2 * sin(i * alpha);
