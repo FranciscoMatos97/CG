@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <iterator>
-#include <string>
 #include <vector>
+#include <string.h>
+#include <stdlib.h>
 #include "headers/vertex.h"
 
 using namespace std;
@@ -12,7 +13,9 @@ void saveFile(vector<Point*> v, string filename){
 
 	ofstream file;
 
-	file.open("files3d/" + filename, ios_base::app);
+	string f = "src/files3d/" + filename; 
+
+	file.open(f.c_str(), ios_base::app);
 
 		for(int i=0; i<v.size(); ++i){
 			file << v[i]->Point::getX() << ' ';
