@@ -14,7 +14,6 @@ void saveFile(vector<Point*> v, string filename){
 
 	file.open("files3d/" + filename, ios_base::app);
 
-
 		for(int i=0; i<v.size(); ++i){
 			file << v[i]->Point::getX() << ' ';
 			file << v[i]->Point::getY() << ' ';
@@ -45,8 +44,8 @@ int main(int argc, char** argv){
 		saveFile(v, "plane.3d");
 	}
 
-	if(strcmp(argv[1], "box") == 0 && argc == 6){
-
+	if(strcmp(argv[1], "box") == 0 && argc == 7){
+		
 		float x = atoi(argv[2]);
 		float y = atoi(argv[3]);
 		float z = atoi(argv[4]);
