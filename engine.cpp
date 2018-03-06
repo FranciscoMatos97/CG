@@ -49,7 +49,24 @@ void renderScene(void) {
 
 // put drawing instructions here
 
-    glBegin(GL_TRIANGLES);
+    glBegin(GL_LINES);
+
+    // draw line for x axis
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(5.0, 0.0, 0.0);
+	// draw line for y axis
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 5.0, 0.0);
+	// draw line for Z axis
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 0.0, 5.0);
+
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
 
     srand (time(NULL));
     int color=0;
@@ -59,11 +76,11 @@ void renderScene(void) {
         Point p = **i;
 
         if(color%3==0) {
-            a = rand() % 2;
-            b = rand() % 2;
-            c = rand() % 2;
+            a = (float)rand() / (float)RAND_MAX;
+            b = (float)rand() / (float)RAND_MAX;
+            c = (float)rand() / (float)RAND_MAX;
 
-            if(a<=0.2 && b<=0.2 && c<=0.2) a=1;
+            if(a<=0.1 && b<=0.1 && c<=0.1) a=1;
 
             glColor3f(a,b,c);
         }
@@ -84,17 +101,54 @@ void processKeys(unsigned char key, int xx, int yy) {
         exit(0);
     }
 
-    if(key == 'r'){
+    if(key == 'q'){
+        angle--;
+        xr=1;
+        yr=0;
+        zr=0;
+        glutPostRedisplay();
+    }
+
+    if(key == 'w'){
         angle++;
-        yr++;
+        xr=1;
+        yr=0;
+        zr=0;
         glutPostRedisplay();
     }
 
     if(key == 'e'){
         angle--;
-        yr--;
+        xr=0;
+        yr=1;
+        zr=0;
         glutPostRedisplay();
     }
+
+    if(key == 'r'){
+        angle++;
+        xr=0;
+        yr=1;
+        zr=0;
+        glutPostRedisplay();
+    }
+
+    if(key == 't'){
+        angle--;
+        xr=0;
+        yr=0;
+        zr=1;
+        glutPostRedisplay();
+    }
+
+    if(key == 'y'){
+        angle++;
+        xr=0;
+        yr=0;
+        zr=1;
+        glutPostRedisplay();
+    }
+
 
     if(key == 'z'){
         zt++;
