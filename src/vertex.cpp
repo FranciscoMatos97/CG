@@ -1,4 +1,5 @@
 #include <vector>
+#include <math.h>
 #include "headers/Point.h"
 
 using namespace std;
@@ -22,7 +23,7 @@ vector<Point*> makePlane(float size){
 vector<Point*> makeBox(float x, float y, float z, int divisions){
 
 	vector<Point*> pointsList;
-	float nx = x/2
+	float nx = x/2;
 	float ny = y/2;
 	float nz = z/2;
 
@@ -62,13 +63,13 @@ vector<Point*> makeBox(float x, float y, float z, int divisions){
 			pointsList.push_back(new Point(-nx, ny - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
 
 			//face lateral direita
-			pointsList,push_back(new Point(nx, (ny - yDiv) - (i * yDiv), nz - (j * zDiv)));
-            pointsList,push_back(new Point(nx, (ny - yDiv) - (i * yDiv), (nz - zDiv) - (j * zDiv)));
-            pointsList,push_back(new Point(nx, ny - (i * yDiv), nz - (j * zDiv)));
+			pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), nz - (j * zDiv)));
+            pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), (nz - zDiv) - (j * zDiv)));
+            pointsList.push_back(new Point(nx, ny - (i * yDiv), nz - (j * zDiv)));
 
-            pointsList,push_back(new Point(nx, (ny - yDiv) - (i * yDiv), (nz - zDiv) - (j * zDiv)));
-            pointsList,push_back(new Point(nx, ny - (i * yDiv), (nz - zDiv) - (j * zDiv)));
-            pointsList,push_back(new Point(nx, ny - (i * yDiv), nz - (j * zDiv)));
+            pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), (nz - zDiv) - (j * zDiv)));
+            pointsList.push_back(new Point(nx, ny - (i * yDiv), (nz - zDiv) - (j * zDiv)));
+            pointsList.push_back(new Point(nx, ny - (i * yDiv), nz - (j * zDiv)));
 
 			//base inferior
 			pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
@@ -77,11 +78,11 @@ vector<Point*> makeBox(float x, float y, float z, int divisions){
 
 			pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, -nz + (i * zDiv)));
-			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv));
+			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
 
 			//base superior
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny, -nz + (i * zDiv)));
-			pointsList.push_back(new Point(-nx + (j * xDiv), ny, (-nz + zDiv) + (i * zDiv));
+			pointsList.push_back(new Point(-nx + (j * xDiv), ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny, (-nz + zDiv) + (i * zDiv)));
 
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny, -nz + (i * zDiv)));
@@ -95,29 +96,77 @@ vector<Point*> makeBox(float x, float y, float z, int divisions){
 	return pointsList;
 }
 
-vector<Point*> makeCone(float radius, float height, int slices, int stacks){
-	vector<Point*> pointsList;
-    double alpha=(2*M_PI)/slices;
-    double x1=radius, z1=0;
-    double x2, z2;
+vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
+    vector<Point*> pointsList;
+    double alpha = (2*M_PI)/slices;
+    double tmp = height/stacks;
+    double tanB = height/radius;
+    double h1 = 0, h2, radius2;
+    double xc1, zc1, xc2, zc2, xc3, zc3, xc4, zc4;
 
-    for(int i=1; i<=slices+1; i++){
-        x2 = radius * sin(i * alpha);
-        z2 = radius * cos(i * alpha);
+    for(int j=1; j<=stacks; j++){
+        h2 = tmp * j;
+        radius2 = (height-h2) / tanB;
+        xc1 = radius, zc1 = 0;
+        xc3 = radius2, zc3 = 0;
 
-        //base
-        pointsList.push_back(new Point(x1, 0, z1));
-	    pointsList.push_back(new Point(0, 0, 0));
-	    pointsList.push_back(new Point(x2, 0, z2));
+        if(j == 1){
+            for(int i=1; i<=slices+1; i++){
+                xc2 = radius * sin(i * alpha);
+                zc2 = radius * cos(i * alpha);
+                xc4 = radius2 * sin(i * alpha);
+                zc4 = radius2 * cos(i * alpha);
 
-        //cone
-        pointsList.push_back(new Point(0, height, 0));
-	    pointsList.push_back(new Point(x1, 0, z1));
-	    pointsList.push_back(new Point(x2, 0, z2));  
+                //base
+                pointsList.push_back(new Point(xc1,0.0f,zc1));
+                pointsList.push_back(new Point(0.0f,0.0f,0.0f));
+                pointsList.push_back(new Point(xc2,0.0f,zc2));
+                //lados
+                pointsList.push_back(new Point(xc1,0.0f,zc1));
+                pointsList.push_back(new Point(xc2,0.0f,zc2));
+                pointsList.push_back(new Point(xc3,h2,zc3));
+                pointsList.push_back(new Point(xc2,0.0f,zc2));
+                pointsList.push_back(new Point(xc4,h2,zc4));
+                pointsList.push_back(new Point(xc3,h2,zc3));
 
-        x1 = x2;
-        z1 = z2;
+                xc1 = xc2, zc1 = zc2;
+                xc3 = xc4, zc3 = zc4;
+            }
+        }
+        else if(j == stacks){
+            for(int i=1; i<=slices+1; i++){
+                xc2 = radius * sin(i * alpha);
+                zc2 = radius * cos(i * alpha);
+
+                pointsList.push_back(new Point(0.0f,height,0.0f));
+                pointsList.push_back(new Point(xc1,h1,zc1));
+                pointsList.push_back(new Point(xc2,h1,zc2));
+
+                xc1 = xc2, zc1 = zc2;
+            }
+        }
+        else {
+            for (int i = 1; i <= slices + 1; i++) {
+                xc2 = radius * sin(i * alpha);
+                zc2 = radius * cos(i * alpha);
+                xc4 = radius2 * sin(i * alpha);
+                zc4 = radius2 * cos(i * alpha);
+
+                pointsList.push_back(new Point(xc1, h1, zc1));
+                pointsList.push_back(new Point(xc2, h1, zc2));
+                pointsList.push_back(new Point(xc3, h2, zc3));
+                pointsList.push_back(new Point(xc2, h1, zc2));
+                pointsList.push_back(new Point(xc4, h2, zc4));
+                pointsList.push_back(new Point(xc3, h2, zc3));
+
+                xc1 = xc2, zc1 = zc2;
+                xc3 = xc4, zc3 = zc4;
+            }
+        }
+
+        h1 = h2;
+        radius = radius2;
     }
-	
-	return pointsList;
+    
+    return pointsList;
 }
