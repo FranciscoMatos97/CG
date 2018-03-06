@@ -1,0 +1,2 @@
+g++ tinyxml2.cpp Point.cpp Parser.cpp engine.cpp -lglut -lGLU -lGL -o engine
+./engine scene.xml

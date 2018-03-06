@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/Point.cpp
+headers/Point.h
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/headers/Point.h
+
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/generator/src/generator.cpp
+iostream
+-
+fstream
+-
+iterator
+-
+vector
+-
+string
+-
+stdlib.h
+-
+../../headers/vertex.h
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/headers/vertex.h
+
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/generator/src/vertex.cpp
+vector
+-
+math.h
+-
+../../headers/Point.h
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/headers/Point.h
+
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/headers/Point.h
+
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/headers/vertex.h
+vector
+-
+Point.h
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/headers/Point.h
+

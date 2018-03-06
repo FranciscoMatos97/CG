@@ -1,0 +1,3 @@
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/generator/CMakeFiles/rebuild_cache.dir
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/generator/CMakeFiles/edit_cache.dir
+/Users/Tiago/Desktop/Universidade/3ano/2semestre/CG/Projeto/CG/generator/CMakeFiles/CG.dir
