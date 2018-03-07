@@ -15,7 +15,7 @@ void saveFile(vector<Point*> v, string filename){
 
 	string f = "../files3d/" + filename; 
 
-	file.open(f.c_str(), ios_base::app);<
+	file.open(f.c_str(), ios_base::app);
 
 		for(int i=0; i<v.size(); ++i){
 			file << v[i]->Point::getX() << ' ';
@@ -57,14 +57,14 @@ int main(int argc, char** argv){
 		saveFile(v, "box.3d");
 	}
 
-	/*if(strcmp(argv[1], "sphere") == 0 && argc == 5){
+	if(strcmp(argv[1], "sphere") == 0 && argc == 6){
 
-		radius = atoi(argv[2]);
-		slices = atoi(argv[3]);
-		stacks = atoi(argv[4]);
+		float radius = atoi(argv[2]);
+		int slices = atoi(argv[3]);
+		int stacks = atoi(argv[4]);
 		v = makeSphere(radius, slices, stacks);
 		saveFile(v, "sphere.3d");
-	}*/
+	}
 
 	if(strcmp(argv[1], "cone") == 0 && argc == 7){
 
