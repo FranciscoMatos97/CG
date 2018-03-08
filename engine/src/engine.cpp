@@ -1,10 +1,14 @@
 
 #include "../../headers/engine.h"
+#include <math.h>
 
 vector<Point*> pontos;
 float xr=0, yr=0, zr=0;
 float angle=0;
 float xt=0, yt=0, zt=0;
+float cx=M_PI_4, cz=M_PI_4;
+float r = 10.0;
+//cz beta, cx alpha
 
 void changeSize(int w, int h) {
 
@@ -38,8 +42,7 @@ void renderScene(void) {
 
 // set the camera
     glLoadIdentity();
-
-    gluLookAt(5.0,5.0,5.0,
+    gluLookAt((r*cos(cx)*cos(cz)),(r*sin(cz)),(r*cos(cz)*sin(cx)),
               0.0,0.0,0.0,
               0.0f,1.0f,0.0f);
 
@@ -100,52 +103,72 @@ void processKeys(unsigned char key, int xx, int yy) {
     if(key == 27){
         exit(0);
     }
+    //zoom in
+
+    if(key == 'i'){
+        r+=0.1;
+        glutPostRedisplay();
+    }
+    //zoom out
+    if(key == 'k'){
+        r-=0.1;
+        glutPostRedisplay();
+    }
+
+    //esquerda
+    if(key=='u'){
+      cx+=0.1;
+        glutPostRedisplay();
+    }
+    //direita
+    if(key=='o'){
+        cx-=0.1;
+        glutPostRedisplay();
+    }
+    if(key=='m'){
+        cz+=0.1;
+        glutPostRedisplay();
+    }
+
+    if(key=='n'){
+        cz-=0.1;
+        glutPostRedisplay();
+    }
 
     if(key == 'q'){
         angle--;
-        xr=1;
-        yr=0;
-        zr=0;
+        xr--;
         glutPostRedisplay();
     }
 
     if(key == 'w'){
         angle++;
-        xr=1;
-        yr=0;
-        zr=0;
+        xr++;
         glutPostRedisplay();
     }
 
     if(key == 'e'){
         angle--;
-        xr=0;
-        yr=1;
-        zr=0;
+
+        yr--;
         glutPostRedisplay();
     }
 
     if(key == 'r'){
         angle++;
-        xr=0;
-        yr=1;
-        zr=0;
+        yr++;
         glutPostRedisplay();
     }
 
     if(key == 't'){
         angle--;
-        xr=0;
-        yr=0;
-        zr=1;
+        zr--;
         glutPostRedisplay();
     }
 
     if(key == 'y'){
         angle++;
-        xr=0;
-        yr=0;
-        zr=1;
+        zr++;
         glutPostRedisplay();
     }
 
@@ -208,7 +231,6 @@ int main(int argc, char** argv){
     glutInitWindowPosition(100,100);
     glutInitWindowSize(800,800);
     glutCreateWindow("Projeto");
-
 // Required callback registry
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
