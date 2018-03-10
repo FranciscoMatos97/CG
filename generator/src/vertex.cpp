@@ -104,8 +104,7 @@ vector<Point*> makeSphere(float radius, int slices, int stacks){
                                                                                                                  
     //float x = radius * cos(h2) * sin(h);                                                                           
     //float y = radius * cos(h);                                                                                     
-    //float z = radius * sin(h2) * sin(h);                                                                           
-                                                                                                                     
+    //float z = radius * sin(h2) * sin(h);                                                                                                                                                                        
                                                                                                                      
     for (int i = 0; i < slices; i++) {                                                                               
                                                                                                                      
@@ -149,11 +148,11 @@ vector<Point*> makeSphere(float radius, int slices, int stacks){
     return v;
 }
 
-vector<Point*> makeCone(float r, float height, int slices, int stacks) {
+vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
     vector<Point*> pointsList;
     double alpha = (2*M_PI)/slices;
     double tmp = height/stacks;
-    double tanB = height/r;
+    double tanB = height/radius;
     double h1 = 0, h2, radius2;
     float x1, x2, x3, x4, z1, z2, z3, z4;
 
@@ -162,11 +161,11 @@ vector<Point*> makeCone(float r, float height, int slices, int stacks) {
         radius2 = (height-h2) / tanB;
 
         for(int i=1; i<=slices+1; i++){
-            x1 = r*sin(alpha*i);
-            z1 = r*cos(alpha*i);
+            x1 = radius*sin(alpha*i);
+            z1 = radius*cos(alpha*i);
 
-            x2 = r*sin(alpha*(i+1));
-            z2 = r*cos(alpha*(i+1));
+            x2 = radius*sin(alpha*(i+1));
+            z2 = radius*cos(alpha*(i+1));
 
             x3 = radius2*sin(alpha*i);
             z3 = radius2*cos(alpha*i);
@@ -176,19 +175,19 @@ vector<Point*> makeCone(float r, float height, int slices, int stacks) {
 
             if(j == 1){
                 
-                    //base
-                    pointsList.push_back(new Point(0.0f,0,0.0f));
-                    pointsList.push_back(new Point(x2,0,z2));
-                    pointsList.push_back(new Point(x1,0,z1));
+                //base
+                pointsList.push_back(new Point(0.0f,0,0.0f));
+                pointsList.push_back(new Point(x2,0,z2));
+                pointsList.push_back(new Point(x1,0,z1));
 
-                    //lados
-                    pointsList.push_back(new Point(x1,0,z1));
-                    pointsList.push_back(new Point(x2,0,z2));
-                    pointsList.push_back(new Point(x3,h2,z3));
+                //lados
+                pointsList.push_back(new Point(x1,0,z1));
+                pointsList.push_back(new Point(x2,0,z2));
+                pointsList.push_back(new Point(x3,h2,z3));
 
-                    pointsList.push_back(new Point(x2,0,z2));
-                    pointsList.push_back(new Point(x4,h2,z4));
-                    pointsList.push_back(new Point(x3,h2,z3));
+                pointsList.push_back(new Point(x2,0,z2));
+                pointsList.push_back(new Point(x4,h2,z4));
+                pointsList.push_back(new Point(x3,h2,z3));
 
             }
             else if(j == stacks){
@@ -213,7 +212,7 @@ vector<Point*> makeCone(float r, float height, int slices, int stacks) {
         }
 
         h1 = h2;
-        r = radius2;
+        radius = radius2;
     }
     
     return pointsList;
