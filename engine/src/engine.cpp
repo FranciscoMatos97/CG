@@ -98,7 +98,7 @@ void renderScene(void) {
 
 
 void processKeys(unsigned char key, int xx, int yy) {
-
+    float inc=0.1;
 // put code to process regular keys in here
     if(key == 27){
         exit(0);
@@ -106,32 +106,36 @@ void processKeys(unsigned char key, int xx, int yy) {
     //zoom in
 
     if(key == 'i'){
-        r+=0.1;
+        r+=inc;
         glutPostRedisplay();
     }
     //zoom out
     if(key == 'k'){
-        r-=0.1;
+        r-=inc;
         glutPostRedisplay();
     }
 
     //esquerda
     if(key=='u'){
-      cx+=0.1;
+      cx+=inc;
         glutPostRedisplay();
     }
     //direita
     if(key=='o'){
-        cx-=0.1;
+        cx-=inc;
         glutPostRedisplay();
     }
-    if(key=='m'){
-        cz+=0.1;
+    if(key=='m'){wat
+        cz+=inc;
+        if(cz>1.5)
+            cz=1.5;
         glutPostRedisplay();
     }
 
     if(key=='n'){
-        cz-=0.1;
+        cz-=inc;
+        if(cz<-1.5)
+            cz=-1.5;
         glutPostRedisplay();
     }
 
