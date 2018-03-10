@@ -125,7 +125,7 @@ void processKeys(unsigned char key, int xx, int yy) {
         cx-=inc;
         glutPostRedisplay();
     }
-    if(key=='m'){wat
+    if(key=='m'){
         cz+=inc;
         if(cz>1.5)
             cz=1.5;
