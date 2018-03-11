@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 #include <stdlib.h>
+#include <cstring>
 #include "../../headers/vertex.h"
+#include "string.h"
 
 using namespace std;
 
