@@ -201,6 +201,14 @@ void processKeys(unsigned char key, int xx, int yy) {
         glPolygonMode(GL_FRONT,GL_POINT);
         glutPostRedisplay();
     }
+
+    if(key=='a'){
+        xr=0;
+        yr=0;
+        zr=0;
+        angle=0;
+        glutPostRedisplay();
+    }
 }
 
 
