@@ -132,6 +132,7 @@ int main(int argc, char** argv){
 
     else if(strcmp(argv[1], "help") == 0){
         showHelp();
+        return 0;
     } 
 
     else{
