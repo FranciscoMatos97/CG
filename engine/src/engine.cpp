@@ -285,6 +285,8 @@ int main(int argc, char** argv){
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
 
+    int xml=0;
+
     if(argc < 2) {
         cout << "Invalid number of arguments." << endl;
         return 0;
@@ -292,15 +294,14 @@ int main(int argc, char** argv){
 
     else if(strcmp(argv[1], "help") == 0){
         showHelp();
+        return 0;
     } 
 
-    else{
+    xml = parseXML(argv[1]);
+    if(xml==0) {
         cout << "I don't recognize that input. Need help? Try './engine help' if you need help!" << endl;
         return 0;
     }
-
-    int xml = parseXML(argv[1]);
-    if(xml==0) return -1;
 
     vector<string> file_list = lookupFiles(argv[1]);
 
