@@ -209,6 +209,12 @@ void processKeys(unsigned char key, int xx, int yy) {
         angle=0;
         glutPostRedisplay();
     }
+
+    if(key == 'b'){
+        cx=M_PI_4;
+        cz=M_PI_4;
+        r = 10;
+    }
 }
 
 
@@ -263,9 +269,17 @@ void showHelp(){
     cout << "|                                                                      |" << endl;
     cout << "|        -> a: Reset the angle and axis.                               |" << endl;
     cout << "|                                                                      |" << endl;
+    cout << "|        -> i or k: Zoom out and Zoom in.                              |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> m or n: Move camera upwards and downwards.                 |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> o or u: Move camera right and left.                        |" << endl;
+    cout << "|                                                                      |" << endl;
     cout << "|        -> UP key or DOWN key: Translate in the Y axis.               |" << endl;
     cout << "|                                                                      |" << endl;
     cout << "|        -> LEFT key or RIGHT key: Translate in the X axis.            |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> ESC: Close app.                                            |" << endl;
     cout << "|                                                                      |" << endl;
     cout << "------------------------------- THE END --------------------------------" << endl;
 }
