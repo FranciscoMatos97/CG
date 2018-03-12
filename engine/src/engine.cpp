@@ -236,6 +236,40 @@ void processSpecialKeys(int key, int xx, int yy) {
     }
 }
 
+void showHelp(){
+    cout << "------------------------- You called for Help! -------------------------" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|      How to use:                                                     |" << endl;
+    cout << "|        -> ./engine (xml file)                                        |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|      XML File:                                                       |" << endl;
+    cout << "|        -> A path to the xml file that contains the name of the       |" << endl;
+    cout << "|           3d files.                                                  |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|      What you can do:                                                |" << endl;
+    cout << "|        -> q or w: Rotate in the X axis.                              |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> e or r: Rotate in the Y axis.                              |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> t or y: Rotate in the Z axis.                              |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> z or x: Translate in the Z axis.                           |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> l: Activate line mode.                                     |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> f: Activate fill mode.                                     |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> p: Activate point mode.                                    |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> a: Reset the angle and axis.                               |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> UP key or DOWN key: Translate in the Y axis.               |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|        -> LEFT key or RIGHT key: Translate in the X axis.            |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "------------------------------- THE END --------------------------------" << endl;
+}
+
 int main(int argc, char** argv){
 // init GLUT and the window
     glutInit(&argc, argv);
@@ -253,6 +287,15 @@ int main(int argc, char** argv){
 
     if(argc < 2) {
         cout << "Invalid number of arguments." << endl;
+        return 0;
+    }
+
+    else if(strcmp(argv[1], "help") == 0){
+        showHelp();
+    } 
+
+    else{
+        cout << "I don't recognize that input. Need help? Try './engine help' if you need help!" << endl;
         return 0;
     }
 
