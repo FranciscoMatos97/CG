@@ -20,6 +20,6 @@ if(NOT OPENGL_FOUND)
     message(ERROR " OPENGL not found!")
 endif(NOT OPENGL_FOUND)
 
-add_executable(${PROJECT_NAME} src/engine.cpp ../Point.cpp src/tinyxml2.cpp src/Parser.cpp)
+add_executable(${PROJECT_NAME} src/engine.cpp ../Point.cpp src/tinyxml2.cpp src/ParserNew.cpp src/Struct.cpp src/Transform.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )

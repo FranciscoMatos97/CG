@@ -1,4 +1,3 @@
-
 #ifndef AA_PROJETO_ENGINE_H
 #define AA_PROJETO_ENGINE_H
 
@@ -15,8 +14,9 @@
 #include <time.h>
 
 using namespace std;
-#include "Parser.h"
+#include "ParserNew.h"
 #include "Point.h"
+#include "Struct.h"
 
 #endif //AA_PROJETO_ENGINE_H
 
