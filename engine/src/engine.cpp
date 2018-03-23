@@ -317,9 +317,9 @@ int main(int argc, char** argv){
         return 0;
     }
 
-    vector<string> file_list = lookupFiles(argv[1]);
+    vector<Struct*> list = lookupFiles(argv[1]);
 
-    if (file_list.size()) {
+    /*if (file_list.size()) {
         for (vector<string>::const_iterator i = file_list.begin(); i != file_list.end(); ++i) {
             vector<Point*> p = readFile(*i);
             for (vector<Point*>:: iterator it = p.begin(); it != p.end(); ++it) {
@@ -327,7 +327,7 @@ int main(int argc, char** argv){
                 pontos.push_back(new Point(pt.getX(), pt.getY(), pt.getZ()));
             }
         }
-    }
+    }*/
 
     cout << "Drawing." << endl;
 
