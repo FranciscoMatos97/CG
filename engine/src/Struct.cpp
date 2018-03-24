@@ -28,3 +28,20 @@ void Struct::setRefit(vector<Transform*> l){
 	refit = l;
 }
 
+void Struct::addTransform(Transform* t){
+	refit.push_back(t);
+}
+
+void Struct::clear(){
+	file="";
+	refit.clear();
+}
+
+int Struct::size(){
+	return refit.size();
+}
+
+void Struct::put(Struct s){
+	refit.insert(refit.end(), s.getRefit().begin(), s.getRefit().end());
+}
+
