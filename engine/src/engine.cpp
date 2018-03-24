@@ -317,7 +317,7 @@ int main(int argc, char** argv){
         return 0;
     }
 
-    vector<Struct*> list = lookupFiles(argv[1]);
+    vector<Struct> list = lookupFiles(argv[1]);
 
     /*if (file_list.size()) {
         for (vector<string>::const_iterator i = file_list.begin(); i != file_list.end(); ++i) {

@@ -1,22 +1,19 @@
 #include "../../headers/Transform.h"
 
 string name;
-float ang, axisX, axisY, axisZ;
+float ang;
+Point* point;
 
 Transform::Transform(){
 	name = "";
 	ang = 0;
-	axisX=0;
-	axisY=0;
-	axisZ=0;
+	point = NULL;
 }
 
-Transform::Transform(string n, float angl, float xx, float yy, float zz){
+Transform::Transform(string n, float angl, Point* p){
 	name = n;
 	ang = angl;
-	axisX = xx;
-	axisY = yy;
-	axisZ = zz;
+	point = p;
 }
 
 string Transform::getName(){
@@ -27,16 +24,8 @@ float Transform::getAngle(){
 	return ang;
 }
 
-float Transform::getX(){
-	return axisX;
-}
-
-float Transform::getY(){
-	return axisY;
-}
-
-float Transform::getZ(){
-	return axisZ;
+Point* Transform::getPoint(){
+	return point;
 }
 
 void Transform::setName(string n){
@@ -47,14 +36,10 @@ void Transform::setAngle(float angl){
 	ang = angl;
 }
 
-void Transform::setX(float xx){
-	axisX = xx;
+void Transform::setPoint(Point* p){
+	point = p;
 }
 
-void Transform::setY(float yy){
-	axisY = yy;
-}
-
-void Transform::setZ(float zz){
-	axisZ = zz;
+Transform* Transform::clone(){
+	return this;
 }

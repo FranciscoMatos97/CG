@@ -2,30 +2,26 @@
 #define PROJETO_TRANSFORM_H__
 
 #include <string>
+#include "Point.h"
 
 using namespace std;
 
 class Transform{
 
 	string name;
-	float angle;
-	float x;
-	float y;
-	float z;
+	float ang;
+	Point* point;
 
 public:
 	Transform();
-	Transform(string,float,float,float,float);
+	Transform(string,float,Point*);
 	string getName();
 	float getAngle();
-	float getX();
-	float getY();
-	float getZ();
+	Point* getPoint();
 	void setName(string);
 	void setAngle(float);
-	void setX(float);
-	void setY(float);
-	void setZ(float);
+	void setPoint(Point*);
+	Transform* clone();
 	
 };
 
