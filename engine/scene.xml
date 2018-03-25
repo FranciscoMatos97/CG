@@ -1,21 +1,22 @@
 <scene>
-	<group>
-		<translate x="5" y="0" z="2" />
-		<rotate angle="45" x="0" y="1" z="0" />
-  		<models>
-			<model file="sphere.3d" />
+    <group>
+        <models>
+	        <model file = "plane.3d"/>
  		</models>
- 		<group>
- 			<scale x="1" y="8" z="2" />
- 			<models>
- 				<model file="box.3d" />
- 			</models>
- 		</group>
  	</group>
- 	<group>
- 		<rotate angle="33" x="0" y="20" z="11" />
- 		<models>
- 			<model file="cone.3d" />
- 		</models>
+    <group>
+        <models>
+	        <model file = "box.3d"/>
+        </models>
+ 	</group>
+    <group>
+        <models>
+	        <model file = "sphere.3d"/>
+        </models>
+ 	</group>
+    <group>
+        <models>
+	        <model file = "cone.3d"/>
+        </models>
  	</group>
 </scene>
