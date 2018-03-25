@@ -22,7 +22,6 @@ public:
 	void addTransform(Transform*);
 	void clear();
 	int size();
-	void put(Struct);
 };
 
 #endif
