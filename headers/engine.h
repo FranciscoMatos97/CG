@@ -12,6 +12,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 using namespace std;
 #include "ParserNew.h"
@@ -21,6 +22,8 @@ using namespace std;
 #endif //AA_PROJETO_ENGINE_H
 
 void changeSize(int w, int h);
+void figuraPrimitiva(Struct);
+void sistemaSolar(Struct);
 void renderScene(void);
 void processKeys(unsigned char key, int xx, int yy);
 void processSpecialKeys(int key, int xx, int yy);
