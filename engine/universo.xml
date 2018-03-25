@@ -1,6 +1,5 @@
 <scene>
 	<group>
-		<!--Sol-->
 		<models>
 			<model file="sol.3d" />
 		</models>
