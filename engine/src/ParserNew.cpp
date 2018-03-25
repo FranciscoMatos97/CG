@@ -3,7 +3,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+Struct s3;
+
 Struct lookupTranslate(XMLElement* element, Struct s){
+
     string transf;
     float x,y,z;
 
@@ -23,12 +26,10 @@ Struct lookupTranslate(XMLElement* element, Struct s){
 
     Point* p = new Point(x,y,z);
     Transform* t = new Transform(transf,NULL,p);
-
     s.addTransform(t);
 
     return s;
     
-
 }
 
 Struct lookupRotate(XMLElement* element, Struct s){
@@ -55,7 +56,6 @@ Struct lookupRotate(XMLElement* element, Struct s){
 
     Point* p = new Point(x,y,z);
     Transform* t = new Transform(transf,angle,p);
-
     s.addTransform(t);
 
     return s;
@@ -68,7 +68,7 @@ Struct lookupScale(XMLElement* element, Struct s){
 
     transf = element->Name();
     if(element->Attribute("x")){
-        x = stof( element->Attribute("x"));
+        x = stof(element->Attribute("x"));
     }
     else x = NULL;
     if(element->Attribute("y")){
@@ -86,6 +86,7 @@ Struct lookupScale(XMLElement* element, Struct s){
 
     return s;
 
+
 }
 
 vector<Struct> lookAux(XMLElement* element){
@@ -96,8 +97,7 @@ vector<Struct> lookAux(XMLElement* element){
     XMLElement* element3;
     vector<Struct> s;
     vector<Transform*> transforms;
-    Struct s2, s3;
-
+    
 
     for(; element; element=element->NextSiblingElement()){
 
@@ -110,22 +110,21 @@ vector<Struct> lookAux(XMLElement* element){
                         cout << "-> " << file << endl;
                         s3.setFile(file);
                         s.push_back(s3); 
-                        
                     }
                 }
-
-                s3.clear();
 
             }
 
             else if(!strcmp(element->Name(),"rotate")){
                 
                 s3 = lookupRotate(element, s3);
+
             }
 
             else if(!strcmp(element->Name(),"translate")){
 
                 s3 = lookupTranslate(element, s3);
+                
     
             }
 
@@ -142,12 +141,13 @@ vector<Struct> lookAux(XMLElement* element){
                 sAux.clear();
             }
         }
+        s3.clear();
 
         return s;
 
 }
 
-vector<Struct> lookupFiles(char* file_name){
+vector<Struct> lookFiles(char* file_name){
 
     vector<Struct> list;
     XMLDocument doc;
@@ -161,23 +161,58 @@ vector<Struct> lookupFiles(char* file_name){
 
     else cout << "Could not load XML file: " << file_name << "." << endl;
 
-    element=doc.FirstChildElement("scene")->FirstChildElement("group")->FirstChildElement();
-
+    element=doc.FirstChildElement("scene")->FirstChildElement("group");
     list = lookAux(element);
+
 
     for (vector<Struct>::iterator i = list.begin(); i != list.end(); ++i) {
         cout << (*i).Struct::getFile() << endl;
-
         for(vector<Transform*>::iterator j = (*i).Struct::getRefit().begin(); j != (*i).Struct::getRefit().end(); ++j){
             cout << (*j)->Transform::getName() << endl;
             cout << "Angle: " << (*j)->Transform::getAngle() << endl;
-            cout << "X: " << (*j)->getPoint()->getX() << endl;
-            cout << "Y: " << (*j)->getPoint()->getY() << endl;
-            cout << "Z: " << (*j)->getPoint()->getZ() << endl;
+            cout << "X: " << (*j)->Transform::getPoint()->getX() << endl;
+            cout << "Y: " << (*j)->Transform::getPoint()->getY() << endl;
+            cout << "Z: " << (*j)->Transform::getPoint()->getZ() << endl;
         }        
     }
 
     return list;
+}
+
+vector<Point*> readFile(string file_name){
+
+    vector<Point*> point_list;
+    vector<string> tokens;
+    string buf;
+    string line;
+    int index = 0;
+    float x, y, z;
+
+    string f = "../files3d/" + file_name;
+    const char * f_n = f.c_str();
+    ifstream file (f_n);
+
+    if(file.is_open()){
+        cout << "Processing " << file_name << endl;
+        while(getline(file,line)) { // percorrer as linhas do ficheiro
+            stringstream ss(line);
+            while (ss >> buf) {
+                tokens.push_back(buf); // percorrer as coordenadas dos pontos em cada linha
+            }
+            if((strcmp("---",tokens.at(index).c_str()))!=0) {
+                x = atof(tokens.at(index).c_str());
+                y = atof(tokens.at(index+1).c_str());
+                z = atof(tokens.at(index+2).c_str());
+                point_list.push_back(new Point(x, y, z)); // adicionar ponto ao vector
+            }
+            index += 3; // incrementar o índice para ler ponto seguinte
+        }
+        file.close();
+
+    }
+    else cout << "Error opening " << file_name << endl;
+
+    return point_list;
 }
 
 
@@ -187,6 +222,7 @@ int parseXML(char* file_name){
     XMLError error;
 
     error = doc.LoadFile(file_name);
+
 
     if(error != 0) {
         cout << "Error loading " << file_name << endl;

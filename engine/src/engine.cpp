@@ -698,6 +698,7 @@ int main(int argc, char** argv){
 
 // Required callback registry
     glutIdleFunc(renderScene);
+    glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
 
 // Callback registration for keyboard processing
