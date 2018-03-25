@@ -95,39 +95,35 @@ int main(int argc, char** argv){
 
 
     if(strcmp(argv[1], "plane") == 0){
-
         size = atoi(argv[2]);
         v = makePlane(size);
-        saveFile(v, "plane.3d");
+        saveFile(v, argv[3]);
     }
 
     else if(strcmp(argv[1], "box") == 0 && argc == 7){
-        cout << "ola" << endl;
         float x = atoi(argv[2]);
         float y = atoi(argv[3]);
         float z = atoi(argv[4]);
         int divisions = atoi(argv[5]);
         v = makeBox(x, y, z, divisions);
-        saveFile(v, "box.3d");
+        saveFile(v, argv[6]);
     }
 
     else if(strcmp(argv[1], "sphere") == 0 && argc == 6){
-
         float radius = atoi(argv[2]);
         int slices = atoi(argv[3]);
         int stacks = atoi(argv[4]);
         v = makeSphere(radius, slices, stacks);
-        saveFile(v, "sphere.3d");
+        saveFile(v, argv[5]);
     }
 
     else if(strcmp(argv[1], "cone") == 0 && argc == 7){
-
         float radius = atoi(argv[2]);
         float height = atoi(argv[3]);
         int slices = atoi(argv[4]);
         int stacks = atoi(argv[5]);
         v = makeCone(radius, height, slices, stacks);
-        saveFile(v, "cone.3d");
+        saveFile(v, argv[6]);
     }
 
     else if(strcmp(argv[1], "help") == 0){
