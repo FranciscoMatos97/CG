@@ -5,7 +5,7 @@
 #include <string>
 #include <stdlib.h>
 #include <cstring>
-#include "../../headers/vertex.h"
+#include "../../headers/Vertex.h"
 #include "string.h"
 
 using namespace std;
@@ -84,20 +84,19 @@ void showHelp(){
 
 int main(int argc, char** argv){
 
-    vector<Point*> v;
-
-    float size=0;
-
     if(argc < 2){
         cout << "Not enough arguments" << endl;
         return 0;
     }
 
+    float size=0;
+    Vertex* vx = new Vertex();
+
 
     if(strcmp(argv[1], "plane") == 0){
         size = atoi(argv[2]);
-        v = makePlane(size);
-        saveFile(v, argv[3]);
+        vx->makePlane(size);
+        saveFile(vx->getPointsList(), argv[3]);
     }
 
     else if(strcmp(argv[1], "box") == 0 && argc == 7){
@@ -105,16 +104,16 @@ int main(int argc, char** argv){
         float y = atoi(argv[3]);
         float z = atoi(argv[4]);
         int divisions = atoi(argv[5]);
-        v = makeBox(x, y, z, divisions);
-        saveFile(v, argv[6]);
+        vx->makeBox(x, y, z, divisions);
+        saveFile(vx->getPointsList(), argv[6]);
     }
 
     else if(strcmp(argv[1], "sphere") == 0 && argc == 6){
         float radius = atoi(argv[2]);
         int slices = atoi(argv[3]);
         int stacks = atoi(argv[4]);
-        v = makeSphere(radius, slices, stacks);
-        saveFile(v, argv[5]);
+        vx->makeSphere(radius, slices, stacks);
+        saveFile(vx->getPointsList(), argv[5]);
     }
 
     else if(strcmp(argv[1], "cone") == 0 && argc == 7){
@@ -122,8 +121,8 @@ int main(int argc, char** argv){
         float height = atoi(argv[3]);
         int slices = atoi(argv[4]);
         int stacks = atoi(argv[5]);
-        v = makeCone(radius, height, slices, stacks);
-        saveFile(v, argv[6]);
+        vx->makeCone(radius, height, slices, stacks);
+        saveFile(vx->getPointsList(), argv[6]);
     }
 
     else if(strcmp(argv[1], "help") == 0){
