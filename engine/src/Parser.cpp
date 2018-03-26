@@ -42,8 +42,8 @@ vector<Struct> lookAux(XMLElement* element){
     vector<Transform*> transforms;
     
 
-    for(; element; element=element->NextSiblingElement()){
-
+    for(element=element->FirstChildElement(); element; element=element->NextSiblingElement()){
+            //cout << element->Name() << endl;
             if(!strcmp(element->Name(), "models")){
 
                 elementAux = element->FirstChildElement("model");
@@ -79,13 +79,12 @@ vector<Struct> lookAux(XMLElement* element){
             }
 
             else if(!strcmp(element->Name(),"group")){
-                element3 = element->FirstChildElement();
+                cout << "ok" << endl;
+                element3 = element;
                 vector<Struct> sAux = lookAux(element3);
                 s.insert(s.end(), sAux.begin(), sAux.end());
-                sAux.clear();
             }
         }
-        s3.clear();
 
         return s;
 
@@ -93,7 +92,7 @@ vector<Struct> lookAux(XMLElement* element){
 
 vector<Struct> lookFiles(char* file_name){
 
-    vector<Struct> list;
+    vector<Struct> list, final;
     XMLDocument doc;
     XMLElement* element; 
 
@@ -105,11 +104,18 @@ vector<Struct> lookFiles(char* file_name){
 
     else cout << "Could not load XML file: " << file_name << "." << endl;
 
-    element=doc.FirstChildElement("scene")->FirstChildElement("group");
-    list = lookAux(element);
+    for(element = doc.FirstChildElement("scene")->FirstChildElement("group"); element; element=element->NextSiblingElement()){
+        
+        //cout << element->Name() << endl;
+        list = lookAux(element);
+        final.insert(final.end(), list.begin(), list.end());
+        s3.clear();
+    }
+    //element=doc.FirstChildElement("scene")->FirstChildElement("group")->FirstChildElement();
+    //list = lookAux(element);
 
 
-    /*for (vector<Struct>::iterator i = list.begin(); i != list.end(); ++i) {
+   for (vector<Struct>::iterator i = final.begin(); i != final.end(); ++i) {
         cout << (*i).Struct::getFile() << endl;
         for(vector<Transform*>::iterator j = (*i).Struct::getRefit().begin(); j != (*i).Struct::getRefit().end(); ++j){
             
@@ -120,10 +126,11 @@ vector<Struct> lookFiles(char* file_name){
             cout << "Y: " << (*j)->Transform::getPoint()->getY() << endl;
             cout << "Z: " << (*j)->Transform::getPoint()->getZ() << endl;
              
-        }*/
+        }
+    }
 
 
-    return list;
+    return final;
 }
 
 vector<Point*> readFile(string file_name){
