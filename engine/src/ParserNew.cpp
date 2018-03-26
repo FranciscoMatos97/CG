@@ -12,22 +12,22 @@ Struct lookupTranslate(XMLElement* element, Struct s){
 
     transf = element->Name();
     if(element->Attribute("x")){
-        x = stof( element->Attribute("x"));
+        x = atof( element->Attribute("x"));
+
     }
     else x = NULL;
     if(element->Attribute("y")){
-        y = stof(element->Attribute("y"));
+        y = atof(element->Attribute("y"));
     }
     else y=NULL;
     if(element->Attribute("z")){
-        z = stof(element->Attribute("z"));
+        z = atof(element->Attribute("z"));
     }
     else z=NULL;
 
     Point* p = new Point(x,y,z);
     Transform* t = new Transform(transf,NULL,p);
     s.addTransform(t);
-
     return s;
     
 }
@@ -38,19 +38,19 @@ Struct lookupRotate(XMLElement* element, Struct s){
 
     transf = element->Name();
     if(element->Attribute("angle")){
-        angle = stof( element->Attribute("angle"));
+        angle = atof( element->Attribute("angle"));
     }
     else angle = NULL;
     if(element->Attribute("x")){
-        x = stof( element->Attribute("x"));
+        x = atof( element->Attribute("x"));
     }
     else x = NULL;
     if(element->Attribute("y")){
-        y = stof(element->Attribute("y"));
+        y = atof(element->Attribute("y"));
     }
     else y=NULL;
     if(element->Attribute("z")){
-        z = stof(element->Attribute("z"));
+        z = atof(element->Attribute("z"));
     }
     else z=NULL;
 
@@ -68,22 +68,21 @@ Struct lookupScale(XMLElement* element, Struct s){
 
     transf = element->Name();
     if(element->Attribute("x")){
-        x = stof(element->Attribute("x"));
+        x = atof(element->Attribute("x"));
     }
     else x = NULL;
     if(element->Attribute("y")){
-        y = stof(element->Attribute("y"));
+        y = atof(element->Attribute("y"));
     }
     else y=NULL;
     if(element->Attribute("z")){
-        z = stof(element->Attribute("z"));
+        z = atof(element->Attribute("z"));
     }
     else z=NULL;
 
     Point* p = new Point(x,y,z);
     Transform* t = new Transform(transf,NULL,p);
     s.addTransform(t);
-
     return s;
 
 
@@ -124,8 +123,7 @@ vector<Struct> lookAux(XMLElement* element){
             else if(!strcmp(element->Name(),"translate")){
 
                 s3 = lookupTranslate(element, s3);
-                
-    
+
             }
 
             else if(!strcmp(element->Name(),"scale")){
@@ -168,13 +166,16 @@ vector<Struct> lookFiles(char* file_name){
     for (vector<Struct>::iterator i = list.begin(); i != list.end(); ++i) {
         cout << (*i).Struct::getFile() << endl;
         for(vector<Transform*>::iterator j = (*i).Struct::getRefit().begin(); j != (*i).Struct::getRefit().end(); ++j){
+            /*
             cout << (*j)->Transform::getName() << endl;
             cout << "Angle: " << (*j)->Transform::getAngle() << endl;
-            cout << "X: " << (*j)->Transform::getPoint()->getX() << endl;
+
+          cout << "X: " << (*j)->Transform::getPoint()->getX() << endl;
             cout << "Y: " << (*j)->Transform::getPoint()->getY() << endl;
             cout << "Z: " << (*j)->Transform::getPoint()->getZ() << endl;
-        }        
-    }
+             */
+        }
+
 
     return list;
 }

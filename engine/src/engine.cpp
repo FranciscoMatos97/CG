@@ -42,11 +42,14 @@ void figuraPrimitiva(Struct s){
 
     for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
         nameTransf = (*t)->Transform::getName().c_str();
-        angle = (*t)->Transform::getAngle();
+
+
+        if (strcmp(nameTransf,"rotate")) {
+            angle = (*t)->Transform::getAngle();
+        }
         x = (*t)->Transform::getPoint()->Point::getX();
         y = (*t)->Transform::getPoint()->Point::getY();
         z = (*t)->Transform::getPoint()->Point::getZ();
-
         if (!strcmp(nameTransf,"translate")){
             glTranslatef(x,y,z);
         }
@@ -58,28 +61,30 @@ void figuraPrimitiva(Struct s){
         }
     }
 
-    vector<Point*> vp = s.getPoints();
+    vector<Point*> vp;
     Point p;
+
+
     srand (time(NULL));
     int color=0;
     float a, b, c;
 
     glBegin(GL_TRIANGLES);
+    vp=s.getPoints();
+            for (vector<Point *>::const_iterator i = vp.begin(); i != vp.end(); ++i, color++) {
+                p = **i;
+                if (color % 3 == 0) {
+                    a = (float) rand() / (float) RAND_MAX;
+                    b = (float) rand() / (float) RAND_MAX;
+                    c = (float) rand() / (float) RAND_MAX;
 
-    for (vector<Point*>::iterator i = vp.begin(); i != vp.end(); i++, color++) {
-        p = **i;
+                    if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
 
-        if (color % 3 == 0) {
-            a = (float) rand() / (float) RAND_MAX;
-            b = (float) rand() / (float) RAND_MAX;
-            c = (float) rand() / (float) RAND_MAX;
+                    glColor3f(a, b, c);
+                }
+                glVertex3f(p.getX(), p.getY(), p.getZ());
+            }
 
-            if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
-
-            glColor3f(a, b, c);
-        }
-        glVertex3f(p.getX(), p.getY(), p.getZ());
-    }
 
     glEnd();
 
@@ -183,7 +188,7 @@ void sistemaSolar(Struct s){
     //definir a cor do planeta e fazer rotação à volta do objeto correspondente
     if(strcmp(nameFile,"lua.3d")!=0) glRotatef(gr*rotacao(nameFile),0,1,0);
 
-    //fazer transação/rotação/escala dos eixos
+    //fazer translação/rotação/escala dos eixos
     int lua=0;
     for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
         nameTransf = (*t)->Transform::getName().c_str();
@@ -193,14 +198,12 @@ void sistemaSolar(Struct s){
         z = (*t)->Transform::getPoint()->Point::getZ();
 
         if (!strcmp(nameTransf,"translate")){
+            string a = s.getFile();
             if(!strcmp(nameFile,"lua.3d")) {
                 if(lua==0) glRotatef(gr*6,0,1,0);
                 glTranslatef(x,y,z);
                 lua++;
                 if(lua==1){
-                    cout << s.getFile() << endl; //ao tirar isto daqui deixa de dar
-
-                    //orbita
                     glColor3f(0.5,0.8,0.8);
                     glBegin(GL_POINTS);
                     for(int k=0;k<360;++k) {
@@ -224,17 +227,15 @@ void sistemaSolar(Struct s){
 
     vector<Point*> vp = s.getPoints();
     Point p;
-
+    string h = s.getFile();
     //desenhar planeta e fazer rotação sobre si próprio
     if(!strcmp(nameFile,"asteroide.3d")){
-        for(int j=0; j<100; j++) {
+        for(int j=0; j<10; j++) {
             r=(rand()%8)+100; //r entre 100 e 108
             alpha=rand()%360; //alpha entre 0 e 360
-
             glPushMatrix();
             glTranslatef(r * sin(alpha), r * cos(alpha), 0);
             glRotatef(gr*6, 0, 1, 0);
-
             glBegin(GL_TRIANGLES);
             for (vector<Point *>::iterator i = vp.begin(); i != vp.end(); i++) {
                 p = **i;
@@ -288,12 +289,13 @@ void renderScene(void) {
 
 // put drawing instructions here
 
-    Struct s;
+
     string nameFile;
     const char* nf;
-
+  //  cout<<estruturas.size()<<endl;
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
-        s = *f;
+        Struct s = (*f);
+        vector<Point*> vp=s.getPoints();
         nameFile = s.getFile();
         nf = nameFile.c_str();
         if(!strcmp("plane.3d",nf) || !strcmp("box.3d",nf) || !strcmp("sphere.3d",nf) || !strcmp("cone.3d",nf))
@@ -520,177 +522,12 @@ int main(int argc, char** argv){
         return 0;
     }
 
-    //estruturas = lookupFiles(argv[1]);
-    /*SE AS ESTRUTURAS VIEREM SEM OS PONTOS FAZER:
-    for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
-        Struct s = *f;
-        vector<Point*> vp = readFile(s.getFile());
-        s.setPoints(vp);
-    }*/
+    estruturas = lookFiles(argv[1]);
 
-
-
-
-
-
-
-    //TESTE figuraPrimitiva
-    /*vector<Transform*> tplane;
-    Point* ppl = new Point(35,0,0);
-    Transform* tpl = new Transform("translate",NULL,ppl);
-    tplane.push_back(tpl);
-    vector<Point*> pplane = readFile("plane.3d");
-    Struct* plane = new Struct("plane.3d",tplane,pplane);
-
-    estruturas.push_back(*plane);
-
-    vector<Transform*> tbox;
-    Point* scale = new Point(2,1,1);
-    Point* trans = new Point(0,20,0);
-    Transform* tt = new Transform("translate",NULL,trans);
-    Transform* tsc = new Transform("scale",NULL,scale);
-    tbox.push_back(tsc);
-    tbox.push_back(tt);
-    vector<Point*> pbox = readFile("box.3d");
-    Struct* box = new Struct("box.3d",tbox,pbox);
-
-    estruturas.push_back(*box);
-
-    vector<Transform*> tsphere;
-    Point* scaleS = new Point(5,5,5);
-    Point* transS = new Point(2.5,0,0);
-    Transform* ttS = new Transform("translate",NULL,transS);
-    Transform* tscS = new Transform("scale",NULL,scaleS);
-    tsphere.push_back(tscS);
-    tsphere.push_back(ttS);
-    vector<Point*> psphere = readFile("sphere.3d");
-    Struct* sphere = new Struct("sphere.3d",tsphere,psphere);
-
-    estruturas.push_back(*sphere);
-
-    vector<Transform*> tcone;
-    Point* pc = new Point(0,0,1);
-    Transform* tc = new Transform("rotate",90,pc);
-    tcone.push_back(tc);
-    vector<Point*> pcone = readFile("cone.3d");
-    Struct* cone = new Struct("cone.3d",tcone,pcone);
-
-    estruturas.push_back(*cone);*/
-
-
-
-    //TESTE sistemaSolar
-    vector<Transform*> tsol;
-    vector<Point*> psol = readFile("sol.3d");
-    Struct* sol = new Struct("sol.3d",tsol,psol);
-
-    estruturas.push_back(*sol);
-
-    vector<Transform*> tmercurio;
-    Point* pm = new Point(35,0,0);
-    Transform* t1 = new Transform("translate",NULL,pm);
-    tmercurio.push_back(t1);
-    vector<Point*> pmercurio = readFile("mercurio.3d");
-    Struct* mercurio = new Struct("mercurio.3d",tmercurio,pmercurio);
-
-    estruturas.push_back(*mercurio);
-
-    vector<Transform*> tvenus;
-    Point* pv = new Point(66/1.5,0,0);
-    Transform* tv = new Transform("translate",NULL,pv);
-    tvenus.push_back(tv);
-    vector<Point*> pvenus = readFile("venus.3d");
-    Struct* venus = new Struct("venus.3d",tvenus,pvenus);
-
-    estruturas.push_back(*venus);
-
-    vector<Transform*> tterra;
-    Point* pt = new Point(92/1.7654,0,0);
-    Transform* t2 = new Transform("translate",NULL,pt);
-    tterra.push_back(t2);
-    vector<Point*> pterra = readFile("terra.3d");
-    Struct* terra = new Struct("terra.3d",tterra,pterra);
-
-    estruturas.push_back(*terra);
-
-    vector<Transform*> tlua;
-    Point* pl1 = new Point(52,0,0);
-    Point* pl2 = new Point(6,0,0);
-    Transform* t3 = new Transform("translate",0,pl1);
-    Transform* t4 = new Transform("translate",0,pl2);
-    tlua.push_back(t3);
-    tlua.push_back(t4);
-    vector<Point*> plua = readFile("lua.3d");
-    Struct* lua = new Struct("lua.3d",tlua,plua);
-
-    estruturas.push_back(*lua);
-
-    vector<Transform*> tmarte;
-    Point* pmr = new Point(70,0,0);
-    Transform* tmr = new Transform("translate",NULL,pmr);
-    tmarte.push_back(tmr);
-    vector<Point*> pmarte = readFile("marte.3d");
-    Struct* marte = new Struct("marte.3d",tmarte,pmarte);
-
-    estruturas.push_back(*marte);
-
-    vector<Transform*> tasteroide;
-    Point* past = new Point(1,0,0);
-    Transform* tast = new Transform("rotate",90,past);
-    tasteroide.push_back(tast);
-    vector<Point*> pasteroide = readFile("asteroide.3d");
-    Struct* asteroide = new Struct("asteroide.3d",tasteroide,pasteroide);
-
-    estruturas.push_back(*asteroide);
-
-    vector<Transform*> tjupiter;
-    Point* pj = new Point(478/3,0,0);
-    Transform* tj = new Transform("translate",NULL,pj);
-    tjupiter.push_back(tj);
-    vector<Point*> pjupiter = readFile("jupiter.3d");
-    Struct* jupiter = new Struct("jupiter.3d",tjupiter,pjupiter);
-
-    estruturas.push_back(*jupiter);
-
-    vector<Transform*> tsaturno;
-    Point* ps = new Point(881/3,0,0);
-    Transform* ts = new Transform("translate",NULL,ps);
-    tsaturno.push_back(ts);
-    vector<Point*> psaturno = readFile("saturno.3d");
-    Struct* saturno = new Struct("saturno.3d",tsaturno,psaturno);
-
-    estruturas.push_back(*saturno);
-
-    vector<Transform*> turano;
-    Point* pu = new Point(1769/5,0,0);
-    Transform* tu = new Transform("translate",NULL,pu);
-    turano.push_back(tu);
-    vector<Point*> purano = readFile("urano.3d");
-    Struct* urano = new Struct("urano.3d",turano,purano);
-
-    estruturas.push_back(*urano);
-
-    vector<Transform*> tneptuno;
-    Point* pn = new Point(2769/6,0,0);
-    Transform* tn = new Transform("translate",NULL,pn);
-    tneptuno.push_back(tn);
-    vector<Point*> pneptuno = readFile("neptuno.3d");
-    Struct* neptuno = new Struct("neptuno.3d",tneptuno,pneptuno);
-
-    estruturas.push_back(*neptuno);
-
-    vector<Transform*> tplutao;
-    Point* pp = new Point(3612/6,0,0);
-    Transform* tp = new Transform("translate",NULL,pp);
-    tplutao.push_back(tp);
-    vector<Point*> pplutao = readFile("plutao.3d");
-    Struct* plutao = new Struct("plutao.3d",tplutao,pplutao);
-
-    estruturas.push_back(*plutao);
-
-
-
-
+        for (int i = 0; i < estruturas.size() ; ++i) {
+        vector<Point *> vp = readFile(estruturas.at(i).getFile());
+        estruturas.at(i).setPoints(vp);
+    }
 
 
 

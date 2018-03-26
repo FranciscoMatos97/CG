@@ -5,15 +5,15 @@
 		</models>
 	</group>
 	<group>
-		<!--Mercurio-->
-		<translate x="35" y="0" z="0" /> 
+    <!--Mercurio-->
+		<translate x="35" y="0" z="0" />
 		<models>
 			<model file="mercurio.3d" />
 		</models>
 	</group>
 	<group>
 		<!--Venus-->
-		<translate x="44" y="0" z="0" /> 
+		<translate x="44" y="0" z="0" />
 		<models>
 			<model file="venus.3d" />
 		</models>
