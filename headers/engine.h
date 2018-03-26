@@ -25,5 +25,6 @@ void changeSize(int w, int h);
 void figuraPrimitiva(Struct);
 void sistemaSolar(Struct);
 void renderScene(void);
+float rotacao(const char*);
 void processKeys(unsigned char key, int xx, int yy);
 void processSpecialKeys(int key, int xx, int yy);

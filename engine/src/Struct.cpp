@@ -51,9 +51,3 @@ void Struct::clear(){
 int Struct::size(){
 	return (refit.size() + points.size());
 }
-
-void Struct::put(Struct s){
-	refit.insert(refit.end(), s.getRefit().begin(), s.getRefit().end());
-	points.insert(points.end(), s.getPoints().begin(), s.getPoints().end());
-}
-

@@ -169,12 +169,13 @@ vector<Struct> lookFiles(char* file_name){
             /*
             cout << (*j)->Transform::getName() << endl;
             cout << "Angle: " << (*j)->Transform::getAngle() << endl;
+
           cout << "X: " << (*j)->Transform::getPoint()->getX() << endl;
             cout << "Y: " << (*j)->Transform::getPoint()->getY() << endl;
             cout << "Z: " << (*j)->Transform::getPoint()->getZ() << endl;
              */
         }
-    }
+
 
     return list;
 }
