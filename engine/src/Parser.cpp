@@ -1,30 +1,136 @@
 #include "../../headers/Parser.h"
 
-vector<string> lookupFiles(char* file_name){
+Struct s3;
 
-    vector<string> file_list;
-    XMLDocument doc;
-    XMLElement* element;
-    XMLError error;
+Struct lookupT(XMLElement* element, Struct s){
+    string transf;
+    float angle,x,y,z;
+
+    transf = element->Name();
+    if(element->Attribute("angle")){
+        angle = atof( element->Attribute("angle"));
+    }
+    else angle = NULL;
+    if(element->Attribute("x")){
+        x = atof( element->Attribute("x"));
+    }
+    else x = NULL;
+    if(element->Attribute("y")){
+        y = atof(element->Attribute("y"));
+    }
+    else y=NULL;
+    if(element->Attribute("z")){
+        z = atof(element->Attribute("z"));
+    }
+    else z=NULL;
+
+    Point* p = new Point(x,y,z);
+    Transform* t = new Transform(transf,angle,p);
+    s.addTransform(t);
+
+    return s;
+
+}
+
+vector<Struct> lookAux(XMLElement* element){
+    XMLElement* elementAux;
     string file;
+    string transf;
+    float angle,x,y,z;
+    XMLElement* element3;
+    vector<Struct> s;
+    vector<Transform*> transforms;
+    
 
-    error = doc.LoadFile(file_name);
+    for(element=element->FirstChildElement(); element; element=element->NextSiblingElement()){
+            //cout << element->Name() << endl;
+            if(!strcmp(element->Name(), "models")){
+
+                elementAux = element->FirstChildElement("model");
+                for(;elementAux;elementAux=elementAux->NextSiblingElement()){
+                    if(!strcmp(elementAux->Name(),"model")){
+                        file = elementAux->Attribute("file");
+                        cout << "-> " << file << endl;
+                        vector<Point*> vp = readFile(file);
+                        s3.setPoints(vp);
+                        s3.setFile(file);
+                        s.push_back(s3); 
+                    }
+                }
+
+            }
+
+            else if(!strcmp(element->Name(),"rotate")){
+                
+                s3 = lookupT(element, s3);
+
+            }
+
+            else if(!strcmp(element->Name(),"translate")){
+
+                s3 = lookupT(element, s3);
+
+            }
+
+            else if(!strcmp(element->Name(),"scale")){
+                
+                s3 = lookupT(element, s3);
+
+            }
+
+            else if(!strcmp(element->Name(),"group")){
+                cout << "ok" << endl;
+                element3 = element;
+                vector<Struct> sAux = lookAux(element3);
+                s.insert(s.end(), sAux.begin(), sAux.end());
+            }
+        }
+
+        return s;
+
+}
+
+vector<Struct> lookFiles(char* file_name){
+
+    vector<Struct> list, final;
+    XMLDocument doc;
+    XMLElement* element; 
+
+    XMLError error = doc.LoadFile(file_name);
 
     if(error == 0){
         cout << "XML files from " << file_name << ": " << endl;
-
-        element = doc.FirstChildElement("scene")->FirstChildElement("model");
-        for(;element;element=element->NextSiblingElement()){
-            if(!strcmp(element->Name(),"model")){
-                file = element->Attribute("file");
-                file_list.push_back(file);
-                cout << "-> " << file << endl;
-            }
-        }
     }
+
     else cout << "Could not load XML file: " << file_name << "." << endl;
 
-    return file_list;
+    for(element = doc.FirstChildElement("scene")->FirstChildElement("group"); element; element=element->NextSiblingElement()){
+        
+        //cout << element->Name() << endl;
+        list = lookAux(element);
+        final.insert(final.end(), list.begin(), list.end());
+        s3.clear();
+    }
+    //element=doc.FirstChildElement("scene")->FirstChildElement("group")->FirstChildElement();
+    //list = lookAux(element);
+
+
+   for (vector<Struct>::iterator i = final.begin(); i != final.end(); ++i) {
+        cout << (*i).Struct::getFile() << endl;
+        for(vector<Transform*>::iterator j = (*i).Struct::getRefit().begin(); j != (*i).Struct::getRefit().end(); ++j){
+            
+            cout << (*j)->Transform::getName() << endl;
+            cout << "Angle: " << (*j)->Transform::getAngle() << endl;
+
+          cout << "X: " << (*j)->Transform::getPoint()->getX() << endl;
+            cout << "Y: " << (*j)->Transform::getPoint()->getY() << endl;
+            cout << "Z: " << (*j)->Transform::getPoint()->getZ() << endl;
+             
+        }
+    }
+
+
+    return final;
 }
 
 vector<Point*> readFile(string file_name){
@@ -63,12 +169,14 @@ vector<Point*> readFile(string file_name){
     return point_list;
 }
 
+
 int parseXML(char* file_name){
 
     XMLDocument doc;
     XMLError error;
 
     error = doc.LoadFile(file_name);
+
 
     if(error != 0) {
         cout << "Error loading " << file_name << endl;

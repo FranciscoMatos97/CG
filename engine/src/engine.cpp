@@ -212,7 +212,7 @@ void sistemaSolar(Struct s){
                     glEnd();
 
                     //cor e rotação
-                    glRotatef(gr*rotacao(nameFile),0,1,0);
+                    glRotatef(-gr*rotacao(nameFile),0,1,0);
                 }
             }
             else glTranslatef(x,y,z);
@@ -230,7 +230,7 @@ void sistemaSolar(Struct s){
     string h = s.getFile();
     //desenhar planeta e fazer rotação sobre si próprio
     if(!strcmp(nameFile,"asteroide.3d")){
-        for(int j=0; j<10; j++) {
+        for(int j=0; j<50; j++) {
             r=(rand()%8)+100; //r entre 100 e 108
             alpha=rand()%360; //alpha entre 0 e 360
             glPushMatrix();
@@ -523,13 +523,6 @@ int main(int argc, char** argv){
     }
 
     estruturas = lookFiles(argv[1]);
-
-        for (int i = 0; i < estruturas.size() ; ++i) {
-        vector<Point *> vp = readFile(estruturas.at(i).getFile());
-        estruturas.at(i).setPoints(vp);
-    }
-
-
 
     cout << "Drawing." << endl;
 
