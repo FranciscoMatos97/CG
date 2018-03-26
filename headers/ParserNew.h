@@ -15,7 +15,8 @@ using namespace std;
 using namespace tinyxml2;
 
 vector<Struct> lookAux(XMLElement*);
-vector<Struct> lookupFiles(char*);
+vector<Struct> lookFiles(char*);
+vector<Point*> readFile(string);
 int parseXML(char*);
 
 #endif

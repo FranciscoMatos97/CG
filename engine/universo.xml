@@ -1,73 +1,83 @@
 <scene>
 	<group>
 		<models>
-			<model file="sol.3d"/>
+			<model file="sol.3d" />
 		</models>
 	</group>
 	<group>
-		<translate X="35" Y="0" Z="0"/> 
+        <!--Mercurio-->
+		<translate x="35" y="0" z="0" />
 		<models>
-			<model file="mercurio.3d"/>
+			<model file="mercurio.3d" />
 		</models>
 	</group>
 	<group>
-		<translate X="44" Y="0" Z="0"/> 
+		<!--Venus-->
+		<translate x="44" y="0" z="0" />
 		<models>
-			<model file="venus.3d"/>
+			<model file="venus.3d" />
 		</models>
 	</group>
-    <group>
-		<translate X="52" Y="0" Z="0"/> 
+	<group>
+		<!--Terra-->
+		<translate x="52" y="0" z="0" /> 
 		<models>
-			<model file="terra.3d"/>
+			<model file="terra.3d" />
 		</models>
 		<group>
-            <translate X="6" Y="0" Z="0"/>
-            <models>
-                <model file="lua.3d"/>
+			<translate x="11" y="0" z="0" /> 
+			<models>
+				<model file="lua.3d" />
 			</models>
 		</group>
 	</group>
 	<group>
-		<translate X="70" Y="0" Z="0"/> 
+		<!--Marte-->
+		<translate x="70" y="0" z="0" /> 
 		<models>
-			<model file="marte.3d"/>
+			<model file="marte.3d" />
 		</models>
 	</group>
 	<group>
-		<rotate angle="90" X="1" Y="0" Z="0"/> 
+		<!--Asteroides-->
+		<rotate angle="90" x="1" y="0" z="0" /> 
 		<models>
-			<model file="asteroide.3d"/>
+			<model file="asteroide.3d" />
 		</models>
 	</group>    
 	<group>
-		<translate X="159" Y="0" Z="0"/> 
+		<!--Jupiter-->
+		<translate x="159" y="0" z="0" /> 
 		<models>
-			<model file="jupiter.3d"/>
+			<model file="jupiter.3d" />
 		</models>
 	</group>
 	<group>
-		<translate X="294" Y="0" Z="0"/> 
+		<!--Saturno-->
+		<translate x="294" y="0" z="0" /> 
 		<models>
-			<model file="saturno.3d"/>
+			<model file="saturno.3d" />
 		</models>
 	</group>
 	<group>
-		<translate X="354" Y="0" Z="0"/> 
+		<!--Urano-->
+		<translate x="354" y="0" z="0" /> 
 		<models>
-			<model file="urano.3d"/>
+			<model file="urano.3d" />
 		</models>
 	</group>
 	<group>
-		<translate X="462" Y="0" Z="0"/> 
+		<!--Neptuno-->
+		<translate x="462" y="0" z="0" /> 
 		<models>
-			<model file="neptuno.3d"/>
+			<model file="neptuno.3d" />
 		</models>
 	</group>
 	<group>
-		<translate X="602" Y="0" Z="0"/> 
+		<!--Plutão-->
+		<translate x="602" y="0" z="0" /> 
 		<models>
-			<model file="plutao.3d"/>
+			<model file="plutao.3d" />
 		</models>
 	</group>
 </scene>
