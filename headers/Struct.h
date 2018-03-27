@@ -24,6 +24,7 @@ public:
 	void setRefit(vector<Transform*>);
     void setPoints(vector<Point*>);
 	void addTransform(Transform*);
+	void addTransform(vector<Transform*>);
 	void clear();
 	int size();
 };
