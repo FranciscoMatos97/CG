@@ -10,19 +10,19 @@ Struct lookupT(XMLElement* element, Struct s){
     if(element->Attribute("angle")){
         angle = atof( element->Attribute("angle"));
     }
-    else angle = NULL;
+    else angle = 0;
     if(element->Attribute("x")){
         x = atof( element->Attribute("x"));
     }
-    else x = NULL;
+    else x = 0;
     if(element->Attribute("y")){
         y = atof(element->Attribute("y"));
     }
-    else y=NULL;
+    else y=0;
     if(element->Attribute("z")){
         z = atof(element->Attribute("z"));
     }
-    else z=NULL;
+    else z=0;
 
     Point* p = new Point(x,y,z);
     Transform* t = new Transform(transf,angle,p);
@@ -45,7 +45,6 @@ vector<Struct> lookAux(XMLElement* element){
     
 
     for(element=element->FirstChildElement(); element; element=element->NextSiblingElement()){
-            //cout << element->Name() << endl;
             if(!strcmp(element->Name(), "models")){
                 c++;
 
@@ -67,19 +66,7 @@ vector<Struct> lookAux(XMLElement* element){
 
             }
 
-            else if(!strcmp(element->Name(),"rotate")){
-                
-                s3 = lookupT(element, s3);
-
-            }
-
-            else if(!strcmp(element->Name(),"translate")){
-
-                s3 = lookupT(element, s3);
-
-            }
-
-            else if(!strcmp(element->Name(),"scale")){
+            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"translate") || !strcmp(element->Name(),"scale")){
                 
                 s3 = lookupT(element, s3);
 
@@ -115,29 +102,9 @@ vector<Struct> lookFiles(char* file_name){
 
     for(element = doc.FirstChildElement("scene")->FirstChildElement("group"); element; element=element->NextSiblingElement()){
         
-        //cout << element->Name() << endl;
         list = lookAux(element);
         final.insert(final.end(), list.begin(), list.end());
-        //s3.clear();
     }
-    //element=doc.FirstChildElement("scene")->FirstChildElement("group")->FirstChildElement();
-    //list = lookAux(element);
-
-
-   for (vector<Struct>::iterator i = final.begin(); i != final.end(); ++i) {
-        cout << (*i).Struct::getFile() << endl;
-        for(vector<Transform*>::iterator j = (*i).Struct::getRefit().begin(); j != (*i).Struct::getRefit().end(); ++j){
-            
-            cout << (*j)->Transform::getName() << endl;
-            cout << "Angle: " << (*j)->Transform::getAngle() << endl;
-
-          cout << "X: " << (*j)->Transform::getPoint()->getX() << endl;
-            cout << "Y: " << (*j)->Transform::getPoint()->getY() << endl;
-            cout << "Z: " << (*j)->Transform::getPoint()->getZ() << endl;
-             
-        }
-    }
-
 
     return final;
 }

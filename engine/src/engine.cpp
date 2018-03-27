@@ -112,9 +112,21 @@ float rotacao(const char* nameFile){
         glColor3f(0.0,0.0,0.9);
         return 6;
     }
-    else if(!strcmp(nameFile,"lua.3d")){
-        glColor3f(0.5,0.8,0.8);
-        return 4;
+    else if(!strcmp(nameFile,"lua.3d") || !strcmp(nameFile,"io.3d") || !strcmp(nameFile,"titan.3d") || !strcmp(nameFile,"triton.3d")) {
+        glColor3f(0.5, 0.8, 0.8);
+        return 20;
+    }
+    else if(!strcmp(nameFile,"europa.3d")){
+        glColor3f(0.5, 0.8, 0.8);
+        return 30;
+    }
+    else if(!strcmp(nameFile,"ganymede.3d")){
+        glColor3f(0.5, 0.8, 0.8);
+        return 35;
+    }
+    else if( !strcmp(nameFile,"callisto.3d")){
+        glColor3f(0.5, 0.8, 0.8);
+        return 40;
     }
     else if(!strcmp(nameFile,"marte.3d")) {
         glColor3f(1.0, 0.0, 0.0);
@@ -149,24 +161,18 @@ float rotacao(const char* nameFile){
 }
 
 void sistemaSolar(Struct s){
-    int r, alpha;
-    srand(r);
-    srand(alpha);
-
-    float time, re, gr;
-    time=1;
-    re = glutGet(GLUT_ELAPSED_TIME)/100.f;
-    gr = (re*360) / (time * 1000);
-
     const char* nameFile = s.getFile().c_str();
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
     float angle, x, y, z;
     float raio;
+    bool lua3d = (!strcmp(nameFile,"lua.3d") || !strcmp(nameFile,"io.3d") || !strcmp(nameFile,"europa.3d") ||
+                !strcmp(nameFile,"ganymede.3d") || !strcmp(nameFile,"callisto.3d") ||
+                !strcmp(nameFile,"titan.3d") || !strcmp(nameFile,"triton.3d"));
 
     glPushMatrix();
 
-    //desenhar orbita
+    //desenhar orbita dos planetas e buscar o raio das orbitas das luas
     if(strcmp(nameFile,"sol.3d")!=0 || strcmp(nameFile,"asteroide.3d")!=0){
         for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
             nameTransf = (*t)->Transform::getName().c_str();
@@ -175,7 +181,7 @@ void sistemaSolar(Struct s){
             }
         }
 
-        if(strcmp(nameFile,"lua.3d")!=0) {
+        if(!lua3d) {
             glColor3f(0.5,0.8,0.8);
             glBegin(GL_POINTS);
             for(int i=0;i<360;++i) {
@@ -185,34 +191,51 @@ void sistemaSolar(Struct s){
         }
     }
 
-    //definir a cor do planeta e fazer rotação à volta do objeto correspondente
-    if(strcmp(nameFile,"lua.3d")!=0) glRotatef(gr*rotacao(nameFile),0,1,0);
+    float time, re, gr;
+    time=1;
+    re = glutGet(GLUT_ELAPSED_TIME)/100.f;
+    gr = (re*360) / (time * 1000);
 
-    //fazer translação/rotação/escala dos eixos
+    //definir a cor do planeta/sol/asteroide e fazer rotação à volta do objeto correspondente
+    if(!lua3d) glRotatef(gr*rotacao(nameFile),0,1,0);
+
     int lua=0;
-    for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
+    //fazer translações/rotações/escalas dos eixos
+    for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); ++t) {
         nameTransf = (*t)->Transform::getName().c_str();
-        angle = (*t)->Transform::getAngle();
+        if (!strcmp(nameTransf,"rotate")) angle = (*t)->Transform::getAngle();
         x = (*t)->Transform::getPoint()->Point::getX();
         y = (*t)->Transform::getPoint()->Point::getY();
         z = (*t)->Transform::getPoint()->Point::getZ();
 
         if (!strcmp(nameTransf,"translate")){
-            string a = s.getFile();
-            if(!strcmp(nameFile,"lua.3d")) {
-                if(lua==0) glRotatef(gr*6,0,1,0);
-                glTranslatef(x,y,z);
+            if(lua3d) {
+                //rotação da lua à volta do sol
+                if (lua == 0) {
+                    if (!strcmp(nameFile, "lua.3d"))
+                        glRotatef(gr * rotacao("terra.3d"), 0, 1, 0);
+                    else if (!strcmp(nameFile, "io.3d") || !strcmp(nameFile, "europa.3d") ||
+                             !strcmp(nameFile, "ganymede.3d") || !strcmp(nameFile, "callisto.3d"))
+                        glRotatef(gr * rotacao("jupiter.3d"), 0, 1, 0);
+                    else if (!strcmp(nameFile, "titan.3d"))
+                        glRotatef(gr * rotacao("saturno.3d"), 0, 1, 0);
+                    else if (!strcmp(nameFile, "triton.3d"))
+                        glRotatef(gr * rotacao("neptuno.3d"), 0, 1, 0);
+                }
+
+                glTranslatef(x, y, z);
                 lua++;
-                if(lua==1){
-                    glColor3f(0.5,0.8,0.8);
+
+                //desenhar orbita da luas à volta do planeta
+                if (lua == 1) {
+                    glColor3f(0.5, 0.8, 0.8);
                     glBegin(GL_POINTS);
-                    for(int k=0;k<360;++k) {
+                    for (int k = 0; k < 360; ++k) {
                         glVertex3f(raio * sin(k), 0, raio * cos(k));
                     }
                     glEnd();
-
-                    //cor e rotação
-                    glRotatef(-gr*rotacao(nameFile),0,1,0);
+                    //cor e rotação da lua sobre o planeta
+                    glRotatef(gr * rotacao(nameFile), 0, 1, 0);
                 }
             }
             else glTranslatef(x,y,z);
@@ -225,14 +248,19 @@ void sistemaSolar(Struct s){
         }
     }
 
+    string h = s.getFile();
     vector<Point*> vp = s.getPoints();
     Point p;
-    string h = s.getFile();
+    int r, alpha;
+    srand(r);
+    srand(alpha);
+
     //desenhar planeta e fazer rotação sobre si próprio
     if(!strcmp(nameFile,"asteroide.3d")){
         for(int j=0; j<50; j++) {
             r=(rand()%8)+100; //r entre 100 e 108
             alpha=rand()%360; //alpha entre 0 e 360
+
             glPushMatrix();
             glTranslatef(r * sin(alpha), r * cos(alpha), 0);
             glRotatef(gr*6, 0, 1, 0);
@@ -257,14 +285,9 @@ void sistemaSolar(Struct s){
 
         //aneis de saturno
         if(!strcmp(nameFile,"saturno.3d")){
-            glColor3f(0.8,0.8,0.8);
-            glBegin(GL_POINTS);
-            for(int j=0; j<5; j+=1){
-                for(int i=0;i<360;++i) {
-                    glVertex3f( j*(71/6) * sin(i),0,  j*(71/6) * cos(i));
-                }
-            }
-            glEnd();
+            glColor3f(0.8,0.6,0.0);
+            glRotatef(-70,1,0,0);
+            glutSolidTorus(10,14,2,100);
         }
     }
 
@@ -289,15 +312,10 @@ void renderScene(void) {
 
 // put drawing instructions here
 
-
-    string nameFile;
     const char* nf;
-  //  cout<<estruturas.size()<<endl;
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
         Struct s = (*f);
-        vector<Point*> vp=s.getPoints();
-        nameFile = s.getFile();
-        nf = nameFile.c_str();
+        nf = s.getFile().c_str();
         if(!strcmp("plane.3d",nf) || !strcmp("box.3d",nf) || !strcmp("sphere.3d",nf) || !strcmp("cone.3d",nf))
             figuraPrimitiva(s);
         else sistemaSolar(s);
