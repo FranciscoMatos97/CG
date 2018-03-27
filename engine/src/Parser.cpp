@@ -40,11 +40,14 @@ vector<Struct> lookAux(XMLElement* element){
     XMLElement* element3;
     vector<Struct> s;
     vector<Transform*> transforms;
+    int c=0;
+    vector<Transform*> vt;
     
 
     for(element=element->FirstChildElement(); element; element=element->NextSiblingElement()){
             //cout << element->Name() << endl;
             if(!strcmp(element->Name(), "models")){
+                c++;
 
                 elementAux = element->FirstChildElement("model");
                 for(;elementAux;elementAux=elementAux->NextSiblingElement()){
@@ -54,7 +57,11 @@ vector<Struct> lookAux(XMLElement* element){
                         vector<Point*> vp = readFile(file);
                         s3.setPoints(vp);
                         s3.setFile(file);
-                        s.push_back(s3); 
+                        s.push_back(s3);
+                        if(c==1){
+                            vt = s3.getRefit();
+                        }
+                        s3.clear();
                     }
                 }
 
@@ -79,9 +86,11 @@ vector<Struct> lookAux(XMLElement* element){
             }
 
             else if(!strcmp(element->Name(),"group")){
-                cout << "ok" << endl;
                 element3 = element;
                 vector<Struct> sAux = lookAux(element3);
+                for(vector<Struct>::iterator j = sAux.begin(); j != sAux.end(); ++j){
+                    j->addTransform(vt);
+                }
                 s.insert(s.end(), sAux.begin(), sAux.end());
             }
         }
@@ -109,7 +118,7 @@ vector<Struct> lookFiles(char* file_name){
         //cout << element->Name() << endl;
         list = lookAux(element);
         final.insert(final.end(), list.begin(), list.end());
-        s3.clear();
+        //s3.clear();
     }
     //element=doc.FirstChildElement("scene")->FirstChildElement("group")->FirstChildElement();
     //list = lookAux(element);

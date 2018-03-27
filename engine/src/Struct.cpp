@@ -42,6 +42,10 @@ void Struct::addTransform(Transform* t){
 	refit.push_back(t);
 }
 
+void Struct::addTransform(vector<Transform*> vt){
+	refit.insert(refit.begin(), vt.begin(), vt.end());
+}
+
 void Struct::clear(){
 	file="";
 	refit.clear();
