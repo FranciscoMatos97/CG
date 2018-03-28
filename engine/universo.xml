@@ -5,7 +5,7 @@
 		</models>
 	</group>
 	<group>
-    <!--Mercurio-->
+        <!--Mercurio-->
 		<translate x="35" y="0" z="0" />
 		<models>
 			<model file="mercurio.3d" />
@@ -25,7 +25,7 @@
 			<model file="terra.3d" />
 		</models>
 		<group>
-			<translate x="11" y="0" z="0" /> 
+			<translate x="6" y="0" z="0" /> 
 			<models>
 				<model file="lua.3d" />
 			</models>
@@ -50,7 +50,31 @@
 		<translate x="159" y="0" z="0" /> 
 		<models>
 			<model file="jupiter.3d" />
-		</models>
+		</models>  
+		<group>
+			<translate x="16.8" y="0" z="0" />
+			<models>
+				<model file="io.3d" />
+			</models>
+		</group>
+		<group>
+			<translate x="21.3" y="0" z="0" /> 
+			<models>
+				<model file="europa.3d" />
+			</models>
+		</group>
+		<group>
+			<translate x="25.3" y="0" z="0" /> 
+			<models>
+				<model file="ganymede.3d" />
+			</models>
+		</group>
+		<group>
+			<translate x="30.3" y="0" z="0" /> 
+			<models>
+				<model file="callisto.3d" />
+			</models>
+		</group>
 	</group>
 	<group>
 		<!--Saturno-->
@@ -58,6 +82,15 @@
 		<models>
 			<model file="saturno.3d" />
 		</models>
+		<group>
+            <rotate angle="-70" x="1" y="0" z="0" />
+            <rotate angle="90" x="1" y="0" z="0" /> 
+            <translate x="0" y="3" z="0" /> 
+			<translate x="16.8" y="0" z="0" />
+			<models>
+				<model file="titan.3d" />
+			</models>
+		</group>
 	</group>
 	<group>
 		<!--Urano-->
@@ -72,6 +105,12 @@
 		<models>
 			<model file="neptuno.3d" />
 		</models>
+		<group>
+			<translate x="12" y="0" z="0" /> 
+			<models>
+				<model file="triton.3d" />
+			</models>
+		</group>
 	</group>
 	<group>
 		<!--Plutão-->
