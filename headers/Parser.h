@@ -1,5 +1,5 @@
-#ifndef PROJETO__PARSERNEW_H__
-#define PROJETO__PARSERNEW_H__
+#ifndef PROJETO__PARSER_H__
+#define PROJETO__PARSER_H__
 
 #include <iostream>
 #include <fstream>

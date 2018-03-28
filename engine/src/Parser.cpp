@@ -16,6 +16,42 @@ using namespace tinyxml2;
 
 Struct s3;
 
+vector<Point*> readFile(string file_name){
+
+    vector<Point*> point_list;
+    vector<string> tokens;
+    string buf;
+    string line;
+    int index = 0;
+    float x, y, z;
+
+    string f = "../files3d/" + file_name;
+    const char * f_n = f.c_str();
+    ifstream file (f_n);
+
+    if(file.is_open()){
+        cout << "Processing " << file_name << endl;
+        while(getline(file,line)) { // percorrer as linhas do ficheiro
+            stringstream ss(line);
+            while (ss >> buf) {
+                tokens.push_back(buf); // percorrer as coordenadas dos pontos em cada linha
+            }
+            if((strcmp("---",tokens.at(index).c_str()))!=0) {
+                x = atof(tokens.at(index).c_str());
+                y = atof(tokens.at(index+1).c_str());
+                z = atof(tokens.at(index+2).c_str());
+                point_list.push_back(new Point(x, y, z)); // adicionar ponto ao vector
+            }
+            index += 3; // incrementar o índice para ler ponto seguinte
+        }
+        file.close();
+
+    }
+    else cout << "Error opening " << file_name << endl;
+
+    return point_list;
+}
+
 Struct lookupT(XMLElement* element, Struct s){
     string transf;
     float angle,x,y,z;
@@ -121,42 +157,6 @@ vector<Struct> lookFiles(char* file_name){
     }
 
     return final;
-}
-
-vector<Point*> readFile(string file_name){
-
-    vector<Point*> point_list;
-    vector<string> tokens;
-    string buf;
-    string line;
-    int index = 0;
-    float x, y, z;
-
-    string f = "../files3d/" + file_name;
-    const char * f_n = f.c_str();
-    ifstream file (f_n);
-
-    if(file.is_open()){
-        cout << "Processing " << file_name << endl;
-        while(getline(file,line)) { // percorrer as linhas do ficheiro
-            stringstream ss(line);
-            while (ss >> buf) {
-                tokens.push_back(buf); // percorrer as coordenadas dos pontos em cada linha
-            }
-            if((strcmp("---",tokens.at(index).c_str()))!=0) {
-                x = atof(tokens.at(index).c_str());
-                y = atof(tokens.at(index+1).c_str());
-                z = atof(tokens.at(index+2).c_str());
-                point_list.push_back(new Point(x, y, z)); // adicionar ponto ao vector
-            }
-            index += 3; // incrementar o índice para ler ponto seguinte
-        }
-        file.close();
-
-    }
-    else cout << "Error opening " << file_name << endl;
-
-    return point_list;
 }
 
 
