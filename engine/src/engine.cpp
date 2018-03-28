@@ -1,17 +1,21 @@
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <math.h>
 #include <stdlib.h>
-
-#include "../../headers/tinyxml2.h"
-#include "../../headers/Transform.h"
-#include "../../headers/Struct.h"
+#include <time.h>
+#include <math.h>
 
 using namespace std;
-using namespace tinyxml2;
+#include "../../headers/Parser.h"
+#include "../../headers/Point.h"
+#include "../../headers/Struct.h"
 
 vector<Struct> estruturas;
 
