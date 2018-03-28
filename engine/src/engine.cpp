@@ -1,4 +1,17 @@
-#include "../../headers/engine.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <math.h>
+#include <stdlib.h>
+
+#include "../../headers/tinyxml2.h"
+#include "../../headers/Transform.h"
+#include "../../headers/Struct.h"
+
+using namespace std;
+using namespace tinyxml2;
 
 vector<Struct> estruturas;
 
