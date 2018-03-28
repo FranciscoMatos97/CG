@@ -1,12 +1,23 @@
-#include <vector>
-#include <math.h>
-#include "../../headers/Point.h"
+#include "../../headers/Vertex.h"
 
 using namespace std;
 
-vector<Point*> makePlane(float size){
+Vertex::Vertex(){}
 
-	vector<Point*> pointsList;
+Vertex::Vertex(vector<Point*> pl){
+    pointsList = pl;
+}
+
+vector<Point*> Vertex::getPointsList(){
+    return pointsList;
+}
+
+void Vertex::setPointsList(vector<Point*> pl){
+    pointsList = pl;
+}
+
+void Vertex::makePlane(float size){
+
 	float h = size/2;
 
 	pointsList.push_back(new Point(h, 0, h));
@@ -17,12 +28,10 @@ vector<Point*> makePlane(float size){
 	pointsList.push_back(new Point(-h, 0, -h));
 	pointsList.push_back(new Point(-h, 0, h));
 	
-	return pointsList;
 }
 
-vector<Point*> makeBox(float x, float y, float z, int divisions){
+void Vertex::makeBox(float x, float y, float z, int divisions){
 
-	vector<Point*> pointsList;
 	float nx = x/2;
 	float ny = y/2;
 	float nz = z/2;
@@ -92,11 +101,9 @@ vector<Point*> makeBox(float x, float y, float z, int divisions){
 		}
 	}
 	
-	
-	return pointsList;
 }
 
-vector<Point*> makeSphere(float radius, int slices, int stacks){
+void Vertex::makeSphere(float radius, int slices, int stacks){
     vector<Point*> v;
 
     float h = (M_PI) / stacks;                                                                                       
@@ -119,37 +126,36 @@ vector<Point*> makeSphere(float radius, int slices, int stacks){
             float z3 = radius*sin(i*h2)*sin(h);                                                                      
                                                                                                                      
             if (j == 0) {                                                                                            
-                v.push_back(new Point(0, radius, 0));                                                                            
-                v.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
-                v.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
+                pointsList.push_back(new Point(0, radius, 0));                                                                            
+                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
 
             }
                                                                                        
             if(j == stacks-1){                                                               
-                v.push_back(new Point(0, -radius, 0));
-                v.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h) + x3, -y2, radius*sin(i*h2)*sin((j+1)*h) + z3));
-                v.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h) + x2, -y3, radius*sin((i+1)*h2)*sin((j+1)*h) + z2));     
+                pointsList.push_back(new Point(0, -radius, 0));
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h) + x3, -y2, radius*sin(i*h2)*sin((j+1)*h) + z3));
+                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h) + x2, -y3, radius*sin((i+1)*h2)*sin((j+1)*h) + z2));     
             }                                                                                                        
                                                                                                                      
             else{                                                                                                                                                                           
-                v.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
-                v.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
-                v.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
+                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
+                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
                                                                             
-                v.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
-                v.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
-                v.push_back(new Point(radius*cos(i*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin(i*h2)*sin((j+2)*h)));       
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
+                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin(i*h2)*sin((j+2)*h)));       
                                                                                                                      
             }                                                                                                        
                                                                                                                                                                                                                      
         }    
     }                                                                                                     
 
-    return v;
+    cout << pointsList.size() << endl;
 }
 
-vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
-    vector<Point*> pointsList;
+void Vertex::makeCone(float radius, float height, int slices, int stacks) {
     double alpha = (2*M_PI)/slices;
     double tmp = height/stacks;
     double tanB = height/radius;
@@ -215,5 +221,4 @@ vector<Point*> makeCone(float radius, float height, int slices, int stacks) {
         radius = radius2;
     }
     
-    return pointsList;
 }

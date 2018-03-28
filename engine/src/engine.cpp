@@ -236,7 +236,7 @@ void sistemaSolar(Struct s){
                         glVertex3f(raio * sin(k), 0, raio * cos(k));
                     }
                     glEnd();
-
+                  
                     //cor e rotação da lua sobre o planeta
                     glRotatef(gr * rotacao(nameFile), 0, 1, 0);
                 }

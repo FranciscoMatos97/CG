@@ -1,9 +1,27 @@
+#ifndef PROJETO_VERTEX_H__
+#define PROJETO_VERTEX_H__
+
+#include <math.h>
+#include <iostream>
 #include <vector>
 #include "Point.h"
 
 using namespace std;
 
-vector<Point*> makePlane(float size);
-vector<Point*> makeBox(float x, float y, float z, int divisions);
-vector<Point*> makeCone(float radius, float height, int slices, int stacks);
-vector<Point*> makeSphere(float radius, int slices, int stacks);
+class Vertex{
+
+	vector<Point*> pointsList;
+
+	public:
+		Vertex();
+		Vertex(vector<Point*>);
+		vector<Point*> getPointsList();
+		void setPointsList(vector<Point*>);
+		void makePlane(float);
+		void makeBox(float, float, float, int);
+		void makeCone(float, float, int, int);
+		void makeSphere(float, int, int);
+
+};
+
+#endif
