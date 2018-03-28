@@ -226,17 +226,24 @@ void sistemaSolar(Struct s){
                 glTranslatef(x, y, z);
                 lua++;
 
+                if(lua==1 && !strcmp(nameFile, "titan.3d")) glRotatef(gr*6, 0, 1, 0);
+
                 //desenhar orbita da luas à volta do planeta
-                if (lua == 1) {
+                if ((lua == 1 && strcmp(nameFile, "titan.3d")) || (lua==2 && !strcmp(nameFile, "titan.3d"))) {
                     glColor3f(0.5, 0.8, 0.8);
                     glBegin(GL_POINTS);
                     for (int k = 0; k < 360; ++k) {
                         glVertex3f(raio * sin(k), 0, raio * cos(k));
                     }
                     glEnd();
+                  
                     //cor e rotação da lua sobre o planeta
                     glRotatef(gr * rotacao(nameFile), 0, 1, 0);
                 }
+
+                //rotação da lua sobre si própria
+                if((lua == 2 && strcmp(nameFile, "titan.3d")) || (lua==3 && !strcmp(nameFile, "titan.3d")))
+                    glRotatef(gr*6,0,1,0);
             }
             else glTranslatef(x,y,z);
         }
