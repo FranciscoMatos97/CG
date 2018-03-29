@@ -1,0 +1,38 @@
+<scene>
+    <group>
+        <models>
+	        <model file = "bonecoC1.3d"/>
+ 		</models>
+ 	</group>
+    <group>
+        <translate x="0" y="17" z="0"/>
+        <models>
+	        <model file = "bonecoC2.3d"/>
+        </models>
+ 	</group>
+    <group>
+        <translate x="0" y="27" z="0"/>
+        <models>
+	        <model file = "bonecoC3.3d"/>
+        </models>
+ 	</group>
+    <group>       
+        <translate x="0" y="27" z="2.75"/>
+		<rotate angle="90" x="1" y="0" z="0" /> 
+        <models>
+	        <model file = "bonecoN.3d"/>
+        </models>
+ 	</group>
+    <group>
+        <translate x="1.5" y="28" z="2.75"/>
+        <models>
+	        <model file = "bonecoO1.3d"/>
+        </models>
+ 	</group>
+    <group>
+        <translate x="-1.5" y="28" z="2.75"/>
+        <models>        
+	        <model file = "bonecoO2.3d"/>
+        </models>
+ 	</group>
+</scene>

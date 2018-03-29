@@ -51,6 +51,7 @@ void changeSize(int w, int h) {
 }
 
 void figuraPrimitiva(Struct s){
+
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
     float angle, x, y, z;
@@ -60,13 +61,14 @@ void figuraPrimitiva(Struct s){
     for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
         nameTransf = (*t)->Transform::getName().c_str();
 
-
-        if (strcmp(nameTransf,"rotate")) {
+        if (!strcmp(nameTransf,"rotate")) {
             angle = (*t)->Transform::getAngle();
         }
+
         x = (*t)->Transform::getPoint()->Point::getX();
         y = (*t)->Transform::getPoint()->Point::getY();
         z = (*t)->Transform::getPoint()->Point::getZ();
+
         if (!strcmp(nameTransf,"translate")){
             glTranslatef(x,y,z);
         }
@@ -340,9 +342,14 @@ void renderScene(void) {
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
         Struct s = (*f);
         nf = s.getFile().c_str();
-        if(!strcmp("plane.3d",nf) || !strcmp("box.3d",nf) || !strcmp("sphere.3d",nf) || !strcmp("cone.3d",nf))
-            figuraPrimitiva(s);
-        else sistemaSolar(s);
+        if(!strcmp("asteroide.3d",nf) || !strcmp("callisto.3d",nf) ||!strcmp("europa.3d",nf) ||
+                !strcmp("ganymede.3d",nf) ||!strcmp("io.3d",nf) ||!strcmp("jupiter.3d",nf) ||
+                !strcmp("lua.3d",nf) ||!strcmp("marte.3d",nf) ||!strcmp("mercurio.3d",nf) ||
+                !strcmp("neptuno.3d",nf) ||!strcmp("plutao.3d",nf) ||!strcmp("saturno.3d",nf) ||
+                !strcmp("sol.3d",nf) ||!strcmp("terra.3d",nf) ||!strcmp("titan.3d",nf) ||
+                !strcmp("triton.3d",nf) ||!strcmp("urano.3d",nf) ||!strcmp("venus.3d",nf))
+            sistemaSolar(s);
+        else figuraPrimitiva(s);
     }
 
 // End of frame
