@@ -160,7 +160,6 @@ vector<Struct> lookFiles(char* file_name){
 }
 
 
-
 int parseXML(char* file_name){
 
     XMLDocument doc;

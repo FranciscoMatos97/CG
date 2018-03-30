@@ -12,10 +12,11 @@
 #include <time.h>
 #include <math.h>
 
-using namespace std;
-#include "../../headers/Parser.h"
 #include "../../headers/Point.h"
 #include "../../headers/Struct.h"
+#include "../../headers/Parser.h"
+
+using namespace std;
 
 vector<Struct> estruturas;
 
