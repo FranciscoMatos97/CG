@@ -21,6 +21,7 @@ class Vertex{
 		void makeBox(float, float, float, int);
 		void makeCone(float, float, int, int);
 		void makeSphere(float, int, int);
+		void makeTorus(float, float, int, int);
 
 };
 

@@ -341,6 +341,7 @@ void renderScene(void) {
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
         Struct s = (*f);
         nf = s.getFile().c_str();
+
         if (!strcmp("asteroide.3d", nf) || !strcmp("callisto.3d", nf) || !strcmp("europa.3d", nf) ||
             !strcmp("ganymede.3d", nf) || !strcmp("io.3d", nf) || !strcmp("jupiter.3d", nf) ||
             !strcmp("lua.3d", nf) || !strcmp("marte.3d", nf) || !strcmp("mercurio.3d", nf) ||
@@ -352,6 +353,7 @@ void renderScene(void) {
         else figuraPrimitiva(s);
     }
     // End of frame
+
     glutSwapBuffers();
 }
 

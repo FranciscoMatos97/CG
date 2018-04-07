@@ -5,7 +5,7 @@
 #include <string>
 #include <stdlib.h>
 #include <cstring>
-#include "../../headers/Vertex.h"
+#include "../../headers/vertex.h"
 #include "string.h"
 
 using namespace std;
@@ -125,10 +125,19 @@ int main(int argc, char** argv){
         saveFile(vx->getPointsList(), argv[6]);
     }
 
+    else if(strcmp(argv[1], "torus") == 0){
+        float intRadius = atoi(argv[2]);
+        float extRadius = atoi(argv[3]);
+        int slices = atoi(argv[4]);
+        int stacks = atoi(argv[5]);
+        vx->makeTorus(intRadius, extRadius, slices, stacks);
+        saveFile(vx->getPointsList(), argv[6]);
+    }
+
     else if(strcmp(argv[1], "help") == 0){
         showHelp();
         return 0;
-    } 
+    }
 
     else{
         cout << "I don't recognize that input. Need help? Try './generator help' if you need help!" << endl;
