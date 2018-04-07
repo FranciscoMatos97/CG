@@ -224,17 +224,19 @@ void Vertex::makeCone(float radius, float height, int slices, int stacks) {
 }
 
 void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks){
-    double angleSlice = (2*M_PI)/slices;
-    double angleStack = (2*M_PI)/stacks;
+    double angleSlice = (2*M_PI)/stacks;
+    double angleStack = (2*M_PI)/slices;
     double act, next, actSt, nextSt;
     float actStR, actStZ, nextStR, nextStZ;
 
-    for(int i=0; i<slices; i++){
+    for(int i=0; i<stacks; i++){
 
         act = angleSlice * i;
         next = act + angleSlice;
 
-        for(int j=0; j<stacks; j++){
+
+        for(int j=0; j<slices+1; j++){
+
 
             actSt = angleStack * j;
             actStR = intRadius * cos(actSt) + extRadius;
@@ -254,6 +256,7 @@ void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks)
 
         }
     }
+
 }
 
 
