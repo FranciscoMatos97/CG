@@ -116,7 +116,8 @@ vector<Struct> lookAux(XMLElement* element){
 
             }
 
-            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"translate") || !strcmp(element->Name(),"scale")){
+            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"translate")
+                    || !strcmp(element->Name(),"scale") || !strcmp(element->Name(),"color")){
                 
                 s3 = lookupT(element, s3);
 

@@ -1,22 +1,26 @@
 <scene>
     <group>
+        <color x="1.0" y="1.0" z="1.0" />
         <models>
 	        <model file = "bonecoC1.3d"/>
  		</models>
  	</group>
     <group>
+        <color x="1.0" y="1.0" z="1.0" />
         <translate x="0" y="17" z="0"/>
         <models>
 	        <model file = "bonecoC2.3d"/>
         </models>
  	</group>
     <group>
+        <color x="1.0" y="1.0" z="1.0" />
         <translate x="0" y="27" z="0"/>
         <models>
 	        <model file = "bonecoC3.3d"/>
         </models>
  	</group>
     <group>       
+        <color x="0.8" y="0.2" z="0.0" />
         <translate x="0" y="27" z="2.75"/>
 		<rotate angle="90" x="1" y="0" z="0" /> 
         <models>
@@ -24,12 +28,14 @@
         </models>
  	</group>
     <group>
+        <color x="0.3" y="0.2" z="0.1" />
         <translate x="1.5" y="28" z="2.75"/>
         <models>
 	        <model file = "bonecoO1.3d"/>
         </models>
  	</group>
     <group>
+        <color x="0.3" y="0.2" z="0.1" />
         <translate x="-1.5" y="28" z="2.75"/>
         <models>        
 	        <model file = "bonecoO2.3d"/>

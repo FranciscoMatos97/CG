@@ -56,6 +56,7 @@ void figuraPrimitiva(Struct s){
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
     float angle, x, y, z;
+    int cl=0;
 
     glPushMatrix();
 
@@ -79,6 +80,10 @@ void figuraPrimitiva(Struct s){
         else if (!strcmp(nameTransf,"scale")) {
             glScalef(x,y,z);
         }
+        else if (!strcmp(nameTransf,"color")) {
+            glColor3f(x,y,z);
+            cl=1;
+        }
     }
 
     vector<Point*> vp;
@@ -93,7 +98,7 @@ void figuraPrimitiva(Struct s){
     vp=s.getPoints();
             for (vector<Point *>::const_iterator i = vp.begin(); i != vp.end(); ++i, color++) {
                 p = **i;
-                if (color % 3 == 0) {
+                if (color % 3 == 0 && cl!= 1) {
                     a = (float) rand() / (float) RAND_MAX;
                     b = (float) rand() / (float) RAND_MAX;
                     c = (float) rand() / (float) RAND_MAX;
@@ -117,67 +122,67 @@ float rotacao(const char* nameFile){
     float r=0;
 
     if(!strcmp(nameFile,"sol.3d")){
-        glColor3f(0.8,0.2,0.0);
+        //glColor3f(0.8,0.2,0.0);
         return 0;
     }
     else if(!strcmp(nameFile,"mercurio.3d")){
-        glColor3f(0.2f, 0.2f, 0.2f);
+        //glColor3f(0.2f, 0.2f, 0.2f);
         return 10;
     }
     else if(!strcmp(nameFile,"venus.3d")){
-        glColor3f(0.8,0.5,0.0);
+        //glColor3f(0.8,0.5,0.0);
         return 8;
     }
     else if(!strcmp(nameFile,"terra.3d")){
-        glColor3f(0.0,0.0,0.9);
+        //glColor3f(0.0,0.0,0.9);
         return 6;
     }
     else if(!strcmp(nameFile,"lua.3d") || !strcmp(nameFile,"io.3d") || !strcmp(nameFile,"titan.3d") || !strcmp(nameFile,"triton.3d")) {
-        glColor3f(0.5, 0.8, 0.8);
+        //glColor3f(0.5, 0.8, 0.8);
         return 20;
     }
     else if(!strcmp(nameFile,"europa.3d")){
-        glColor3f(0.5, 0.8, 0.8);
+        //glColor3f(0.5, 0.8, 0.8);
         return 30;
     }
     else if(!strcmp(nameFile,"ganymede.3d")){
-        glColor3f(0.5, 0.8, 0.8);
+        //glColor3f(0.5, 0.8, 0.8);
         return 35;
     }
     else if( !strcmp(nameFile,"callisto.3d")){
-        glColor3f(0.5, 0.8, 0.8);
+        //glColor3f(0.5, 0.8, 0.8);
         return 40;
     }
     else if(!strcmp(nameFile,"marte.3d")) {
-        glColor3f(1.0, 0.0, 0.0);
+        //glColor3f(1.0, 0.0, 0.0);
         return 4;
     }
     else if(!strcmp(nameFile,"asteroide.3d")){
-        glColor3f(0.7,0.7,0.7);
+        //glColor3f(0.7,0.7,0.7);
         return 6;
     }
     else if(!strcmp(nameFile,"jupiter.3d")){
-        glColor3f(0.8,0.5,0.2);
+        //glColor3f(0.8,0.5,0.2);
         return 1.5;
     }
     else if(!strcmp(nameFile,"saturno.3d")){
-        glColor3f(0.8,0.6,0.4);
+        // glColor3f(0.8,0.6,0.4);
         return 1;
     }
     else if(!strcmp(nameFile,"anel.3d")){
-        glColor3f(0.8,0.6,0.0);
+        //     glColor3f(0.8,0.6,0.0);
         return 1;
     }
     else if(!strcmp(nameFile,"urano.3d")){
-        glColor3f(0.5,0.5,1.0);
+        // glColor3f(0.5,0.5,1.0);
         return 0.5;
     }
     else if(!strcmp(nameFile,"neptuno.3d")){
-        glColor3f(0.2,0.2,1.0);
+        //      glColor3f(0.2,0.2,1.0);
         return 0.2;
     }
     else if(!strcmp(nameFile,"plutao.3d")){
-        glColor3f(0.7,0.7,0.7);
+  //      glColor3f(0.7,0.7,0.7);
         return 0.1;
     }
 
@@ -278,6 +283,9 @@ void sistemaSolar(Struct s){
         else if (!strcmp(nameTransf,"scale")) {
             glScalef(x,y,z);
         }
+        else if (!strcmp(nameTransf,"color")) {
+            glColor3f( x,y,z);
+        }
     }
 
     string h = s.getFile();
@@ -341,7 +349,6 @@ void renderScene(void) {
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
         Struct s = (*f);
         nf = s.getFile().c_str();
-
         if (!strcmp("asteroide.3d", nf) || !strcmp("callisto.3d", nf) || !strcmp("europa.3d", nf) ||
             !strcmp("ganymede.3d", nf) || !strcmp("io.3d", nf) || !strcmp("jupiter.3d", nf) ||
             !strcmp("lua.3d", nf) || !strcmp("marte.3d", nf) || !strcmp("mercurio.3d", nf) ||
@@ -353,7 +360,6 @@ void renderScene(void) {
         else figuraPrimitiva(s);
     }
     // End of frame
-
     glutSwapBuffers();
 }
 
@@ -387,7 +393,7 @@ void processKeys(unsigned char key, int xx, int yy) {
     if(key == 'b'){
         cx=M_PI_4;
         cz=M_PI_4;
-        r = 10;
+        r = 250;
     }
 
     //zoom in
