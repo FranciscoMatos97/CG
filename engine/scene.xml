@@ -1,5 +1,6 @@
 <scene>
     <group>
+        <color x="0.7" y="0.7" z="0.8" />
 		<translate x="35" y="0" z="0" />
 		<scale x="5" y="10" z="15" />
         <models>
@@ -7,6 +8,7 @@
  		</models>
  	</group>
     <group>
+        <color x="0.7" y="0.7" z="0.7" />
 	    <translate x="25" y="0" z="0" />
 		<scale x="2" y="1" z="1" /> 
         <models>
@@ -21,6 +23,7 @@
         </models>
  	</group>
     <group>
+        <color x="0.1" y="0.2" z="0.1" />
 		<rotate angle="90" x="0" y="0" z="1" />
         <models>
 	        <model file = "cone.3d" />
