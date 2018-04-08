@@ -193,8 +193,19 @@ void sistemaSolar(Struct s){
     re = glutGet(GLUT_ELAPSED_TIME)/100.f;
     gr = (re*360) / (time * 1000);
 
-    //aplicar a rotação à volta do corpo celeste correspondente
+    //aplicar a rotação à volta do sol
     if(!lua3d) glRotatef(gr*rotacao(nameFile),0,1,0);
+    else{
+        if (!strcmp(nameFile, "lua.3d"))
+            glRotatef(gr * rotacao("terra.3d"), 0, 1, 0);
+        else if (!strcmp(nameFile, "io.3d") || !strcmp(nameFile, "europa.3d") ||
+                 !strcmp(nameFile, "ganymede.3d") || !strcmp(nameFile, "callisto.3d"))
+            glRotatef(gr * rotacao("jupiter.3d"), 0, 1, 0);
+        else if (!strcmp(nameFile, "titan.3d"))
+            glRotatef(gr * rotacao("saturno.3d"), 0, 1, 0);
+        else if (!strcmp(nameFile, "triton.3d"))
+            glRotatef(gr * rotacao("neptuno.3d"), 0, 1, 0);
+    }
 
     //aplicar translações/rotações/escalas dos eixos e cor do corpo celeste
     int lua=0;
@@ -208,19 +219,6 @@ void sistemaSolar(Struct s){
 
         if (!strcmp(nameTransf,"translate")){
             if(lua3d) {
-                //rotação da lua correspondente à volta do sol
-                if (lua == 0) {
-                    if (!strcmp(nameFile, "lua.3d"))
-                        glRotatef(gr * rotacao("terra.3d"), 0, 1, 0);
-                    else if (!strcmp(nameFile, "io.3d") || !strcmp(nameFile, "europa.3d") ||
-                             !strcmp(nameFile, "ganymede.3d") || !strcmp(nameFile, "callisto.3d"))
-                        glRotatef(gr * rotacao("jupiter.3d"), 0, 1, 0);
-                    else if (!strcmp(nameFile, "titan.3d"))
-                        glRotatef(gr * rotacao("saturno.3d"), 0, 1, 0);
-                    else if (!strcmp(nameFile, "triton.3d"))
-                        glRotatef(gr * rotacao("neptuno.3d"), 0, 1, 0);
-                }
-
                 glTranslatef(x, y, z);
                 lua++;
 
