@@ -1,5 +1,6 @@
 <scene>
 	<group>
+        <!--Sol-->
         <color x="0.8" y="0.2" z="0.0" />
 		<models>
 			<model file="sol2.3d" />
