@@ -1,43 +1,42 @@
 #include "../../headers/Transform.h"
 
 string name;
-float ang;
-Point* point;
+float timeT;
+vector<Point*> pointsL;
 
 Transform::Transform(){
 	name = "";
-	ang = 0;
-	point = NULL;
+	timeT = 0;
 }
 
-Transform::Transform(string n, float angl, Point* p){
+Transform::Transform(string n, float ti, vector<Point*> p){
 	name = n;
-	ang = angl;
-	point = p;
+	timeT = ti;
+	pointsL = p;
 }
 
 string Transform::getName(){
 	return name;
 }
 
-float Transform::getAngle(){
-	return ang;
+float Transform::getTime(){
+	return timeT;
 }
 
-Point* Transform::getPoint(){
-	return point;
+vector<Point*> Transform::getPoints(){
+	return pointsL;
 }
 
 void Transform::setName(string n){
 	name = n;
 }
 
-void Transform::setAngle(float angl){
-	ang = angl;
+void Transform::setTime(float ti){
+	timeT = ti;
 }
 
-void Transform::setPoint(Point* p){
-	point = p;
+void Transform::setPoint(vector<Point*> p){
+	pointsL = p;
 }
 
 Transform* Transform::clone(){

@@ -2,6 +2,7 @@
 #define PROJETO_TRANSFORM_H__
 
 #include <string>
+#include <vector>
 #include "Point.h"
 
 using namespace std;
@@ -9,18 +10,18 @@ using namespace std;
 class Transform{
 
 	string name;
-	float ang;
-	Point* point;
+	float timeT;
+	vector<Point*> pointsL;
 
 public:
 	Transform();
-	Transform(string,float,Point*);
+	Transform(string,float,vector<Point*>);
 	string getName();
-	float getAngle();
-	Point* getPoint();
+	float getTime();
+	vector<Point*> getPoints();
 	void setName(string);
-	void setAngle(float);
-	void setPoint(Point*);
+	void setTime(float);
+	void setPoint(vector<Point*>);
 	Transform* clone();
 	
 };

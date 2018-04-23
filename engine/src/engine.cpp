@@ -60,7 +60,7 @@ void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
-    float angle, x, y, z;
+    float timeT, x, y, z;
     int cl=0;
 
     glPushMatrix();
@@ -69,12 +69,12 @@ void figuraPrimitiva(Struct s){
         nameTransf = (*t)->Transform::getName().c_str();
 
         if (!strcmp(nameTransf,"rotate")) {
-            angle = (*t)->Transform::getAngle();
+            timeT = (*t)->Transform::getTime();
         }
 
-        x = (*t)->Transform::getPoint()->Point::getX();
-        y = (*t)->Transform::getPoint()->Point::getY();
-        z = (*t)->Transform::getPoint()->Point::getZ();
+        //x = (*t)->Transform::getPoint()->Point::getX();
+        //y = (*t)->Transform::getPoint()->Point::getY();
+        //z = (*t)->Transform::getPoint()->Point::getZ();
 
         if (!strcmp(nameTransf,"translate")){
             glTranslatef(x,y,z);
@@ -158,7 +158,7 @@ void sistemaSolar(Struct s){
     const char* nameFile = s.getFile().c_str();
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
-    float angle, x, y, z;
+    float timeT, x, y, z;
     float raio;
     bool sol = !strcmp(nameFile,"sol.3d");
     bool anel = !strcmp(nameFile,"anel.3d");
@@ -174,7 +174,7 @@ void sistemaSolar(Struct s){
         for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
             nameTransf = (*t)->Transform::getName().c_str();
             if (!strcmp(nameTransf,"translate")){
-                raio = (*t)->Transform::getPoint()->Point::getX();
+                //raio = (*t)->Transform::getPoint()->Point::getX();
             }
         }
 
@@ -212,10 +212,10 @@ void sistemaSolar(Struct s){
     for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); ++t) {
 
         nameTransf = (*t)->Transform::getName().c_str();
-        if (!strcmp(nameTransf,"rotate")) angle = (*t)->Transform::getAngle();
-        x = (*t)->Transform::getPoint()->Point::getX();
-        y = (*t)->Transform::getPoint()->Point::getY();
-        z = (*t)->Transform::getPoint()->Point::getZ();
+        if (!strcmp(nameTransf,"rotate")) timeT = (*t)->Transform::getTime();
+        //x = (*t)->Transform::getPoint()->Point::getX();
+        //y = (*t)->Transform::getPoint()->Point::getY();
+        //z = (*t)->Transform::getPoint()->Point::getZ();
 
         if (!strcmp(nameTransf,"translate")){
             if(lua3d) {
