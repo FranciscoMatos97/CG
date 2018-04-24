@@ -93,13 +93,13 @@ int main(int argc, char** argv){
     Vertex* vx = new Vertex();
 
 
-    if(strcmp(argv[1], "plane") == 0){
+    if(!strcmp(argv[1], "plane")){
         size = atoi(argv[2]);
         vx->makePlane(size);
         saveFile(vx->getPointsList(), argv[3]);
     }
 
-    else if(strcmp(argv[1], "box") == 0 && argc == 7){
+    else if(!strcmp(argv[1], "box") && argc == 7){
         float x = atoi(argv[2]);
         float y = atoi(argv[3]);
         float z = atoi(argv[4]);
@@ -108,7 +108,7 @@ int main(int argc, char** argv){
         saveFile(vx->getPointsList(), argv[6]);
     }
 
-    else if(strcmp(argv[1], "sphere") == 0 && argc == 6){
+    else if(!strcmp(argv[1], "sphere") && argc == 6){
         float radius = atoi(argv[2]);
         int slices = atoi(argv[3]);
         int stacks = atoi(argv[4]);
@@ -116,7 +116,7 @@ int main(int argc, char** argv){
         saveFile(vx->getPointsList(), argv[5]);
     }
 
-    else if(strcmp(argv[1], "cone") == 0 && argc == 7){
+    else if(!strcmp(argv[1], "cone") && argc == 7){
         float radius = atoi(argv[2]);
         float height = atoi(argv[3]);
         int slices = atoi(argv[4]);
@@ -125,13 +125,19 @@ int main(int argc, char** argv){
         saveFile(vx->getPointsList(), argv[6]);
     }
 
-    else if(strcmp(argv[1], "torus") == 0){
+    else if(!strcmp(argv[1], "torus") && argc == 7){
         float intRadius = atoi(argv[2]);
         float extRadius = atoi(argv[3]);
         int slices = atoi(argv[4]);
         int stacks = atoi(argv[5]);
         vx->makeTorus(intRadius, extRadius, slices, stacks);
         saveFile(vx->getPointsList(), argv[6]);
+    }
+
+    else if(!strcmp(argv[1], "patches")){
+        string nameFile = argv[2];
+        int tess = atoi(argv[3]);
+        
     }
 
     else if(strcmp(argv[1], "help") == 0){

@@ -30,7 +30,7 @@ vector<Point*> readFile(string file_name){
     ifstream file (f_n);
 
     if(file.is_open()){
-        cout << "Processing " << file_name << endl;
+        //cout << "Processing " << file_name << endl;
         while(getline(file,line)) { // percorrer as linhas do ficheiro
             stringstream ss(line);
             while (ss >> buf) {
@@ -52,15 +52,37 @@ vector<Point*> readFile(string file_name){
     return point_list;
 }
 
+Struct lookUpTranslate(XMLElement* element, Struct s){
+    string transf;
+    float timeT, x, y, z;
+    vector<Point*> pl;
+    transf = element->Name();
+    timeT = atof(element->Attribute("time"));
+
+    for(element = element->FirstChildElement(); element; element=element->NextSiblingElement()){
+        x = atof(element->Attribute("x"));
+        y = atof(element->Attribute("y"));
+        z = atof(element->Attribute("z"));
+
+        pl.push_back(new Point(x,y,z));
+
+        Transform* t = new Transform(transf,timeT,pl);
+        s.addTransform(t);
+    }
+
+    return s;
+}
+
 Struct lookupT(XMLElement* element, Struct s){
     string transf;
-    float angle,x,y,z;
+    float timeT,x,y,z;
+    vector<Point*> pl;
 
     transf = element->Name();
     if(element->Attribute("angle")){
-        angle = atof( element->Attribute("angle"));
+        timeT = atof( element->Attribute("time"));
     }
-    else angle = 0;
+    else timeT = 0;
     if(element->Attribute("x")){
         x = atof( element->Attribute("x"));
     }
@@ -74,8 +96,8 @@ Struct lookupT(XMLElement* element, Struct s){
     }
     else z=0;
 
-    Point* p = new Point(x,y,z);
-    Transform* t = new Transform(transf,angle,p);
+    pl.push_back(new Point(x,y,z));
+    Transform* t = new Transform(transf,timeT,pl);
     s.addTransform(t);
 
     return s;
@@ -102,7 +124,7 @@ vector<Struct> lookAux(XMLElement* element){
                 for(;elementAux;elementAux=elementAux->NextSiblingElement()){
                     if(!strcmp(elementAux->Name(),"model")){
                         file = elementAux->Attribute("file");
-                        cout << "-> " << file << endl;
+                        //cout << "-> " << file << endl;
                         vector<Point*> vp = readFile(file);
                         s3.setPoints(vp);
                         s3.setFile(file);
@@ -116,11 +138,15 @@ vector<Struct> lookAux(XMLElement* element){
 
             }
 
-            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"translate")
-                    || !strcmp(element->Name(),"scale") || !strcmp(element->Name(),"color")){
+            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale") 
+            || !strcmp(element->Name(),"color")){
                 
                 s3 = lookupT(element, s3);
 
+            }
+
+            else if(!strcmp(element->Name(),"translate")){
+                lookUpTranslate(element, s3);
             }
 
             else if(!strcmp(element->Name(),"group")){
