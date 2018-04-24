@@ -20,6 +20,6 @@ if(NOT OPENGL_FOUND)
     message(ERROR " OPENGL not found!")
 endif(NOT OPENGL_FOUND)
 
-add_executable(${PROJECT_NAME} src/generator.cpp ../Point.cpp src/vertex.cpp)
+add_executable(${PROJECT_NAME} src/generator.cpp ../Point.cpp src/vertex.cpp src/Patch.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
