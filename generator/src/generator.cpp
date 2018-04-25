@@ -1,11 +1,14 @@
 #include <iostream>
+#include <stdio.h>
+#include <istream>
 #include <fstream>
 #include <iterator>
 #include <vector>
 #include <string>
 #include <stdlib.h>
 #include <cstring>
-#include "../../headers/vertex.h"
+#include "../../headers/Vertex.h"
+#include "../../headers/Patch.h"
 #include "string.h"
 
 using namespace std;
@@ -82,6 +85,74 @@ void showHelp(){
     cout << "------------------------------- THE END --------------------------------" << endl;
 }
 
+string getPointsOfLine(string inputFile, int ctrl){
+    int i;
+    string ctrLine;
+    ifstream file;
+    file.open(inputFile);
+    if(file.is_open()){
+        for(i=0; i<ctrl; i++) getline(file,ctrLine);
+        file.close();
+    }
+    return ctrLine;
+}
+
+vector<Point*> makePatch(int tesselation, string inputFile){
+    vector<Patch*> patchList;
+    int i, j, k, ind, patches, pos, ctrl;
+    float number;
+    string l, ctrLine;
+
+    ifstream file;
+    file.open(inputFile);
+
+    if(file.is_open()){
+        
+        getline(file,l);
+        
+        patches = stoi(l);
+        
+        for(i=0; i<patches; i++){
+
+            getline(file,l);
+            vector<Point*> v;
+            Patch* pat = new Patch();
+
+            for(j=0; j<16; j++){
+                
+                pos = l.find(", ");
+                ind = stoi(l.substr(0, pos));
+                l.erase(0, pos+2);
+                ctrl = 3 + patches + ind;
+                ctrLine = getPointsOfLine(inputFile,ctrl);
+                Point* p = new Point();
+                for(k=0; k<3; k++){
+                    pos = ctrLine.find(", ");
+                    number = stof(ctrLine.substr(0, pos));
+                    ctrLine.erase(0, pos+2);
+                    if(k==0){
+                        p->setX(number);  
+                    }
+                    if(k==1){
+                        p->setY(number);
+                    }
+                    if(k==2){
+                        p->setZ(number);
+                    }
+                }
+                v.push_back(p);
+            }
+            pat->setCtrlPoints(v);
+            patchList.push_back(pat);
+        }
+        Vertex* vx = new Vertex();
+        vector<Point*> points = vx->bezierPatchTriangles(tesselation,patchList);
+        return points;
+    }
+
+
+}
+
 int main(int argc, char** argv){
 
     if(argc < 2){
@@ -137,7 +208,9 @@ int main(int argc, char** argv){
     else if(!strcmp(argv[1], "patches")){
         string nameFile = argv[2];
         int tess = atoi(argv[3]);
-        
+        string outFile = argv[4];
+        vector<Point*> list = makePatch(tess,nameFile);
+        saveFile(list,outFile);
     }
 
     else if(strcmp(argv[1], "help") == 0){
