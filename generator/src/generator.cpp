@@ -7,7 +7,7 @@
 #include <string>
 #include <stdlib.h>
 #include <cstring>
-#include "../../headers/Vertex.h"
+#include "../../headers/vertex.h"
 #include "../../headers/Patch.h"
 #include "string.h"
 
@@ -89,7 +89,7 @@ string getPointsOfLine(string inputFile, int ctrl){
     int i;
     string ctrLine;
     ifstream file;
-    file.open(inputFile);
+    file.open(inputFile.c_str());
     if(file.is_open()){
         for(i=0; i<ctrl; i++) getline(file,ctrLine);
         file.close();
@@ -104,13 +104,13 @@ vector<Point*> makePatch(int tesselation, string inputFile){
     string l, ctrLine;
 
     ifstream file;
-    file.open(inputFile);
+    file.open(inputFile.c_str());
 
     if(file.is_open()){
         
         getline(file,l);
-        
-        patches = stoi(l);
+
+        patches = atoi(l.c_str());
         
         for(i=0; i<patches; i++){
 
@@ -121,14 +121,14 @@ vector<Point*> makePatch(int tesselation, string inputFile){
             for(j=0; j<16; j++){
                 
                 pos = l.find(", ");
-                ind = stoi(l.substr(0, pos));
+                ind = atoi(l.substr(0, pos).c_str());
                 l.erase(0, pos+2);
                 ctrl = 3 + patches + ind;
                 ctrLine = getPointsOfLine(inputFile,ctrl);
                 Point* p = new Point();
                 for(k=0; k<3; k++){
                     pos = ctrLine.find(", ");
-                    number = stof(ctrLine.substr(0, pos));
+                    number = atof(ctrLine.substr(0, pos).c_str());
                     ctrLine.erase(0, pos+2);
                     if(k==0){
                         p->setX(number);  

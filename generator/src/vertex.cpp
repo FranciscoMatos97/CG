@@ -1,4 +1,4 @@
-#include "../../headers/Vertex.h"
+#include "../../headers/vertex.h"
 
 using namespace std;
 
