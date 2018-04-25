@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "Point.h"
+#include "Patch.h"
 
 using namespace std;
 
@@ -22,6 +23,9 @@ class Vertex{
 		void makeCone(float, float, int, int);
 		void makeSphere(float, int, int);
 		void makeTorus(float, float, int, int);
+        Point* bezierCurve(float, Point*, Point*, Point*, Point*);
+        Point* bezierPatch(float, float, vector<Point*>);
+        vector<Point*> bezierPatchTriangles(int, vector<Patch*>);
 
 };
 

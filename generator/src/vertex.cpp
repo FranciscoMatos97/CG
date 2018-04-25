@@ -258,6 +258,102 @@ void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks)
     }
 
 }
+/**
+ * Ponto da curva consoante o valor T
+ */
+Point* bezierCurve(float t, Point* p0, Point* p1, Point* p2, Point* p3) {
+
+    float x, y, z;
+
+    float b0 = (1.0 - t) * (1.0 - t) * (1.0 - t);
+    float b1 = 3 * t * (1.0 - t) * (1.0 - t);
+    float b2 = 3 * t * t * (1.0 - t);
+    float b3 = t * t * t;
+
+    x = b0*p0->getX() + b1*p1->getX() + b2*p2->getX() + b3*p3->getX();
+    y = b0*p0->getY() + b1*p1->getY() + b2*p2->getY() + b3*p3->getY();
+    z = b0*p0->getZ() + b1*p1->getZ() + b2*p2->getZ() + b3*p3->getZ();
+
+    Point* new_point = new Point(x, y, z);
+    return new_point;
+}
+
+
+/**
+ * Ponto da curva consoante o valor U e V
+ */
+Point* bezierPatch(float u, float v, vector<Point*> control_points) {
+    float matU[4][3], matUV[4][3];
+    int i, j=0, k=0;
+
+    for (i = 0; i < 16; i ++) {
+        matU[j][0] = control_points[i]->getX();
+        matU[j][1] = control_points[i]->getY();
+        matU[j][2] = control_points[i]->getZ();
+
+        j++;
+
+        if (j % 4 == 0) {
+            Point* pointU = bezierCurve(u, new Point(matU[0][0],matU[0][1],matU[0][2]),
+                                           new Point(matU[1][0],matU[1][1],matU[1][2]),
+                                           new Point(matU[2][0],matU[2][1],matU[2][2]),
+                                           new Point(matU[3][0],matU[3][1],matU[3][2]));
+
+            matUV[k][0] = pointU->getX();
+            matUV[k][1] = pointU->getY();
+            matUV[k][2] = pointU->getZ();
+
+            k++;
+            j = 0;
+        }
+    }
+
+    Point* pointUV = bezierCurve(v, new Point(matUV[0][0],matUV[0][1],matUV[0][2]),
+                                  new Point(matUV[1][0],matUV[1][1],matUV[1][2]),
+                                  new Point(matUV[2][0],matUV[2][1],matUV[2][2]),
+                                  new Point(matUV[3][0],matUV[3][1],matUV[3][2]));
+
+    return pointUV;
+}
+
+/**
+ * triangulos de bezier para o engine
+ */
+vector<Point*> bezierPatchTriangles(int divs, vector<Patch*> patch_list){
+
+    vector<Point*> point_list;
+    float u, uu, v, vv;
+    float inc = 1.0 / divs;
+
+    for(int n_patches = 0; n_patches < patch_list.size(); n_patches++){
+        vector<Point*> control_points = patch_list[n_patches]->getControlPoints();
+
+        for(int j=0; j <= divs ; j++){
+            for(int i=0; i <= divs; i++){
+
+                u = i * inc;
+                v = j * inc;
+                uu = (i+1) * inc;
+                vv = (j+1) * inc;
+
+                Point* p0 = bezierPatch(u, v, control_points);
+                Point* p1 = bezierPatch(u, vv, control_points);
+                Point* p2 = bezierPatch(uu, v, control_points);
+                Point* p3 = bezierPatch(uu, vv, control_points);
+
+                point_list.push_back(p0);
+                point_list.push_back(p2);
+                point_list.push_back(p3);
+
+                point_list.push_back(p0);
+                point_list.push_back(p3);
+                point_list.push_back(p1);
+            }
+        }
+    }
+
+    return point_list;
+}
 
 
 
