@@ -1,7 +1,9 @@
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#include <GL/glew.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
@@ -25,6 +27,14 @@ float angle=0;
 float xt=0, yt=0, zt=0;
 float cx=M_PI_4, cz=M_PI_4;
 float r = 250.0;
+float vertex_size;
+
+
+float g_time;
+
+double g_size;
+
+float g_change;
 
 void changeSize(int w, int h) {
 
@@ -60,7 +70,7 @@ void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
-    float timeT, x, y, z;
+    float angle, x, y, z;
     int cl=0;
 
     glPushMatrix();
@@ -69,12 +79,12 @@ void figuraPrimitiva(Struct s){
         nameTransf = (*t)->Transform::getName().c_str();
 
         if (!strcmp(nameTransf,"rotate")) {
-            timeT = (*t)->Transform::getTime();
+            angle = (*t)->Transform::getAngle();
         }
 
-        //x = (*t)->Transform::getPoint()->Point::getX();
-        //y = (*t)->Transform::getPoint()->Point::getY();
-        //z = (*t)->Transform::getPoint()->Point::getZ();
+        x = (*t)->Transform::getPoint()->Point::getX();
+        y = (*t)->Transform::getPoint()->Point::getY();
+        z = (*t)->Transform::getPoint()->Point::getZ();
 
         if (!strcmp(nameTransf,"translate")){
             glTranslatef(x,y,z);
@@ -91,29 +101,25 @@ void figuraPrimitiva(Struct s){
         }
     }
 
-    vector<Point*> vp;
-    Point p;
-
-    srand (time(NULL));
-    int color=0;
+    srand(time(NULL));
     float a, b, c;
 
-    glBegin(GL_TRIANGLES);
-    vp=s.getPoints();
-    for (vector<Point *>::const_iterator i = vp.begin(); i != vp.end(); ++i, color++) {
-        p = **i;
-        if (cl!= 1 && color % 3 == 0) {
-            a = (float) rand() / (float) RAND_MAX;
-            b = (float) rand() / (float) RAND_MAX;
-            c = (float) rand() / (float) RAND_MAX;
+    if(cl!=1) {
+        a = (float) rand() / (float) RAND_MAX;
+        b = (float) rand() / (float) RAND_MAX;
+        c = (float) rand() / (float) RAND_MAX;
 
-            if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
+        if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
 
-            glColor3f(a, b, c);
-        }
-        glVertex3f(p.getX(), p.getY(), p.getZ());
+        glColor3f(a, b, c);
     }
-    glEnd();
+
+    GLuint* buffer = s.getBuffer();
+    vertex_size = s.getPoints().size();
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+    glVertexPointer(3, GL_FLOAT, 0, 0);
+    glDrawArrays(GL_TRIANGLES, 0, vertex_size * 3);
 
     glPopMatrix();
 }
@@ -158,7 +164,7 @@ void sistemaSolar(Struct s){
     const char* nameFile = s.getFile().c_str();
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
-    float timeT, x, y, z;
+    float angle, x, y, z;
     float raio;
     bool sol = !strcmp(nameFile,"sol.3d");
     bool anel = !strcmp(nameFile,"anel.3d");
@@ -174,7 +180,7 @@ void sistemaSolar(Struct s){
         for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
             nameTransf = (*t)->Transform::getName().c_str();
             if (!strcmp(nameTransf,"translate")){
-                //raio = (*t)->Transform::getPoint()->Point::getX();
+                raio = (*t)->Transform::getPoint()->Point::getX();
             }
         }
 
@@ -192,6 +198,15 @@ void sistemaSolar(Struct s){
     time=1;
     re = glutGet(GLUT_ELAPSED_TIME)/100.f;
     gr = (re*360) / (time * 1000);
+
+
+    float delta_time=(glutGet(GLUT_ELAPSED_TIME)/1000.f-g_time);
+    printf("dt: %f\n", delta_time);
+    g_time = glutGet(GLUT_ELAPSED_TIME)/1000.f;
+    if(fabs(g_size)>=1.0f)
+        g_change *=-1.0f;
+    g_size += g_change * delta_time *0.1f;
+
 
     //aplicar a rotação à volta do sol
     if(!lua3d) glRotatef(gr*rotacao(nameFile),0,1,0);
@@ -212,10 +227,10 @@ void sistemaSolar(Struct s){
     for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); ++t) {
 
         nameTransf = (*t)->Transform::getName().c_str();
-        if (!strcmp(nameTransf,"rotate")) timeT = (*t)->Transform::getTime();
-        //x = (*t)->Transform::getPoint()->Point::getX();
-        //y = (*t)->Transform::getPoint()->Point::getY();
-        //z = (*t)->Transform::getPoint()->Point::getZ();
+        if (!strcmp(nameTransf,"rotate")) angle = (*t)->Transform::getAngle();
+        x = (*t)->Transform::getPoint()->Point::getX();
+        y = (*t)->Transform::getPoint()->Point::getY();
+        z = (*t)->Transform::getPoint()->Point::getZ();
 
         if (!strcmp(nameTransf,"translate")){
             if(lua3d) {
@@ -472,6 +487,7 @@ void processSpecialKeys(int key, int xx, int yy) {
     }
 }
 
+
 void showHelp(){
     cout << "------------------------- You called for Help! -------------------------" << endl;
     cout << "|                                                                      |" << endl;
@@ -514,6 +530,42 @@ void showHelp(){
     cout << "------------------------------- THE END --------------------------------" << endl;
 }
 
+
+void initGL() {
+    Struct s;
+    vector<Point*> vp;
+    int index;
+    GLuint* buffer;
+    Point p;
+    float* vertex_array;
+
+// init
+    for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
+        s = (*f);
+        vp = s.getPoints();
+        index = 0;
+        buffer = s.getBuffer();
+
+        glGenBuffers(1, buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+
+        vertex_array = (float*) malloc(sizeof(float) * vp.size() * 3);
+
+        for (vector<Point *>::const_iterator i = vp.begin(); i != vp.end(); ++i) {
+            p = **i;
+            vertex_array[index] = p.getX();
+            vertex_array[index+1] = p.getX();
+            vertex_array[index+2] = p.getX();
+            index+=3;
+        }
+
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vp.size() * 3, vertex_array, GL_STATIC_DRAW);
+
+        free(vertex_array);
+    }
+}
+
+
 int main(int argc, char** argv){
 // init GLUT and the window
     glutInit(&argc, argv);
@@ -521,6 +573,11 @@ int main(int argc, char** argv){
     glutInitWindowPosition(100,100);
     glutInitWindowSize(800,800);
     glutCreateWindow("Projeto");
+
+    #ifndef __APPLE__
+        glewInit();
+    #endif
+    glEnableClientState(GL_VERTEX_ARRAY);
 
     int xml=0;
 
@@ -558,6 +615,7 @@ int main(int argc, char** argv){
     glEnable(GL_CULL_FACE);
 
 // enter GLUT's main cycle
+    initGL();
     glutMainLoop();
 
     return 0;
