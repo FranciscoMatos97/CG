@@ -75,7 +75,7 @@ void figuraPrimitiva(Struct s){
 
     glPushMatrix();
 
-    for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
+   /* for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
         nameTransf = (*t)->Transform::getName().c_str();
 
         if (!strcmp(nameTransf,"rotate")) {
@@ -112,12 +112,12 @@ void figuraPrimitiva(Struct s){
         if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
 
         glColor3f(a, b, c);
-    }
+    }*/
 
-    GLuint* buffer = s.getBuffer();
+    GLuint buffer = s.getBuffer();
     vertex_size = s.getPoints().size();
 
-    glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glVertexPointer(3, GL_FLOAT, 0, 0);
     glDrawArrays(GL_TRIANGLES, 0, vertex_size * 3);
 
@@ -160,7 +160,7 @@ float rotacao(const char* nameFile){
  *
  * @param s estrutura com informações sobre o corpo celeste
  */
-void sistemaSolar(Struct s){
+/*void sistemaSolar(Struct s){
     const char* nameFile = s.getFile().c_str();
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
@@ -302,7 +302,7 @@ void sistemaSolar(Struct s){
     }
 
     glPopMatrix();
-}
+}*/
 
 
 void renderScene(void) {
@@ -321,19 +321,9 @@ void renderScene(void) {
     glTranslatef(xt,yt,zt);
 
 // put drawing instructions here
-    const char* nf;
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
         Struct s = (*f);
-        nf = s.getFile().c_str();
-        if (!strcmp("asteroide.3d", nf) || !strcmp("callisto.3d", nf) || !strcmp("europa.3d", nf) ||
-            !strcmp("ganymede.3d", nf) || !strcmp("io.3d", nf) || !strcmp("jupiter.3d", nf) ||
-            !strcmp("lua.3d", nf) || !strcmp("marte.3d", nf) || !strcmp("mercurio.3d", nf) ||
-            !strcmp("neptuno.3d", nf) || !strcmp("plutao.3d", nf) || !strcmp("saturno.3d", nf) ||
-            !strcmp("anel.3d", nf) || !strcmp("sol.3d", nf) || !strcmp("terra.3d", nf) ||
-            !strcmp("titan.3d", nf) || !strcmp("triton.3d", nf) || !strcmp("urano.3d", nf) ||
-            !strcmp("venus.3d", nf))
-            sistemaSolar(s);
-        else figuraPrimitiva(s);
+        figuraPrimitiva(s);
     }
 
 // End of frame
@@ -535,7 +525,7 @@ void initGL() {
     Struct s;
     vector<Point*> vp;
     int index;
-    GLuint* buffer;
+    GLuint buffer;
     Point p;
     float* vertex_array;
 
@@ -546,22 +536,23 @@ void initGL() {
         index = 0;
         buffer = s.getBuffer();
 
-        glGenBuffers(1, buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+        glGenBuffers(1, &buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
-        vertex_array = (float*) malloc(sizeof(float) * vp.size() * 3);
+        s.alocaVertexArray();
+        vertex_array = s.getVertexArray();
 
         for (vector<Point *>::const_iterator i = vp.begin(); i != vp.end(); ++i) {
             p = **i;
             vertex_array[index] = p.getX();
-            vertex_array[index+1] = p.getX();
-            vertex_array[index+2] = p.getX();
+            vertex_array[index+1] = p.getY();
+            vertex_array[index+2] = p.getZ();
             index+=3;
         }
 
         glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vp.size() * 3, vertex_array, GL_STATIC_DRAW);
 
-        free(vertex_array);
+       // free(vertex_array);
     }
 }
 

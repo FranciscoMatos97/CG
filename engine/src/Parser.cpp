@@ -30,7 +30,7 @@ vector<Point*> readFile(string file_name){
     ifstream file (f_n);
 
     if(file.is_open()){
-        //cout << "Processing " << file_name << endl;
+        cout << "Processing " << file_name << endl;
         while(getline(file,line)) { // percorrer as linhas do ficheiro
             stringstream ss(line);
             while (ss >> buf) {
@@ -66,7 +66,7 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
 
         pl.push_back(new Point(x,y,z));
 
-        Transform* t = new Transform(transf,timeT,NULL,pl);
+        Transform* t = new Transform(transf,timeT,0,pl);
         s.addTransform(t);
     }
 
@@ -112,7 +112,6 @@ vector<Struct> lookAux(XMLElement* element){
     XMLElement* elementAux;
     string file;
     string transf;
-    float angle,x,y,z;
     XMLElement* element3;
     vector<Struct> s;
     vector<Transform*> transforms;
@@ -125,10 +124,10 @@ vector<Struct> lookAux(XMLElement* element){
                 c++;
 
                 elementAux = element->FirstChildElement("model");
-                for(;elementAux;elementAux=elementAux->NextSiblingElement()){
+                for(; elementAux; elementAux=elementAux->NextSiblingElement()){
                     if(!strcmp(elementAux->Name(),"model")){
                         file = elementAux->Attribute("file");
-                        //cout << "-> " << file << endl;
+                        cout << "-> " << file << endl;
                         vector<Point*> vp = readFile(file);
                         s3.setPoints(vp);
                         s3.setFile(file);
@@ -144,9 +143,7 @@ vector<Struct> lookAux(XMLElement* element){
 
             else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale") 
             || !strcmp(element->Name(),"color")){
-                
                 s3 = lookupT(element, s3);
-
             }
 
             else if(!strcmp(element->Name(),"translate")){
