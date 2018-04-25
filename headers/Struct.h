@@ -22,20 +22,24 @@ class Struct{
     vector<Transform*> refit;
     vector<Point*> points;
     GLuint buffer[1];
+    float* vertexArray;
 
 public:
 	Struct();
-	Struct(string,vector<Transform*>,vector<Point*>, GLuint);
+	Struct(string,vector<Transform*>,vector<Point*>, GLuint, float*);
 	string getFile();
 	vector<Transform*> getRefit();
     vector<Point*> getPoints();
-    GLuint* getBuffer();
+    GLuint getBuffer();
+	float* getVertexArray();
 	void setFile(string);
 	void setRefit(vector<Transform*>);
     void setPoints(vector<Point*>);
-    void setBuffer(GLuint);
+	void setBuffer(GLuint);
+	void setVertexArray(float*);
 	void addTransform(Transform*);
 	void addTransform(vector<Transform*>);
+	void alocaVertexArray();
 	void clear();
 	int size();
 };

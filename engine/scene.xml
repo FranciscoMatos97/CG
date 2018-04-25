@@ -32,4 +32,10 @@
 	        <model file = "torus.3d" />
         </models>
  	</group>
+    <group>
+	    <translate x="-60" y="0" z="0" />
+        <models>
+	        <model file = "teapot.3d" />
+        </models>
+ 	</group>
 </scene>
