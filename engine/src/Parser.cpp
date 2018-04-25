@@ -66,7 +66,7 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
 
         pl.push_back(new Point(x,y,z));
 
-        Transform* t = new Transform(transf,timeT,pl);
+        Transform* t = new Transform(transf,timeT,NULL,pl);
         s.addTransform(t);
     }
 
@@ -75,11 +75,15 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
 
 Struct lookupT(XMLElement* element, Struct s){
     string transf;
-    float timeT,x,y,z;
+    float timeT,angle,x,y,z;
     vector<Point*> pl;
 
     transf = element->Name();
     if(element->Attribute("angle")){
+        angle = atof( element->Attribute("angle"));
+    }
+    else angle = 0;
+    if(element->Attribute("time")){
         timeT = atof( element->Attribute("time"));
     }
     else timeT = 0;
@@ -97,7 +101,7 @@ Struct lookupT(XMLElement* element, Struct s){
     else z=0;
 
     pl.push_back(new Point(x,y,z));
-    Transform* t = new Transform(transf,timeT,pl);
+    Transform* t = new Transform(transf,timeT,angle,pl);
     s.addTransform(t);
 
     return s;

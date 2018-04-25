@@ -10,17 +10,19 @@ using namespace std;
 class Transform{
 
 	string name;
-	float timeT;
+	float timeT, ang;
 	vector<Point*> pointsL;
 
 public:
 	Transform();
-	Transform(string,float,vector<Point*>);
+	Transform(string,float,float,vector<Point*>);
 	string getName();
 	float getTime();
+	float getAngle();
 	vector<Point*> getPoints();
 	void setName(string);
 	void setTime(float);
+	void setAngle(float);
 	void setPoint(vector<Point*>);
 	Transform* clone();
 	
