@@ -1,4 +1,4 @@
-#include "../../headers/vertex.h"
+#include "../../headers/Vertex.h"
 
 using namespace std;
 
@@ -261,7 +261,7 @@ void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks)
 /**
  * Ponto da curva consoante o valor T
  */
-Point* bezierCurve(float t, Point* p0, Point* p1, Point* p2, Point* p3) {
+Point* Vertex::bezierCurve(float t, Point* p0, Point* p1, Point* p2, Point* p3) {
 
     float x, y, z;
 
@@ -282,7 +282,7 @@ Point* bezierCurve(float t, Point* p0, Point* p1, Point* p2, Point* p3) {
 /**
  * Ponto da curva consoante o valor U e V
  */
-Point* bezierPatch(float u, float v, vector<Point*> control_points) {
+Point* Vertex::bezierPatch(float u, float v, vector<Point*> control_points) {
     float matU[4][3], matUV[4][3];
     int i, j=0, k=0;
 
@@ -319,7 +319,7 @@ Point* bezierPatch(float u, float v, vector<Point*> control_points) {
 /**
  * triangulos de bezier para o engine
  */
-vector<Point*> bezierPatchTriangles(int divs, vector<Patch*> patch_list){
+vector<Point*> Vertex::bezierPatchTriangles(int divs, vector<Patch*> patch_list){
 
     vector<Point*> point_list;
     float u, uu, v, vv;

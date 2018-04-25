@@ -13,11 +13,9 @@ class Patch{
 
     public:
         Patch();
-        Patch(vector<Point*>, vector<Point*>);
+        Patch(vector<Point*>);
         vector<Point*> getControlPoints();
-        vector<Point*> getPointsList();
         void setCtrlPoints(vector<Point*>);
-        void setPTList(vector<Point*>);
 };
 
 #endif
