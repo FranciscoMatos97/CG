@@ -62,24 +62,30 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
         timeT = atof( element->Attribute("time"));
     }
     else timeT = 0;
+
     if(element->Attribute("x")){
         x = atof(element->Attribute("x"));
     }
     else x = 0;
+
     if(element->Attribute("y")){
         y = atof(element->Attribute("y"));
     }
     else y = 0;
+
     if(element->Attribute("z")){
         z = atof(element->Attribute("z"));
     }
     else z = 0;
-    pl.push_back(new Point(x,y,z));
+
+    if(x!=0 && y!=0 && z!=0) pl.push_back(new Point(x,y,z));
 
     for(element = element->FirstChildElement(); element; element=element->NextSiblingElement()){
-        x = atof(element->Attribute("x"));
-        y = atof(element->Attribute("y"));
-        z = atof(element->Attribute("z"));
+        if(!strcmp(element->Name(), "point")) {
+            x = atof(element->Attribute("x"));
+            y = atof(element->Attribute("y"));
+            z = atof(element->Attribute("z"));
+        }
 
         pl.push_back(new Point(x,y,z));
     }
