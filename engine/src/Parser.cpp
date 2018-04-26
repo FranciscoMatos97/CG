@@ -56,8 +56,25 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
     string transf;
     float timeT, x, y, z;
     vector<Point*> pl;
+
     transf = element->Name();
-    timeT = atof(element->Attribute("time"));
+    if(element->Attribute("time")){
+        timeT = atof( element->Attribute("time"));
+    }
+    else timeT = 0;
+    if(element->Attribute("x")){
+        x = atof(element->Attribute("x"));
+    }
+    else x = 0;
+    if(element->Attribute("y")){
+        y = atof(element->Attribute("y"));
+    }
+    else y = 0;
+    if(element->Attribute("z")){
+        z = atof(element->Attribute("z"));
+    }
+    else z = 0;
+    pl.push_back(new Point(x,y,z));
 
     for(element = element->FirstChildElement(); element; element=element->NextSiblingElement()){
         x = atof(element->Attribute("x"));
@@ -65,10 +82,10 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
         z = atof(element->Attribute("z"));
 
         pl.push_back(new Point(x,y,z));
-
-        Transform* t = new Transform(transf,timeT,0,pl);
-        s.addTransform(t);
     }
+
+    Transform* t = new Transform(transf,timeT,0,pl);
+    s.addTransform(t);
 
     return s;
 }
@@ -83,18 +100,22 @@ Struct lookupT(XMLElement* element, Struct s){
         angle = atof( element->Attribute("angle"));
     }
     else angle = 0;
+
     if(element->Attribute("time")){
         timeT = atof( element->Attribute("time"));
     }
     else timeT = 0;
+
     if(element->Attribute("x")){
         x = atof( element->Attribute("x"));
     }
     else x = 0;
+
     if(element->Attribute("y")){
         y = atof(element->Attribute("y"));
     }
     else y=0;
+
     if(element->Attribute("z")){
         z = atof(element->Attribute("z"));
     }
@@ -102,10 +123,11 @@ Struct lookupT(XMLElement* element, Struct s){
 
     pl.push_back(new Point(x,y,z));
     Transform* t = new Transform(transf,timeT,angle,pl);
+
     s.addTransform(t);
 
-    return s;
 
+    return s;
 }
 
 vector<Struct> lookAux(XMLElement* element){
@@ -141,13 +163,12 @@ vector<Struct> lookAux(XMLElement* element){
 
             }
 
-            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale") 
-            || !strcmp(element->Name(),"color")){
+            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale")  || !strcmp(element->Name(),"color")){
                 s3 = lookupT(element, s3);
             }
 
             else if(!strcmp(element->Name(),"translate")){
-                lookUpTranslate(element, s3);
+                s3 = lookUpTranslate(element, s3);
             }
 
             else if(!strcmp(element->Name(),"group")){

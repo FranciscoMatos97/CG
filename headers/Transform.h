@@ -20,6 +20,7 @@ public:
 	float getTime();
 	float getAngle();
 	vector<Point*> getPoints();
+	Point* getPoint();
 	void setName(string);
 	void setTime(float);
 	void setAngle(float);
