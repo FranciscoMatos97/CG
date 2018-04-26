@@ -149,14 +149,6 @@ void renderCatmullRomCurve(float* p, int POINT_COUNT) {
         glVertex3f(pos[0], pos[1], pos[2]);
     }
     glEnd();
-
-    glBegin(GL_LINES);
-    for (float gt = 0; gt <= 1; gt += 0.01) {
-        getGlobalCatmullRomPoint(gt, pos, deriv, p, POINT_COUNT);
-        glVertex3f(pos[0], pos[1], pos[2]);
-        glVertex3f(pos[0] + deriv[0], pos[1] + deriv[1], pos[2] + deriv[2]);
-    }
-    glEnd();
 }
 
 
@@ -199,7 +191,7 @@ void figuraPrimitiva(Struct s){
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
     float timeT, angle, x, y, z, te, gr;
-    int cl=0;
+    int cor=0;
 
     glPushMatrix();
 
@@ -218,9 +210,9 @@ void figuraPrimitiva(Struct s){
                     glRotatef(angle,x,y,z);
                 }
                 else {
-                    te = glutGet(GLUT_ELAPSED_TIME) % (int)(timeT * 1000);
-                    gr = te / (timeT * 1000);
-                    glRotatef(timeT*gr,x,y,z);
+                    te = glutGet(GLUT_ELAPSED_TIME)/100.f;
+                    gr = (te*360) / (timeT * 1000);
+                    glRotatef(gr,x,y,z);
                 }
             }
             else if (!strcmp(nameTransf,"scale")) {
@@ -228,7 +220,7 @@ void figuraPrimitiva(Struct s){
             }
             else if (!strcmp(nameTransf,"color")) {
                 glColor3f(x,y,z);
-                cl=1;
+                cor=1;
             }
         }
         else{
@@ -251,7 +243,7 @@ void figuraPrimitiva(Struct s){
     srand(1024);
     float a, b, c;
 
-    if(cl!=1) {
+    if(cor!=1) {
         a = (float) rand() / (float) RAND_MAX;
         b = (float) rand() / (float) RAND_MAX;
         c = (float) rand() / (float) RAND_MAX;
@@ -261,7 +253,6 @@ void figuraPrimitiva(Struct s){
         glColor3f(a, b, c);
     }
 
-    s.fillBuffer();
     s.draw();
 
     glPopMatrix();
@@ -667,7 +658,6 @@ void showHelp(){
     cout << "------------------------------- THE END --------------------------------" << endl;
 }
 
-
 int main(int argc, char** argv){
 // init GLUT and the window
     glutInit(&argc, argv);
@@ -700,26 +690,6 @@ int main(int argc, char** argv){
     }
 
     estruturas = lookFiles(argv[1]);
-
-    for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++){
-        Struct s = *f;
-        cout << s.getFile() << endl;
-        vector<Transform*> vt;
-
-        if(vt.size()==0) cout << "vazio mf" << endl;
-
-        for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++){
-            Transform tt = **t;
-            cout << tt.getName() << endl;
-            cout << tt.getTime() << endl;
-            cout << tt.getAngle() << endl;
-            for (int i = 0; i < tt.getPoints().size(); ++i) {
-                cout << tt.getPoints().at(i)->getX() << endl;
-                cout << tt.getPoints().at(i)->getY() << endl;
-                cout << tt.getPoints().at(i)->getZ() << endl;
-            }
-        }
-    }
 
     cout << "Drawing." << endl;
 

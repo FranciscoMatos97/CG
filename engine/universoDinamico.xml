@@ -1,24 +1,38 @@
 <scene>
 	<group>
         <!--Sol-->
-        <translate time="6" x="0" y="1" z="0" />
+        <rotate time="1" x="0" y="1" z="0" />
         <color x="0.8" y="0.2" z="0.0" />
 		<models>
 			<model file="sol.3d" />
 		</models>
 	</group>
+    <group>
+        <!--Cometa-->
+        <translate time="10" />
+             <point x="35" y="0" z="0" />
+        <rotate time="1" x="0" y="1" z="0" />
+        <color x="0.8" y="0.2" z="0.0" />
+		<models>
+			<model file="teapot.3d" />
+		</models>
+	</group>
 	<group>
         <!--Mercurio-->
+		<translate time="10" />
+             <point x="35" y="0" z="0" />
+        <rotate time="1" x="0" y="1" z="0" />
         <color x="0.2" y="0.2" z="0.2" />
-		<translate x="35" y="0" z="0" />
 		<models>
 			<model file="mercurio.3d" />
 		</models>
 	</group>
 	<group>
 		<!--Venus-->
-        <color x="0.8" y="0.5" z="0.0" />
-		<translate x="44" y="0" z="0" />
+		<translate time="8" />
+            <point x="44" y="0" z="0" />
+        <rotate time="1" x="0" y="1" z="0" />  
+        <color x="0.8" y="0.5" z="0.0" />      
 		<models>
 			<model file="venus.3d" />
 		</models>
