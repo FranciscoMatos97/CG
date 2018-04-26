@@ -90,7 +90,7 @@ void multMatrixVector(float *m, float *v, float *res) {
 
 
 void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, float *pos, float *deriv) {
-    // catmull-rom matrix
+    //catmull-rom matrix
     float m[4][4] = {	{-0.5f,  1.5f, -1.5f,  0.5f},
                          { 1.0f, -2.5f,  2.0f, -0.5f},
                          {-0.5f,  0.0f,  0.5f,  0.0f},
@@ -144,7 +144,7 @@ void renderCatmullRomCurve(float* p, int POINT_COUNT) {
     float deriv[3];
 
     glBegin(GL_LINE_LOOP);
-    for (float gt = 0; gt <= 1; gt += 0.01) {
+    for (float gt = 0; gt <= 1; gt += 0.0001) {
         getGlobalCatmullRomPoint(gt, pos, deriv, p, POINT_COUNT);
         glVertex3f(pos[0], pos[1], pos[2]);
     }
@@ -158,9 +158,9 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
     float Y[3] = { 0, 1, 0 }, Z[3], M[16], pos[3], deriv[3];
 
     for (int i = 0; i < POINT_COUNT; ++i) {
-        p[i][1] = vp.at(i)->getX();
-        p[i][2] = vp.at(i)->getY();
-        p[i][3] = vp.at(i)->getZ();
+        p[i][0] = vp.at(i)->getX();
+        p[i][1] = vp.at(i)->getY();
+        p[i][2] = vp.at(i)->getZ();
     }
 
     renderCatmullRomCurve(*p,POINT_COUNT);
@@ -177,7 +177,6 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
 
     buildRotMatrix(deriv, Y, Z, M);
     glMultMatrixf(M);
-
 }
 
 
@@ -235,7 +234,8 @@ void figuraPrimitiva(Struct s){
             else{
                 te = glutGet(GLUT_ELAPSED_TIME) % (int)(timeT * 1000);
                 gr = te / (timeT * 1000);
-                orbitaCatmullRom(s.getPoints(), gr);
+                glColor3f(1,1,1);
+                orbitaCatmullRom((*t)->Transform::getPoints(), gr);
             }
         }
     }
