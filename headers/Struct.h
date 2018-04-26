@@ -39,9 +39,10 @@ public:
 	void setVertexArray(float*);
 	void addTransform(Transform*);
 	void addTransform(vector<Transform*>);
-	void alocaVertexArray();
 	void clear();
 	int size();
+    void fillBuffer();
+    void draw();
 };
 
 #endif

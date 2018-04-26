@@ -66,10 +66,6 @@ void Struct::addTransform(vector<Transform*> vt){
 	refit.insert(refit.begin(), vt.begin(), vt.end());
 }
 
-void Struct::alocaVertexArray(){
-	vertex_array = (float*) malloc(sizeof(float) * points.size() * 3);
-}
-
 void Struct::clear(){
 	file="";
 	refit.clear();
@@ -78,4 +74,29 @@ void Struct::clear(){
 
 int Struct::size(){
 	return (refit.size() + points.size());
+}
+
+void Struct::fillBuffer(){
+	Point p;
+	int index = 0;
+	vertex_array = (float*) malloc(sizeof(float) * points.size() * 3);
+
+	for (vector<Point *>::const_iterator i = points.begin(); i != points.end(); ++i) {
+		p = **i;
+		vertex_array[index] = p.getX();
+		vertex_array[index+1] = p.getY();
+		vertex_array[index+2] = p.getZ();
+		index+=3;
+	}
+
+	glGenBuffers(1, buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size() * 3, vertex_array, GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+}
+
+void Struct::draw(){
+	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glDrawArrays(GL_TRIANGLES, 0, points.size() * 3);
 }

@@ -33,6 +33,10 @@ vector<Point*> Transform::getPoints(){
 	return pointsL;
 }
 
+Point* Transform::getPoint(){
+	return pointsL.at(0);
+}
+
 void Transform::setName(string n){
 	name = n;
 }

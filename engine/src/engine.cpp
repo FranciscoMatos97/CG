@@ -1,4 +1,3 @@
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #include <GL/glew.h>
@@ -11,8 +10,10 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include <math.h>
+#include <cmath>
 
 #include "../../headers/Point.h"
 #include "../../headers/Struct.h"
@@ -27,14 +28,7 @@ float angle=0;
 float xt=0, yt=0, zt=0;
 float cx=M_PI_4, cz=M_PI_4;
 float r = 250.0;
-float vertex_size;
 
-
-float g_time;
-
-double g_size;
-
-float g_change;
 
 void changeSize(int w, int h) {
 
@@ -61,6 +55,140 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
+
+void buildRotMatrix(float *x, float *y, float *z, float *m) {
+    m[0] = x[0]; m[1] = x[1]; m[2] = x[2]; m[3] = 0;
+    m[4] = y[0]; m[5] = y[1]; m[6] = y[2]; m[7] = 0;
+    m[8] = z[0]; m[9] = z[1]; m[10] = z[2]; m[11] = 0;
+    m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+}
+
+
+void cross(float *a, float *b, float *res) {
+    res[0] = a[1]*b[2] - a[2]*b[1];
+    res[1] = a[2]*b[0] - a[0]*b[2];
+    res[2] = a[0]*b[1] - a[1]*b[0];
+}
+
+
+void normalize(float *a) {
+    float l = sqrt(a[0]*a[0] + a[1] * a[1] + a[2] * a[2]);
+    a[0] = a[0]/l;
+    a[1] = a[1]/l;
+    a[2] = a[2]/l;
+}
+
+
+void multMatrixVector(float *m, float *v, float *res) {
+    for (int j = 0; j < 4; ++j) {
+        res[j] = 0;
+        for (int k = 0; k < 4; ++k) {
+            res[j] += v[k] * m[j * 4 + k];
+        }
+    }
+}
+
+
+void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, float *pos, float *deriv) {
+    // catmull-rom matrix
+    float m[4][4] = {	{-0.5f,  1.5f, -1.5f,  0.5f},
+                         { 1.0f, -2.5f,  2.0f, -0.5f},
+                         {-0.5f,  0.0f,  0.5f,  0.0f},
+                         { 0.0f,  1.0f,  0.0f,  0.0f}};
+
+    // Compute A = M * P
+    float X[4] = {p0[0], p1[0], p2[0], p3[0]};
+    float Y[4] = {p0[1], p1[1], p2[1], p3[1] };
+    float Z[4] = {p0[2], p1[2], p2[2], p3[2] };
+
+    float Ax[4], Ay[4], Az[4];
+    multMatrixVector(*m, X, Ax);
+    multMatrixVector(*m, Y, Ay);
+    multMatrixVector(*m, Z, Az);
+
+    // Compute pos = T * A
+    float T[4] = {t*t*t, t*t, t, 1};
+
+    pos[0] = T[0] * Ax[0] + T[1] * Ax[1] + T[2] * Ax[2] + T[3] * Ax[3];
+    pos[1] = T[0] * Ay[0] + T[1] * Ay[1] + T[2] * Ay[2] + T[3] * Ay[3];
+    pos[2] = T[0] * Az[0] + T[1] * Az[1] + T[2] * Az[2] + T[3] * Az[3];
+
+    // compute deriv = T' * A
+    float T_d[4] = {3*t*t, 2*t, 1, 0 };
+
+    deriv[0] = T_d[0] * Ax[0] + T_d[1] * Ax[1] + T_d[2] * Ax[2] + T_d[3] * Ax[3];
+    deriv[1] = T_d[0] * Ay[0] + T_d[1] * Ay[1] + T_d[2] * Ay[2] + T_d[3] * Ay[3];
+    deriv[2] = T_d[0] * Az[0] + T_d[1] * Az[1] + T_d[2] * Az[2] + T_d[3] * Az[3];
+}
+
+
+// given  global t, returns the point in the curve
+void getGlobalCatmullRomPoint(float gt, float *pos, float *deriv, float* p, int POINT_COUNT) {
+    float t = gt * POINT_COUNT; // this is the real global t
+    int index = floor(t);  // which segment
+    t = t - index; // where within  the segment
+
+    // indices store the points
+    int indices[4];
+    indices[0] = (index + POINT_COUNT-1)%POINT_COUNT;
+    indices[1] = (indices[0]+1)%POINT_COUNT;
+    indices[2] = (indices[1]+1)%POINT_COUNT;
+    indices[3] = (indices[2]+1)%POINT_COUNT;
+
+    getCatmullRomPoint(t, &p[indices[0]], &p[indices[1]], &p[indices[2]], &p[indices[3]], pos, deriv);
+}
+
+
+void renderCatmullRomCurve(float* p, int POINT_COUNT) {
+    float pos[3];
+    float deriv[3];
+
+    glBegin(GL_LINE_LOOP);
+    for (float gt = 0; gt <= 1; gt += 0.01) {
+        getGlobalCatmullRomPoint(gt, pos, deriv, p, POINT_COUNT);
+        glVertex3f(pos[0], pos[1], pos[2]);
+    }
+    glEnd();
+
+    glBegin(GL_LINES);
+    for (float gt = 0; gt <= 1; gt += 0.01) {
+        getGlobalCatmullRomPoint(gt, pos, deriv, p, POINT_COUNT);
+        glVertex3f(pos[0], pos[1], pos[2]);
+        glVertex3f(pos[0] + deriv[0], pos[1] + deriv[1], pos[2] + deriv[2]);
+    }
+    glEnd();
+}
+
+
+void orbitaCatmullRom(vector<Point*> vp, float gr){
+    int POINT_COUNT = vp.size();
+    float p[POINT_COUNT][3];
+    float Y[3] = { 0, 1, 0 }, Z[3], M[16], pos[3], deriv[3];
+
+    for (int i = 0; i < POINT_COUNT; ++i) {
+        p[i][1] = vp.at(i)->getX();
+        p[i][2] = vp.at(i)->getY();
+        p[i][3] = vp.at(i)->getZ();
+    }
+
+    renderCatmullRomCurve(*p,POINT_COUNT);
+
+    getGlobalCatmullRomPoint(gr, pos, deriv, *p, POINT_COUNT);
+    glTranslatef(pos[0], pos[1], pos[2]);
+
+    cross(deriv, Y, Z);
+    cross(Z,deriv, Y);
+
+    normalize(deriv);
+    normalize(Z);
+    normalize(Y);
+
+    buildRotMatrix(deriv, Y, Z, M);
+    glMultMatrixf(M);
+
+}
+
+
 /**
  * Aplica as transformações da figura e desenha-a através de triângulos
  *
@@ -70,38 +198,57 @@ void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
-    float angle, x, y, z;
+    float timeT, angle, x, y, z, te, gr;
     int cl=0;
 
     glPushMatrix();
 
-   /* for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
+    for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
         nameTransf = (*t)->Transform::getName().c_str();
 
-        if (!strcmp(nameTransf,"rotate")) {
-            angle = (*t)->Transform::getAngle();
-        }
+        if(strcmp(nameTransf,"translate")){
+            x = (*t)->Transform::getPoint()->Point::getX();
+            y = (*t)->Transform::getPoint()->Point::getY();
+            z = (*t)->Transform::getPoint()->Point::getZ();
 
-        x = (*t)->Transform::getPoint()->Point::getX();
-        y = (*t)->Transform::getPoint()->Point::getY();
-        z = (*t)->Transform::getPoint()->Point::getZ();
+            if (!strcmp(nameTransf,"rotate")) {
+                timeT = (*t)->Transform::getTime();
+                angle = (*t)->Transform::getAngle();
+                if(angle!=0){
+                    glRotatef(angle,x,y,z);
+                }
+                else {
+                    te = glutGet(GLUT_ELAPSED_TIME) % (int)(timeT * 1000);
+                    gr = te / (timeT * 1000);
+                    glRotatef(timeT*gr,x,y,z);
+                }
+            }
+            else if (!strcmp(nameTransf,"scale")) {
+                glScalef(x,y,z);
+            }
+            else if (!strcmp(nameTransf,"color")) {
+                glColor3f(x,y,z);
+                cl=1;
+            }
+        }
+        else{
+            timeT = (*t)->Transform::getTime();
+            if(timeT==0){
+                x = (*t)->Transform::getPoint()->Point::getX();
+                y = (*t)->Transform::getPoint()->Point::getY();
+                z = (*t)->Transform::getPoint()->Point::getZ();
 
-        if (!strcmp(nameTransf,"translate")){
-            glTranslatef(x,y,z);
-        }
-        else if (!strcmp(nameTransf,"rotate")) {
-            glRotatef(angle,x,y,z);
-        }
-        else if (!strcmp(nameTransf,"scale")) {
-            glScalef(x,y,z);
-        }
-        else if (!strcmp(nameTransf,"color")) {
-            glColor3f(x,y,z);
-            cl=1;
+                glTranslatef(x,y,z);
+            }
+            else{
+                te = glutGet(GLUT_ELAPSED_TIME) % (int)(timeT * 1000);
+                gr = te / (timeT * 1000);
+                orbitaCatmullRom(s.getPoints(), gr);
+            }
         }
     }
 
-    srand(time(NULL));
+    srand(1024);
     float a, b, c;
 
     if(cl!=1) {
@@ -112,17 +259,14 @@ void figuraPrimitiva(Struct s){
         if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
 
         glColor3f(a, b, c);
-    }*/
+    }
 
-    GLuint buffer = s.getBuffer();
-    vertex_size = s.getPoints().size();
-
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-    glDrawArrays(GL_TRIANGLES, 0, vertex_size * 3);
+    s.fillBuffer();
+    s.draw();
 
     glPopMatrix();
 }
+
 
 /**
  * Retorna a velocidade de rotação do corpo celeste à volta de outro corpo
@@ -152,6 +296,7 @@ float rotacao(const char* nameFile){
 
     return r;
 }
+
 
 /**
  * Função especifica para um sistema solar dinâmico
@@ -321,8 +466,10 @@ void renderScene(void) {
     glTranslatef(xt,yt,zt);
 
 // put drawing instructions here
+    Struct s;
+
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
-        Struct s = (*f);
+        s = (*f);
         figuraPrimitiva(s);
     }
 
@@ -521,42 +668,6 @@ void showHelp(){
 }
 
 
-void initGL() {
-    Struct s;
-    vector<Point*> vp;
-    int index;
-    GLuint buffer;
-    Point p;
-    float* vertex_array;
-
-// init
-    for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
-        s = (*f);
-        vp = s.getPoints();
-        index = 0;
-        buffer = s.getBuffer();
-
-        glGenBuffers(1, &buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-
-        s.alocaVertexArray();
-        vertex_array = s.getVertexArray();
-
-        for (vector<Point *>::const_iterator i = vp.begin(); i != vp.end(); ++i) {
-            p = **i;
-            vertex_array[index] = p.getX();
-            vertex_array[index+1] = p.getY();
-            vertex_array[index+2] = p.getZ();
-            index+=3;
-        }
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vp.size() * 3, vertex_array, GL_STATIC_DRAW);
-
-       // free(vertex_array);
-    }
-}
-
-
 int main(int argc, char** argv){
 // init GLUT and the window
     glutInit(&argc, argv);
@@ -590,6 +701,26 @@ int main(int argc, char** argv){
 
     estruturas = lookFiles(argv[1]);
 
+    for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++){
+        Struct s = *f;
+        cout << s.getFile() << endl;
+        vector<Transform*> vt;
+
+        if(vt.size()==0) cout << "vazio mf" << endl;
+
+        for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++){
+            Transform tt = **t;
+            cout << tt.getName() << endl;
+            cout << tt.getTime() << endl;
+            cout << tt.getAngle() << endl;
+            for (int i = 0; i < tt.getPoints().size(); ++i) {
+                cout << tt.getPoints().at(i)->getX() << endl;
+                cout << tt.getPoints().at(i)->getY() << endl;
+                cout << tt.getPoints().at(i)->getZ() << endl;
+            }
+        }
+    }
+
     cout << "Drawing." << endl;
 
 // Required callback registry
@@ -606,7 +737,6 @@ int main(int argc, char** argv){
     glEnable(GL_CULL_FACE);
 
 // enter GLUT's main cycle
-    initGL();
     glutMainLoop();
 
     return 0;
