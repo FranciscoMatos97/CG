@@ -126,7 +126,6 @@ Struct lookupT(XMLElement* element, Struct s){
 
     s.addTransform(t);
 
-
     return s;
 }
 
@@ -139,7 +138,6 @@ vector<Struct> lookAux(XMLElement* element){
     vector<Transform*> transforms;
     int c=0;
     vector<Transform*> vt;
-    
 
     for(element=element->FirstChildElement(); element; element=element->NextSiblingElement()){
             if(!strcmp(element->Name(), "models")){
@@ -153,6 +151,7 @@ vector<Struct> lookAux(XMLElement* element){
                         vector<Point*> vp = readFile(file);
                         s3.setPoints(vp);
                         s3.setFile(file);
+                        s3.fillBuffer();
                         s.push_back(s3);
                         if(c==1){
                             vt = s3.getRefit();
@@ -160,10 +159,9 @@ vector<Struct> lookAux(XMLElement* element){
                         s3.clear();
                     }
                 }
-
             }
 
-            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale")  || !strcmp(element->Name(),"color")){
+            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale") || !strcmp(element->Name(),"color")){
                 s3 = lookupT(element, s3);
             }
 
@@ -182,7 +180,6 @@ vector<Struct> lookAux(XMLElement* element){
         }
 
         return s;
-
 }
 
 vector<Struct> lookFiles(char* file_name){
@@ -200,7 +197,6 @@ vector<Struct> lookFiles(char* file_name){
     else cout << "Could not load XML file: " << file_name << "." << endl;
 
     for(element = doc.FirstChildElement("scene")->FirstChildElement("group"); element; element=element->NextSiblingElement()){
-        
         list = lookAux(element);
         final.insert(final.end(), list.begin(), list.end());
     }
