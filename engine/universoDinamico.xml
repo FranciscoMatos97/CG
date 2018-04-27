@@ -8,29 +8,22 @@
 		    </models>
 	</group>
     <group>
-        <!--Cometa-->
-            <rotate angle="70" x="1" y="0" z="0" />
-            <translate time = "0" x="20" y="0" z="0" />
-			<translate time="200">
-				<point x="40" y="0" z="-80" />
-				<point x="36.9552" y="0" z="-39.8182" />
-				<point x="28.2843" y="0" z="-5.75379" />
-				<point x="15.3073" y="0" z="17.0074" />
-				<point x="2.44929e-15" y="0" z="25" />
-				<point x="-15.3073" y="0" z="17.0074" />
-				<point x="-28.2843" y="0" z="-5.75379" />
-				<point x="-36.9552" y="0" z="-39.8182" />
-				<point x="-40" y="0" z="-80" />
-				<point x="-36.9552" y="0" z="-120.182" />
-				<point x="-28.2843" y="0" z="-154.246" />
-				<point x="-15.3073" y="0" z="-177.007" />
-				<point x="-7.34788e-15" y="0" z="-185" />
-				<point x="15.3073" y="0" z="-177.007" />
-				<point x="28.2843" y="0" z="-154.246" />
-				<point x="36.9552" y="0" z="-120.182" />
+        <!--Cometa Halley-->
+            <rotate angle="-45" x="1" y="0" z="0" />
+            <translate x="40" y="-35" z="-40" />
+			<translate time="100">
+			 <point x="0" y="0" z="70" />             
+             <point x="49.497" y="0" z="49.497" />
+             <point x="70" y="0" z="0" />
+             <point x="49.497" y="0" z="-49.497" />
+             <point x="0" y="0" z="-70" />
+             <point x="-49.497" y="0" z="-49.497" />
+             <point x="-70" y="0" z="0" />
+             <point x="-49.497" y="0" z="49.497" />
 			</translate>
+            <translate x="0" y="-1" z="0" />
 			<rotate angle="270" x="1" y="0" z="0"/>
-            <color x="1.0" y="1.0" z="1.0" />
+            <color x="0.6" y="1.0" z="0.5" />
 		    <models>
 		    	<model file="teapot.3d" />
 		    </models>
@@ -123,14 +116,6 @@
 	    	<models>
 			    <model file="marte.3d" />
 	    	</models>
-	</group>
-	<group>
-		<!--Asteroides-->
-            <rotate time="1" x="0" y="1" z="0" />  
-            <color x="0.7" y="0.7" z="0.7" />
-		    <models>
-                <model file="asteroide.3d" />
-		    </models>
 	</group>
 	<group>
 		<!--Jupiter-->       
