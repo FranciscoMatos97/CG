@@ -9,7 +9,6 @@ using namespace std;
 class Patch{
 
     vector<Point*> controlPoints;
-    vector<Point*> ptList;
 
     public:
         Patch();
