@@ -77,10 +77,12 @@ void normalize(float *a) {
     a[2] = a[2]/l;
 }
 
+
 float length(float *v) {
 	float res = sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 	return res;
 }
+
 
 void multMatrixVector(float *m, float *v, float *res) {
     for (int j = 0; j < 4; ++j) {
@@ -259,36 +261,6 @@ void figuraPrimitiva(Struct s){
     s.draw();
 
     glPopMatrix();
-}
-
-
-/**
- * Retorna a velocidade de rotação do corpo celeste à volta de outro corpo
- * Por exemplo, a velocidade com que a Terra gira à volta do Sol ou Lua gira à volta da Terra
- *
- * @param nameFile nome do ficheiro
- * @return velocidade
- */
-float rotacao(const char* nameFile){
-    float r=0;
-
-    if(!strcmp(nameFile,"sol.3d")) return 0;
-    else if(!strcmp(nameFile,"mercurio.3d")) return 10;
-    else if(!strcmp(nameFile,"venus.3d")) return 8;
-    else if(!strcmp(nameFile,"terra.3d"))  return 6;
-    else if(!strcmp(nameFile,"lua.3d") || !strcmp(nameFile,"io.3d") || !strcmp(nameFile,"titan.3d") || !strcmp(nameFile,"triton.3d")) return 20;
-    else if(!strcmp(nameFile,"europa.3d")) return 30;
-    else if(!strcmp(nameFile,"ganymede.3d")) return 35;
-    else if(!strcmp(nameFile,"callisto.3d")) return 40;
-    else if(!strcmp(nameFile,"marte.3d")) return 4;
-    else if(!strcmp(nameFile,"asteroide.3d")) return 6;
-    else if(!strcmp(nameFile,"jupiter.3d")) return 1.5;
-    else if(!strcmp(nameFile,"saturno.3d") || !strcmp(nameFile,"anel.3d")) return 1;
-    else if(!strcmp(nameFile,"urano.3d")) return 0.5;
-    else if(!strcmp(nameFile,"neptuno.3d")) return 0.2;
-    else if(!strcmp(nameFile,"plutao.3d")) return 0.1;
-
-    return r;
 }
 
 

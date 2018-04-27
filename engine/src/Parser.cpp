@@ -78,7 +78,7 @@ Struct lookUpTranslate(XMLElement* element, Struct s){
     }
     else z = 0;
 
-    if(x!=0 && y!=0 && z!=0) pl.push_back(new Point(x,y,z));
+    if(x!=0 || y!=0 || z!=0) pl.push_back(new Point(x,y,z));
 
     for(element = element->FirstChildElement(); element; element=element->NextSiblingElement()){
         if(!strcmp(element->Name(), "point")) {
