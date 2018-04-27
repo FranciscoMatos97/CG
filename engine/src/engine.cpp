@@ -29,8 +29,8 @@ float xt=0, yt=0, zt=0;
 float cx=M_PI_4, cz=M_PI_4;
 float r = 250.0;
 
-void changeSize(int w, int h) {
 
+void changeSize(int w, int h) {
 // Prevent a divide by zero, when window is too short
 // (you cant make a window with zero width).
     if(h == 0)
@@ -80,7 +80,6 @@ void normalize(float *a) {
 float length(float *v) {
 	float res = sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 	return res;
-
 }
 
 void multMatrixVector(float *m, float *v, float *res) {
@@ -446,7 +445,6 @@ float rotacao(const char* nameFile){
 
 
 void renderScene(void) {
-
 // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -596,7 +594,6 @@ void processKeys(unsigned char key, int xx, int yy) {
 
 
 void processSpecialKeys(int key, int xx, int yy) {
-
 // put code to process special keys in here
     if(key == GLUT_KEY_LEFT){
         xt--;
