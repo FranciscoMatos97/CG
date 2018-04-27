@@ -96,15 +96,15 @@ void multMatrixVector(float *m, float *v, float *res) {
 
 void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, float *pos, float *deriv) {
     //catmull-rom matrix
-    float m[4][4] = {	{-0.5f,  1.5f, -1.5f,  0.5f},
-                         { 1.0f, -2.5f,  2.0f, -0.5f},
-                         {-0.5f,  0.0f,  0.5f,  0.0f},
-                         { 0.0f,  1.0f,  0.0f,  0.0f}};
+    float m[4][4] = {{-0.5f,  1.5f, -1.5f,  0.5f},
+                     { 1.0f, -2.5f,  2.0f, -0.5f},
+                     {-0.5f,  0.0f,  0.5f,  0.0f},
+                     { 0.0f,  1.0f,  0.0f,  0.0f}};
 
     // Compute A = M * P
     float X[4] = {p0[0], p1[0], p2[0], p3[0]};
-    float Y[4] = {p0[1], p1[1], p2[1], p3[1] };
-    float Z[4] = {p0[2], p1[2], p2[2], p3[2] };
+    float Y[4] = {p0[1], p1[1], p2[1], p3[1]};
+    float Z[4] = {p0[2], p1[2], p2[2], p3[2]};
 
     float Ax[4], Ay[4], Az[4];
     multMatrixVector(*m, X, Ax);
@@ -185,17 +185,12 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
 }
 
 
-/**
- * Aplica as transformações da figura e desenha-a através de triângulos
- *
- * @param s estrutura com informações sobre a figura
- */
 void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
     float timeT, angle, x, y, z, te, gr;
-    int cor=0;
+    bool cor=false;
 
     glPushMatrix();
 
@@ -214,8 +209,8 @@ void figuraPrimitiva(Struct s){
                     glRotatef(angle,x,y,z);
                 }
                 else {
-                    te = glutGet(GLUT_ELAPSED_TIME)/100.f;
-                    gr = (te*360) / (timeT * 1000);
+                    float te = glutGet(GLUT_ELAPSED_TIME)/100.f;
+                    float gr = (te*360) / (timeT * 1000);
                     glRotatef(gr,x,y,z);
                 }
             }
@@ -224,7 +219,7 @@ void figuraPrimitiva(Struct s){
             }
             else if (!strcmp(nameTransf,"color")) {
                 glColor3f(x,y,z);
-                cor=1;
+                cor=true;
             }
         }
         else{
@@ -245,10 +240,11 @@ void figuraPrimitiva(Struct s){
         }
     }
 
-    srand(1024);
     float a, b, c;
 
-    if(cor!=1) {
+    if(cor==false) {
+        srand(1024);
+
         a = (float) rand() / (float) RAND_MAX;
         b = (float) rand() / (float) RAND_MAX;
         c = (float) rand() / (float) RAND_MAX;
@@ -262,158 +258,6 @@ void figuraPrimitiva(Struct s){
 
     glPopMatrix();
 }
-
-
-/**
- * Função especifica para um sistema solar dinâmico
- * Aplica as transformações do corpo celeste e desenha-o através de triângulos
- * Consoante o corpo celeste correspondente aplica as rotações que este possui no sistema solar e desenha a sua órbita
- *
- * @param s estrutura com informações sobre o corpo celeste
- */
-/*void sistemaSolar(Struct s){
-    const char* nameFile = s.getFile().c_str();
-    vector<Transform*> vt = s.getRefit();
-    const char* nameTransf;
-    float angle, x, y, z;
-    float raio;
-    bool sol = !strcmp(nameFile,"sol.3d");
-    bool anel = !strcmp(nameFile,"anel.3d");
-    bool asteroide = !strcmp(nameFile,"asteroide.3d");
-    bool lua3d = (!strcmp(nameFile,"lua.3d") || !strcmp(nameFile,"io.3d") || !strcmp(nameFile,"europa.3d") ||
-                !strcmp(nameFile,"ganymede.3d") || !strcmp(nameFile,"callisto.3d") ||
-                !strcmp(nameFile,"titan.3d") || !strcmp(nameFile,"triton.3d"));
-
-    glPushMatrix();
-
-    //desenhar órbita dos planetas e obter o raio das órbitas das luas
-    if(!sol || !asteroide || !anel){
-        for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); t++) {
-            nameTransf = (*t)->Transform::getName().c_str();
-            if (!strcmp(nameTransf,"translate")){
-                raio = (*t)->Transform::getPoint()->Point::getX();
-            }
-        }
-
-        if(!lua3d) {
-            glColor3f(0.5,0.8,0.8);
-            glBegin(GL_POINTS);
-            for(int i=0;i<360;++i) {
-                glVertex3f(raio * sin(i), 0, raio * cos(i));
-            }
-            glEnd();
-        }
-    }
-
-    float time, re, gr;
-    time=1;
-    re = glutGet(GLUT_ELAPSED_TIME)/100.f;
-    gr = (re*360) / (time * 1000);
-
-
-    float delta_time=(glutGet(GLUT_ELAPSED_TIME)/1000.f-g_time);
-    printf("dt: %f\n", delta_time);
-    g_time = glutGet(GLUT_ELAPSED_TIME)/1000.f;
-    if(fabs(g_size)>=1.0f)
-        g_change *=-1.0f;
-    g_size += g_change * delta_time *0.1f;
-
-
-    //aplicar a rotação à volta do sol
-    if(!lua3d) glRotatef(gr*rotacao(nameFile),0,1,0);
-    else{
-        if (!strcmp(nameFile, "lua.3d"))
-            glRotatef(gr * rotacao("terra.3d"), 0, 1, 0);
-        else if (!strcmp(nameFile, "io.3d") || !strcmp(nameFile, "europa.3d") ||
-                 !strcmp(nameFile, "ganymede.3d") || !strcmp(nameFile, "callisto.3d"))
-            glRotatef(gr * rotacao("jupiter.3d"), 0, 1, 0);
-        else if (!strcmp(nameFile, "titan.3d"))
-            glRotatef(gr * rotacao("saturno.3d"), 0, 1, 0);
-        else if (!strcmp(nameFile, "triton.3d"))
-            glRotatef(gr * rotacao("neptuno.3d"), 0, 1, 0);
-    }
-
-    //aplicar translações/rotações/escalas dos eixos e cor do corpo celeste
-    int lua=0;
-    for (vector<Transform *>::const_iterator t = vt.begin(); t != vt.end(); ++t) {
-
-        nameTransf = (*t)->Transform::getName().c_str();
-        if (!strcmp(nameTransf,"rotate")) angle = (*t)->Transform::getAngle();
-        x = (*t)->Transform::getPoint()->Point::getX();
-        y = (*t)->Transform::getPoint()->Point::getY();
-        z = (*t)->Transform::getPoint()->Point::getZ();
-
-        if (!strcmp(nameTransf,"translate")){
-            if(lua3d) {
-                glTranslatef(x, y, z);
-                lua++;
-
-                if(lua==1 && !strcmp(nameFile, "titan.3d")) glRotatef(gr*6, 0, 1, 0);
-
-                //desenhar órbita da lua e aplicar a sua rotação sobre o planeta correspondente
-                if ((lua == 1 && strcmp(nameFile, "titan.3d")) || (lua==2 && !strcmp(nameFile, "titan.3d"))) {
-                    glColor3f(0.5, 0.8, 0.8);
-                    glBegin(GL_POINTS);
-                    for (int k = 0; k < 360; ++k) {
-                        glVertex3f(raio * sin(k), 0, raio * cos(k));
-                    }
-                    glEnd();
-
-                    glRotatef(gr * rotacao(nameFile), 0, 1, 0);
-                }
-            }
-            else if(anel) {glTranslatef(x,y,z); glRotatef(gr*6, 0, 1, 0);}
-            else glTranslatef(x,y,z);
-        }
-        else if (!strcmp(nameTransf,"rotate")) {
-            glRotatef(angle,x,y,z);
-        }
-        else if (!strcmp(nameTransf,"scale")) {
-            glScalef(x,y,z);
-        }
-        else if (!strcmp(nameTransf,"color")) {
-            glColor3f( x,y,z);
-        }
-    }
-
-    string h = s.getFile();
-    vector<Point*> vp = s.getPoints();
-    Point p;
-    int r, alpha;
-    srand(r);
-    srand(alpha);
-
-    //desenhar corpo celeste e fazer rotação sobre si próprio
-    if(!strcmp(nameFile,"asteroide.3d")){
-        for(int j=0; j<75; j++) {
-            r=(rand()%8)+100; //r entre 100 e 108
-            alpha=rand()%360; //alpha entre 0 e 360
-
-            glPushMatrix();
-            glTranslatef(r * sin(alpha), r * cos(alpha), 0);
-            glRotatef(gr*6, 0, 1, 0);
-            glBegin(GL_TRIANGLES);
-            for (vector<Point *>::iterator i = vp.begin(); i != vp.end(); i++) {
-                p = **i;
-                glVertex3f(p.getX(), p.getY(), p.getZ());
-            }
-            glEnd();
-            glPopMatrix();
-        }
-    }
-    else {
-        if(!anel) glRotatef(gr*6, 0, 1, 0);
-
-        glBegin(GL_TRIANGLES);
-        for (vector<Point *>::iterator i = vp.begin(); i != vp.end(); i++) {
-            p = **i;
-            glVertex3f(p.getX(), p.getY(), p.getZ());
-        }
-        glEnd();
-    }
-
-    glPopMatrix();
-}*/
 
 
 void renderScene(void) {
@@ -630,6 +474,7 @@ void showHelp(){
     cout << "|                                                                      |" << endl;
     cout << "------------------------------- THE END --------------------------------" << endl;
 }
+
 
 int main(int argc, char** argv){
 // init GLUT and the window
