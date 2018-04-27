@@ -29,7 +29,6 @@ float xt=0, yt=0, zt=0;
 float cx=M_PI_4, cz=M_PI_4;
 float r = 250.0;
 
-
 void changeSize(int w, int h) {
 
 // Prevent a divide by zero, when window is too short
@@ -78,6 +77,11 @@ void normalize(float *a) {
     a[2] = a[2]/l;
 }
 
+float length(float *v) {
+	float res = sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+	return res;
+
+}
 
 void multMatrixVector(float *m, float *v, float *res) {
     for (int j = 0; j < 4; ++j) {
@@ -105,7 +109,7 @@ void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, flo
     multMatrixVector(*m, X, Ax);
     multMatrixVector(*m, Y, Ay);
     multMatrixVector(*m, Z, Az);
-
+    
     // Compute pos = T * A
     float T[4] = {t*t*t, t*t, t, 1};
 
@@ -135,7 +139,7 @@ void getGlobalCatmullRomPoint(float gt, float *pos, float *deriv, float* p, int 
     indices[2] = (indices[1]+1)%POINT_COUNT;
     indices[3] = (indices[2]+1)%POINT_COUNT;
 
-    getCatmullRomPoint(t, &p[indices[0]], &p[indices[1]], &p[indices[2]], &p[indices[3]], pos, deriv);
+    getCatmullRomPoint(t, p+indices[0]*3, p+indices[1]*3, p+indices[2]*3, p+indices[3]*3, pos, deriv);
 }
 
 
@@ -144,7 +148,7 @@ void renderCatmullRomCurve(float* p, int POINT_COUNT) {
     float deriv[3];
 
     glBegin(GL_LINE_LOOP);
-    for (float gt = 0; gt <= 1; gt += 0.0001) {
+    for (float gt = 0; gt <= 1; gt += 0.01) {
         getGlobalCatmullRomPoint(gt, pos, deriv, p, POINT_COUNT);
         glVertex3f(pos[0], pos[1], pos[2]);
     }
@@ -169,7 +173,7 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
     glTranslatef(pos[0], pos[1], pos[2]);
 
     cross(deriv, Y, Z);
-    cross(Z,deriv, Y);
+    cross(Z, deriv, Y);
 
     normalize(deriv);
     normalize(Z);
