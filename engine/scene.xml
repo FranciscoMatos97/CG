@@ -27,9 +27,26 @@
         </models>
  	</group>
     <group>
-	    <translate x="-40" y="0" z="0" />
+	    <translate x="-32" y="0" z="0" />
         <models>
 	        <model file = "torus.3d" />
+        </models>
+ 	</group>
+    <group>
+	    <translate time="10" >
+			 <point x="0" y="0" z="50" />             
+             <point x="35.355" y="0" z="35.355" />
+             <point x="50" y="0" z="0" />
+             <point x="35.355" y="0" z="-35.355" />
+             <point x="0" y="0" z="-50" />
+             <point x="-35.3557" y="0" z="-35.355" />
+             <point x="-50" y="0" z="0" />
+             <point x="-35.355" y="0" z="35.355" />
+			</translate>
+        <scale x="4" y="2" z="2" /> 
+        <rotate angle="-90" x="1" y="0" z="0" />
+        <models>
+	        <model file = "teapot.3d" />
         </models>
  	</group>
 </scene>
