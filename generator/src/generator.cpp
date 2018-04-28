@@ -39,6 +39,8 @@ void showHelp(){
     cout << "|                                                                      |" << endl;
     cout << "|      How to use:                                                     |" << endl;
     cout << "|        -> ./generator (figure) (dimensions) (file)                   |" << endl;
+    cout << "|        or                                                            |" << endl;
+    cout << "|        -> ./generator patches (input file) (tesselation) (file)      |" << endl;
     cout << "|                                                                      |" << endl;
     cout << "|      Supported figures:                                              |" << endl;
     cout << "|        -> plane:                                                     |" << endl;
@@ -74,6 +76,21 @@ void showHelp(){
     cout << "|                -> Creates a cone with the given radius and height    |" << endl;
     cout << "|                   centered in the origin, with the slices and        |" << endl;
     cout << "|                   stacks specified.                                  |" << endl;
+    cout << "|        -> torus:                                                     |" << endl;
+    cout << "|              . Dimensions:                                           |" << endl;
+    cout << "|                -> (IntRadius) (ExtRadius) (Slices) (Stacks)          |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|              . Description:                                          |" << endl;
+    cout << "|                -> Creates a torus with the given internal radius     |" << endl;
+    cout << "|                   and external radius, with the slices and           |" << endl;
+    cout << "|                   stacks specified.                                  |" << endl;
+    cout << "|        -> patches:                                                   |" << endl;
+    cout << "|              . Dimensions:                                           |" << endl;
+    cout << "|                -> (Tesselation) (Input file)                         |" << endl;
+    cout << "|                                                                      |" << endl;
+    cout << "|              . Description:                                          |" << endl;
+    cout << "|                -> Creates a cubic figure with the given input file   |" << endl;
+    cout << "|                   and tesselation,                                   |" << endl;
     cout << "|                                                                      |" << endl;
     cout << "|      File:                                                           |" << endl;
     cout << "|        -> This is the output file in which you want to save the      |" << endl;
@@ -81,6 +98,8 @@ void showHelp(){
     cout << "|                                                                      |" << endl;
     cout << "|      EXAMPLE USAGE:                                                  |" << endl;
     cout << "|        -> ./generator sphere 2 20 20 sphere.3d                       |" << endl;
+    cout << "|        or                                                            |" << endl;
+    cout << "|        -> ./generator patches teapot.patch 6 teapot.3d               |" << endl;
     cout << "|                                                                      |" << endl;
     cout << "------------------------------- THE END --------------------------------" << endl;
 }
