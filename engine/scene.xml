@@ -27,7 +27,7 @@
         </models>
  	</group>
     <group>
-	    <translate x="-40" y="0" z="0" />
+	    <translate x="-32" y="0" z="0" />
         <models>
 	        <model file = "torus.3d" />
         </models>
