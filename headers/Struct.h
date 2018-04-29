@@ -3,12 +3,10 @@
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
-#include <GL/glew.h>
 #else
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
-
 #include <string.h>
 #include <vector>
 #include "Transform.h"
