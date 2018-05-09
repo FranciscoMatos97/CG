@@ -12,12 +12,18 @@ using namespace std;
 class Vertex{
 
 	vector<Point*> pointsList;
+    vector<Point*> normalsList;
+    vector<Point*> texturesList;
 
 	public:
 		Vertex();
-		Vertex(vector<Point*>);
+		Vertex(vector<Point*>,vector<Point*>,vector<Point*>);
 		vector<Point*> getPointsList();
-		void setPointsList(vector<Point*>);
+		vector<Point*> getNormalsList();
+        vector<Point*> getTexturesList();
+        void setPointsList(vector<Point*>);
+        void setNormalsList(vector<Point*>);
+        void setTexturesList(vector<Point*>);
 		void makePlane(float);
 		void makeBox(float, float, float, int);
 		void makeCone(float, float, int, int);

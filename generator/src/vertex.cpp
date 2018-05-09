@@ -4,16 +4,34 @@ using namespace std;
 
 Vertex::Vertex(){}
 
-Vertex::Vertex(vector<Point*> pl){
+Vertex::Vertex(vector<Point*> pl, vector<Point*> nl, vector<Point*> tl){
     pointsList = pl;
+    normalsList = nl;
+    texturesList = tl;
 }
 
 vector<Point*> Vertex::getPointsList(){
     return pointsList;
 }
 
+vector<Point*> Vertex::getNormalsList(){
+    return normalsList;
+}
+
+vector<Point*> Vertex::getTexturesList(){
+    return texturesList;
+}
+
 void Vertex::setPointsList(vector<Point*> pl){
     pointsList = pl;
+}
+
+void Vertex::setNormalsList(vector<Point*> nl){
+    normalsList = nl;
+}
+
+void Vertex::setTexturesList(vector<Point*> tl){
+    texturesList = tl;
 }
 
 void Vertex::makePlane(float size){
@@ -21,16 +39,28 @@ void Vertex::makePlane(float size){
 	float h = size/2;
 
 	pointsList.push_back(new Point(h, 0, h));
-	pointsList.push_back(new Point(h, 0, -h));
-	pointsList.push_back(new Point(-h, 0, -h));
+    pointsList.push_back(new Point(h, 0, -h));
+    pointsList.push_back(new Point(-h, 0, -h));
+    normalsList.push_back(new Point(0,1,0));
+    normalsList.push_back(new Point(0,1,0));
+    normalsList.push_back(new Point(0,1,0));
+    texturesList.push_back(new Point(1,1,0));
+    texturesList.push_back(new Point(1,0,0));
+    texturesList.push_back(new Point(0,0,0));
 
-	pointsList.push_back(new Point(h, 0, h));
-	pointsList.push_back(new Point(-h, 0, -h));
-	pointsList.push_back(new Point(-h, 0, h));
-	
+    pointsList.push_back(new Point(h, 0, h));
+    pointsList.push_back(new Point(-h, 0, -h));
+    pointsList.push_back(new Point(-h, 0, h));
+    normalsList.push_back(new Point(0,1,0));
+    normalsList.push_back(new Point(0,1,0));
+    normalsList.push_back(new Point(0,1,0));
+    texturesList.push_back(new Point(1,1,0));
+    texturesList.push_back(new Point(0,0,0));
+    texturesList.push_back(new Point(0,1,0));
+
 }
 
-void Vertex::makeBox(float x, float y, float z, int divisions){
+void Vertex::makeBox(float x, float y, float z, int divisions) {
 
 	float nx = x/2;
 	float ny = y/2;
@@ -40,6 +70,16 @@ void Vertex::makeBox(float x, float y, float z, int divisions){
 	float yDiv = (float) y/divisions;
 	float zDiv = (float) z/divisions;
 
+    float texY1 = z/((z*2)+y);
+    float texY2 = (z+y)/((z*2)+y);
+
+    float texX1 = (z)/((z*2)+(x*2));
+    float texX2 = (z+x)/((z*2)+(x*2));
+    float texX3 = ((z*2)+x)/((z*2)+(x*2));
+
+    float texDivX = (x/((z*2)+(x*2)))/float(divisions);
+    float texDivY = (y/((z*2)+y))/float(divisions);
+    float texDivZ = (z/((z*2)+(x*2)))/float(divisions);
 
 	for(int i=0; i<divisions; i++){
 		for(int j=0; j<divisions; j++){
@@ -48,56 +88,127 @@ void Vertex::makeBox(float x, float y, float z, int divisions){
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv) , nz));
 			pointsList.push_back(new Point(-nx + (j * xDiv), (ny - yDiv) - (i * yDiv) , nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), nz));
+            normalsList.push_back(new Point(0,0,1));
+            normalsList.push_back(new Point(0,0,1));
+            normalsList.push_back(new Point(0,0,1));
+            texturesList.push_back(new Point(texX1+(j*texDivX), texY2 - (i*texDivY),0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),(texY2 - texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
 
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv) , nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny - (i * yDiv), nz));
+            normalsList.push_back(new Point(0,0,1));
+            normalsList.push_back(new Point(0,0,1));
+            normalsList.push_back(new Point(0,0,1));
+            texturesList.push_back(new Point(texX1+(j*texDivX),texY2-(i*texDivY),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),texY2-(i*texDivY),0));
 
-			//face traseira
-			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), -nz));
+            //face traseira
+            pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), -nz));
 			pointsList.push_back(new Point(-nx + (j * xDiv), (ny - yDiv) - (i * yDiv), -nz));
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv), -nz));
+            normalsList.push_back(new Point(0,0,-1));
+            normalsList.push_back(new Point(0,0,-1));
+            normalsList.push_back(new Point(0,0,-1));
+            texturesList.push_back(new Point((1-texDivX)-(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point(1-(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point(1-(j*texDivX),texY2-(i*texDivY),0));
 
-			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), -nz));
+            pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), -nz));
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv) , -nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny - (i * yDiv), -nz));
+            normalsList.push_back(new Point(0,0,-1));
+            normalsList.push_back(new Point(0,0,-1));
+            normalsList.push_back(new Point(0,0,-1));
+            texturesList.push_back(new Point((1-texDivX)-(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point(1-(j*texDivX),texY2-(i*texDivY),0));
+            texturesList.push_back(new Point((1-texDivX)-(j*texDivX),texY2-(i*texDivY),0));
 
 			//face lateral esquerda
-			pointsList.push_back(new Point(-nx, ny - (i * yDiv), -nz + (j * zDiv)));
+            pointsList.push_back(new Point(-nx, ny - (i * yDiv), -nz + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, (ny - yDiv) - (i * yDiv), -nz + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, (ny - yDiv) - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
+            normalsList.push_back(new Point(-1,0,0));
+            normalsList.push_back(new Point(-1,0,0));
+            normalsList.push_back(new Point(-1,0,0));
+            texturesList.push_back(new Point((j*texDivZ),texY2-(i*texDivY),0));
+            texturesList.push_back(new Point(j*texDivZ,(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point(texDivZ+(j*texDivZ),(texY2-texDivY)-(i*texDivY),0));
 
 			pointsList.push_back(new Point(-nx, ny - (i * yDiv), -nz + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, (ny - yDiv) - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, ny - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
+            normalsList.push_back(new Point(-1,0,0));
+            normalsList.push_back(new Point(-1,0,0));
+            normalsList.push_back(new Point(-1,0,0));
+            texturesList.push_back(new Point((j*texDivZ),texY2-(i*texDivY),0));
+            texturesList.push_back(new Point(texDivZ+(j*texDivZ),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point(texDivZ+(j*texDivZ),texY2-(i*texDivY),0));
 
-			//face lateral direita
-			pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), nz - (j * zDiv)));
+            //face lateral direita
+            pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), nz - (j * zDiv)));
             pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), (nz - zDiv) - (j * zDiv)));
             pointsList.push_back(new Point(nx, ny - (i * yDiv), nz - (j * zDiv)));
+            normalsList.push_back(new Point(1,0,0));
+            normalsList.push_back(new Point(1,0,0));
+            normalsList.push_back(new Point(1,0,0));
+            texturesList.push_back(new Point(texX2+(j*texDivZ),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point((texX2+texDivZ)-(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point(texX2+(j*texDivZ),texY2-(i*texDivY),0));
 
             pointsList.push_back(new Point(nx, (ny - yDiv) - (i * yDiv), (nz - zDiv) - (j * zDiv)));
             pointsList.push_back(new Point(nx, ny - (i * yDiv), (nz - zDiv) - (j * zDiv)));
             pointsList.push_back(new Point(nx, ny - (i * yDiv), nz - (j * zDiv)));
+            normalsList.push_back(new Point(1,0,0));
+            normalsList.push_back(new Point(1,0,0));
+            normalsList.push_back(new Point(1,0,0));
+            texturesList.push_back(new Point((texX2+texDivZ)+(j*texDivZ),(texY2-texDivY)-(i*texDivY),0));
+            texturesList.push_back(new Point((texX2+texDivZ)+(j*texDivX),texY2-(i*texDivY),0));
+            texturesList.push_back(new Point(texX2+(j*texDivZ),texY2-(i*texDivY),0));
 
 			//base inferior
-			pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
+            pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point(-nx + (j * xDiv), -ny, -nz + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, -nz + (i * zDiv)));
+            normalsList.push_back(new Point(0,-1,0));
+            normalsList.push_back(new Point(0,-1,0));
+            normalsList.push_back(new Point(0,-1,0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),(texY1-texDivZ)-(i*texDivZ),0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),texY1-(i*texDivZ),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),texY1-(i*texDivZ),0));
 
-			pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
+            pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, -nz + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
+            normalsList.push_back(new Point(0,-1,0));
+            normalsList.push_back(new Point(0,-1,0));
+            normalsList.push_back(new Point(0,-1,0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),(texY1-texDivZ)-(i*texDivZ),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),texY1-(i*texDivZ),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),(texY1-texDivZ)-(i*texDivZ),0));
 
-			//base superior
-			pointsList.push_back(new Point(-nx + (j * xDiv), ny, -nz + (i * zDiv)));
+            //base superior
+            pointsList.push_back(new Point(-nx + (j * xDiv), ny, -nz + (i * zDiv)));
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny, (-nz + zDiv) + (i * zDiv)));
+            normalsList.push_back(new Point(0,1,0));
+            normalsList.push_back(new Point(0,1,0));
+            normalsList.push_back(new Point(0,1,0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),1-(i*texDivZ),0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),(1-texDivZ)-(i*texDivZ),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),(1-texDivZ)-(i*texDivZ),0));
 
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny, -nz + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny, -nz + (i * zDiv)));
-
+            normalsList.push_back(new Point(0,1,0));
+            normalsList.push_back(new Point(0,1,0));
+            normalsList.push_back(new Point(0,1,0));
+            texturesList.push_back(new Point(texX1+(j*texDivX),1-(i*texDivZ),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),(1-texDivZ)-(i*texDivZ),0));
+            texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),1-(i*texDivZ),0));
 		}
 	}
 	
@@ -107,48 +218,84 @@ void Vertex::makeSphere(float radius, int slices, int stacks){
     vector<Point*> v;
 
     float h = (M_PI) / stacks;                                                                                       
-    float h2 = (2 * M_PI) / slices;                                                                                  
-                                                                                                                 
-    //float x = radius * cos(h2) * sin(h);                                                                           
-    //float y = radius * cos(h);                                                                                     
-    //float z = radius * sin(h2) * sin(h);                                                                                                                                                                        
+    float h2 = (2 * M_PI) / slices;
                                                                                                                      
     for (int i = 0; i < slices; i++) {                                                                               
                                                                                                                      
         for (int j = 0; j < stacks; j++) {                                                                              
                                                                                                                      
-            float x2 = radius*cos((i+1)*h2)*sin(h);                                                                  
+            float x2 = radius*cos((i+1)*h2)*sin(h);
             float y2 = radius*cos(h);                                                                                
-            float z2 = radius*sin((i+1)*h2)*sin(h);                                                                  
+            float z2 = radius*sin((i+1)*h2)*sin(h);
 
-            float x3 = radius*cos(i*h2)*sin(h);                                                                      
+            float x3 = radius*cos(i*h2)*sin(h);
             float y3 = radius*cos(h);                                                                                
-            float z3 = radius*sin(i*h2)*sin(h);                                                                      
+            float z3 = radius*sin(i*h2)*sin(h);
                                                                                                                      
             if (j == 0) {                                                                                            
                 pointsList.push_back(new Point(0, radius, 0));                                                                            
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
-                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
-
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));
+                normalsList.push_back(new Point(0,1,0));
+                normalsList.push_back(new Point(sin((i+1)*h2),cos((j+1)*h),cos((i+1)*h2)));
+                normalsList.push_back(new Point(sin(i*h2),cos((j+1)*h),cos(i*h2)));
             }
                                                                                        
             if(j == stacks-1){                                                               
                 pointsList.push_back(new Point(0, -radius, 0));
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h) + x3, -y2, radius*sin(i*h2)*sin((j+1)*h) + z3));
-                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h) + x2, -y3, radius*sin((i+1)*h2)*sin((j+1)*h) + z2));     
+                pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h) + x2, -y3, radius*sin((i+1)*h2)*sin((j+1)*h) + z2));
+                normalsList.push_back(new Point(0,-1,0));
+                normalsList.push_back(new Point(sin(i*h2),-cos(h),cos(i*h2)));
+                normalsList.push_back(new Point(sin((i+1)*h2),-cos(h),cos((i+1)*h2)));
             }                                                                                                        
                                                                                                                      
             else{                                                                                                                                                                           
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
-                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));
+                normalsList.push_back(new Point(sin((i+1)*h2),cos((j+1)*h),cos((i+1)*h2)));
+                normalsList.push_back(new Point(sin((i+1)*h2),cos((j+2)*h),cos((i+1)*h2)));
+                normalsList.push_back(new Point(sin(i*h2),cos((j+1)*h),cos(i*h2)));
                                                                             
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
-                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin(i*h2)*sin((j+2)*h)));       
-                                                                                                                     
-            }                                                                                                        
-                                                                                                                                                                                                                     
+                pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin(i*h2)*sin((j+2)*h)));
+                normalsList.push_back(new Point(sin(i*h2),cos((j+1)*h),cos(i*h2)));
+                normalsList.push_back(new Point(sin((i+1)*h2),cos((j+2)*h),cos((i+1)*h2)));
+                normalsList.push_back(new Point(sin(i*h2),cos((j+2)*h),cos(i*h2)));
+            }
+
+            for(int i = 0; i < pointsList.size(); i+=3){
+                float x,y,x2,y2,x3,y3;
+
+                x = (-atan2(-pointsList[i]->getX(),pointsList[i]->getZ())+ M_PI) /  (2*M_PI);
+                y = 1-(((-(pointsList[i]->getY()/radius))+1)/2.0);
+
+                x2 = (-atan2(-pointsList[i+1]->getX(),pointsList[i+1]->getZ())+ M_PI) /  (2*M_PI);
+                y2 = 1-(((-(pointsList[i+1]->getY()/radius))+1)/2.0);
+
+                x3 = (-atan2(-pointsList[i+2]->getX(),pointsList[i+2]->getZ())+ M_PI) /  (2*M_PI);
+                y3 = 1-(((-(pointsList[i+2]->getY()/radius))+1)/2.0);
+
+                if(x > x2 && fabs(x - x2) > 0.8)
+                    x2 = 1.0;
+                if(x > x3 && fabs(x - x3) > 0.8)
+                    x3 = 1.0;
+                if (x2 > x && fabs(x2 - x) > 0.8)
+                    x = 1.0;
+                if (x2 > x3 && fabs(x2 - x3) > 0.8)
+                    x3 = 1.0;
+                if (x3 > x && fabs(x3 - x) > 0.8)
+                    x = 1.0;
+                if (x3 > x2 && fabs(x3 - x2) > 0.8)
+                    x2 = 1.0;
+
+                texturesList.push_back(new Point(x,y,0));
+                texturesList.push_back(new Point(x2,y2,0));
+                texturesList.push_back(new Point(x3,y3,0));
+            }
+
         }    
     }                                                                                                     
 
@@ -228,12 +375,17 @@ void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks)
     double angleStack = (2*M_PI)/slices;
     double act, next, actSt, nextSt;
     float actStR, actStZ, nextStR, nextStZ;
-
+    float texSide = float(1)/float(slices);
+    float texRing = float(1)/float(stacks);
     for(int i=0; i<stacks; i++){
 
-        act = angleSlice * i;
-        next = act + angleSlice;
+        act = angleSlice * i; //a0
+        next = act + angleSlice; // a1
 
+        float x0 = cos(act);
+        float y0 = sin(act);
+        float x1 = cos(next);
+        float y1 = sin(next);
 
         for(int j=0; j<slices+1; j++){
 
@@ -249,10 +401,23 @@ void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks)
             pointsList.push_back(new Point(cos(act)*actStR, sin(act)*actStR, actStZ));
             pointsList.push_back(new Point(cos(next)*actStR, sin(next)*actStR, actStZ));
             pointsList.push_back(new Point(cos(act)*nextStR, sin(act)*nextStR, nextStZ));
+            normalsList.push_back(new Point(cos(act)*cos(actSt),sin(act)*cos(actSt),sin(actSt)));
+            normalsList.push_back(new Point(cos(next)*cos(actSt),sin(next)*cos(actSt),sin(actSt)));
+            normalsList.push_back(new Point(cos(act)*cos(actSt),sin(act)*cos(actSt),sin(nextSt)));
+            texturesList.push_back(new Point(i*texRing,j*texSide,0));
+            texturesList.push_back(new Point((i+1)*texRing,j*texRing,0));
+            texturesList.push_back(new Point(i*texRing,(j+1)*texSide,0));
+
 
             pointsList.push_back(new Point(cos(act)*nextStR, sin(act)*nextStR, nextStZ));
             pointsList.push_back(new Point(cos(next)*actStR, sin(next)*actStR, actStZ));
             pointsList.push_back(new Point(cos(next)*nextStR, sin(next)*nextStR, nextStZ));
+            normalsList.push_back(new Point(cos(act)*cos(nextSt),sin(act)*cos(nextSt),sin(nextSt)));
+            normalsList.push_back(new Point(cos(next)*cos(actSt),sin(next)*cos(actSt),sin(actSt)));
+            normalsList.push_back(new Point(cos(next)*cos(nextSt),sin(next)*cos(nextSt),sin(nextSt)));
+            texturesList.push_back(new Point(i*texRing,(j+1)*texSide,0));
+            texturesList.push_back(new Point((i+1)*texRing,j*texSide,0));
+            texturesList.push_back(new Point((i+1)*texRing,(j+1)*texSide,0));
 
         }
     }
@@ -262,7 +427,6 @@ void Vertex::makeTorus(float intRadius, float extRadius, int slices, int stacks)
  * Ponto da curva consoante o valor T
  */
 Point* Vertex::bezierCurve(float t, Point* p0, Point* p1, Point* p2, Point* p3) {
-
     float x, y, z;
 
     float b0 = (1.0 - t) * (1.0 - t) * (1.0 - t);
