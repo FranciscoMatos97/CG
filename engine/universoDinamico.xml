@@ -1,10 +1,12 @@
 <scene>
 	<group>
         <!--Sol-->
+            <lights>
+      			<light type="POINT" x="0" y="0" z="0"/>
+            </lights>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.8" y="0.2" z="0.0" />
 		    <models>
-		    	<model file="sol.3d" />
+		    	<model file="sol.3d" texture="../files/sun.jpg" emissiveX="0.8" emissiveY="0.2" emissiveZ="0.0" />
 		    </models>
 	</group>
     <group>
@@ -23,9 +25,8 @@
 			</translate>
             <translate x="0" y="-1" z="0" />
 			<rotate angle="270" x="1" y="0" z="0"/>
-            <color x="0.6" y="1.0" z="0.5" />
 		    <models>
-		    	<model file="teapot.3d" />
+		    	<model file="teapot.3d" texture="../files/teapot.jpg" diffuseX="0.8" diffuseY="0.2" diffuseZ="0.0"/>
 		    </models>
 	</group>
 	<group>
@@ -41,9 +42,8 @@
              <point x="-24.7487" y="0" z="24.7487" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.2" y="0.2" z="0.2" />
 		    <models>
-		    	<model file="mercurio.3d" />
+		    	<model file="mercurio.3d" texture="../files/mercury.jpg" diffuseX="0.2" diffuseY="0.2" diffuseZ="0.2" />
 		    </models>
 	</group>
     <group>
@@ -58,10 +58,9 @@
              <point x="-44" y="0" z="0" />
              <point x="-31.112" y="0" z="31.112" />
             </translate>
-            <rotate time="1" x="0" y="1" z="0" />  
-            <color x="0.8" y="0.5" z="0.0" />      
+            <rotate time="1" x="0" y="1" z="0" />        
 		    <models>
-		    	<model file="venus.3d" />
+		    	<model file="venus.3d" texture="../files/venus.jpg" diffuseX="0.8" diffuseY="0.5" diffuseZ="0.0" />
 	    	</models>
 	</group>
     	<group>
@@ -76,10 +75,9 @@
              <point x="-52" y="0" z="0" />
              <point x="-36.775" y="0" z="36.775" />
             </translate>
-            <rotate time="1" x="0" y="1" z="0" />  
-            <color x="0.0" y="0.0" z="0.9" />
+            <rotate time="1" x="0" y="1" z="0" />
 		    <models>
-			    <model file="terra.3d" />
+			    <model file="terra.3d" texture="../files/mercury.jpg" diffuseX="0.0" diffuseY="0.0" diffuseZ="0.9" />
 	    	</models>
 		<group>
             <translate time="20" >
@@ -92,10 +90,9 @@
              <point x="-6" y="0" z="0" />
              <point x="-4.242" y="0" z="4.242" />
             </translate>
-            <rotate time="1" x="0" y="1" z="0" />  
-            <color x="0.5" y="0.8" z="0.8" />
+            <rotate time="1" x="0" y="1" z="0" />
 			<models>
-				<model file="lua.3d" />
+				<model file="lua.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 	</group>
@@ -111,10 +108,9 @@
              <point x="-70" y="0" z="0" />
              <point x="-49.497" y="0" z="49.497" />
            </translate>
-           <rotate time="1" x="0" y="1" z="0" />  
-           <color x="1.0" y="0.0" z="0.0" />
+           <rotate time="1" x="0" y="1" z="0" />
 	    	<models>
-			    <model file="marte.3d" />
+			    <model file="marte.3d" texture="../files/mars.jpg" diffuseX="1.0" diffuseY="0.0" diffuseZ="0.0" />
 	    	</models>
 	</group>
 	<group>
@@ -130,9 +126,8 @@
              <point x="-112.43" y="0" z="112.43" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.8" y="0.5" z="0.2" />
 		    <models>
-			    <model file="jupiter.3d" />
+			    <model file="jupiter.3d" texture="../files/jupiter.jpg" diffuseX="0.8" diffuseY="0.5" diffuseZ="0.2" />
 		    </models>  
 		<group>
             <translate time="15" >
@@ -146,9 +141,8 @@
              <point x="-11.879" y="0" z="11.879" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.5" y="0.8" z="0.8" />
 			<models>
-				<model file="io.3d" />
+				<model file="io.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 		<group>
@@ -163,9 +157,8 @@
              <point x="-15.061" y="0" z="15.061" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.5" y="0.8" z="0.8" />
 			<models>
-				<model file="europa.3d" />
+				<model file="europa.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 		<group>
@@ -179,9 +172,9 @@
              <point x="-25.3" y="0" z="0" />
              <point x="-17.889" y="0" z="17.889" />
             </translate>
-            <color x="0.5" y="0.8" z="0.8" />
+            <rotate time="1" x="0" y="1" z="0" />
 			<models>
-				<model file="ganymede.3d" />
+				<model file="ganymede.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 		<group>
@@ -196,9 +189,8 @@
              <point x="-21.425" y="0" z="21.425" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.5" y="0.8" z="0.8" />
 			<models>
-				<model file="callisto.3d" />
+				<model file="callisto.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 	</group>
@@ -215,15 +207,13 @@
              <point x="-207.889" y="0" z="207.889" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.8" y="0.6" z="0.4" />
 		    <models>
-			    <model file="saturno.3d" />
+			    <model file="saturno.3d" texture="../files/saturn.jpg" diffuseX="0.8" diffuseY="0.6" diffuseZ="0.4" />
 		    </models>
         <group>
-            <color x="0.8" y="0.6" z="0.0" />
             <rotate angle="-70" x="1" y="0" z="0" /> 
             <models>
-				<model file="anel.3d" />
+				<model file="anel.3d" texture="../files/ring.jpg" diffuseX="0.8" diffuseY="0.6" diffuseZ="0.0"  />
 			</models>
         </group>
 		<group>
@@ -239,10 +229,9 @@
              <point x="-16.8" y="3" z="0" />
              <point x="-11.879" y="3" z="11.879" />
             </translate>
-            <color x="0.5" y="0.8" z="0.8" />
             <rotate time="1" x="0" y="1" z="0" /> 
 			<models>
-				<model file="titan.3d" />
+				<model file="titan.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 	</group>
@@ -259,9 +248,8 @@
              <point x="-250.316" y="0" z="250.316" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.5" y="0.5" z="1.0" />
 		    <models>
-		    	<model file="urano.3d" />
+		    	<model file="urano.3d" texture="../files/uranus.jpg" diffuseX="0.5" diffuseY="0.5" diffuseZ="1.0" />
 		    </models>
 	</group>  
 	<group>
@@ -277,9 +265,8 @@
              <point x="-326.683" y="0" z="326.683" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.2" y="0.2" z="1.0" />
 		    <models>
-			    <model file="neptuno.3d" />
+			    <model file="neptuno.3d" texture="../files/neptune.jpg" diffuseX="0.2" diffuseY="0.2" diffuseZ="1.0" />
 		    </models>
 		<group>
             <translate time="20" >
@@ -293,9 +280,8 @@
              <point x="-8.485" y="0" z="8.485" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.5" y="0.8" z="0.8" />
 			<models>
-				<model file="triton.3d" />
+				<model file="triton.3d" texture="../files/moon.jpg" diffuseX="0.5" diffuseY="0.8" diffuseZ="0.8" />
 			</models>
 		</group>
 	</group>
@@ -312,9 +298,8 @@
              <point x="-425.678" y="0" z="425.678" />
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
-            <color x="0.7" y="0.7" z="0.7" />
 		    <models>
-		        <model file="plutao.3d" />
+		        <model file="plutao.3d" texture="../files/pluto.jpg" diffuseX="0.7" diffuseY="0.7" diffuseZ="0.7" />
 	    	</models>
 	</group>
 </scene>
