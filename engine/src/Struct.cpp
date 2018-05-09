@@ -1,10 +1,12 @@
 #include "../../headers/Struct.h"
 
-string file;
+string file3d, fileTexture;
 vector<Transform*> refit;
-vector<Point*> points;
-GLuint buffer[1];
-float* vertex_array;
+vector<Point*> points, normals, textures;
+Material material;
+Light light;
+GLuint buffer[3];
+float* points_array, normals_array, textures_array;
 
 Struct::Struct(){
 	file = "";
@@ -15,7 +17,7 @@ Struct::Struct(string name, vector<Transform*> l, vector<Point*> p, GLuint b, fl
 	refit = l;
 	points = p;
 	buffer[0] = b;
-	vertex_array = va;
+	points_array = va;
 }
 
 string Struct::getFile(){
@@ -35,7 +37,8 @@ GLuint Struct::getBuffer(){
 }
 
 float* Struct::getVertexArray(){
-	return vertex_array;
+	return points_array
+            ;
 }
 
 void Struct::setFile(string s){
@@ -55,7 +58,8 @@ void Struct::setBuffer(GLuint b){
 }
 
 void Struct::setVertexArray(float* b){
-	vertex_array = b;
+	points_array
+            = b;
 }
 
 void Struct::addTransform(Transform* t){
@@ -79,24 +83,39 @@ int Struct::size(){
 void Struct::fillBuffer(){
 	Point p;
 	int index = 0;
-	vertex_array = (float*) malloc(sizeof(float) * points.size() * 3);
+	points_array
+            = (float*) malloc(sizeof(float) * points.size() * 3);
 
 	for (vector<Point *>::const_iterator i = points.begin(); i != points.end(); ++i) {
 		p = **i;
-		vertex_array[index] = p.getX();
-		vertex_array[index+1] = p.getY();
-		vertex_array[index+2] = p.getZ();
+		points_array
+        [index] = p.getX();
+		points_array
+        [index+1] = p.getY();
+		points_array
+        [index+2] = p.getZ();
 		index+=3;
 	}
 
 	glGenBuffers(1, buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size() * 3, vertex_array, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * points.size() * 3, points_array, GL_STATIC_DRAW);
 	glEnableClientState(GL_VERTEX_ARRAY);
 }
 
 void Struct::draw(){
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
 	glVertexPointer(3, GL_FLOAT, 0, 0);
 	glDrawArrays(GL_TRIANGLES, 0, points.size() * 3);
+}
+
+void Struct::applyTexture() {
+}
+
+void Struct::applyMaterials() {
+}
+
+void Struct::applyLights() {
 }

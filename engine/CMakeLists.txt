@@ -32,7 +32,7 @@ if(NOT OPENGL_FOUND)
     message(ERROR " OPENGL not found!")
 endif(NOT OPENGL_FOUND)
 
-add_executable(${PROJECT_NAME} src/engine.cpp ../Point.cpp src/tinyxml2.cpp src/Parser.cpp src/Struct.cpp src/Transform.cpp)
+add_executable(${PROJECT_NAME} src/engine.cpp ../Point.cpp src/tinyxml2.cpp src/Parser.cpp src/Struct.cpp src/Transform.cpp src/Light.cpp src/Material.cpp)
 if (WIN32)
 	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glew32)
 else(WIN32)
