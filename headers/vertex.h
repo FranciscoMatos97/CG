@@ -32,7 +32,10 @@ class Vertex{
         Point* bezierCurve(float, Point*, Point*, Point*, Point*);
         Point* bezierPatch(float, float, vector<Point*>);
         vector<Point*> bezierPatchTriangles(int, vector<Patch*>);
-
+        void cross(float*, float*, float*);
+        void normalize(float*);
+        float bezierPointTangent(float u, float v, float m[4][4] , float t[4][4], int d);
+        vector<Point*> bezierTangent(int,vector<Patch*>);
 };
 
 #endif
