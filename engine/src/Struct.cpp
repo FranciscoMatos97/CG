@@ -46,6 +46,10 @@ GLuint Struct::getBuffer(){
     return *buffer;
 }
 
+GLuint Struct::getTexture(){
+    return texture;
+}
+
 float* Struct::getPointsArray(){
 	return points_array;
 }
@@ -94,6 +98,10 @@ void Struct::setBuffer(GLuint b){
     *buffer = b;
 }
 
+void Struct::setTexture(GLuint t){
+    texture = t;
+}
+
 void Struct::setPointsArray(float* p){
 	points_array = p;
 }
@@ -114,7 +122,35 @@ void Struct::addTransform(vector<Transform*> vt) {
     refit.insert(refit.begin(), vt.begin(), vt.end());
 }
 
-void Struct::prepareTexture() {
+void Struct::prepareTexture(string s) {
+
+        unsigned int t,tw,th;
+        unsigned char *texData;
+
+        ilInit();
+        ilEnable(IL_ORIGIN_SET);
+        ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+        ilGenImages(1,&t);
+        ilBindImage(t);
+        ilLoadImage((ILstring)s.c_str());
+        tw = ilGetInteger(IL_IMAGE_WIDTH);
+        th = ilGetInteger(IL_IMAGE_HEIGHT);
+        ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+        texData = ilGetData();
+
+        glGenTextures(1,&texture);
+
+        glBindTexture(GL_TEXTURE_2D,texture);
+        glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MAG_FILTER,   	GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,	GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -175,8 +211,11 @@ void Struct::draw(){
     if(textures.size()!=0){
         glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
         glTexCoordPointer(2, GL_FLOAT, 0, 0);
+        glBindTexture(GL_TEXTURE_2D, texture);
     }
 
     glDrawArrays(GL_TRIANGLES, 0, (points.size()+normals.size()+textures.size()) * 3);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
