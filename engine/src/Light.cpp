@@ -19,7 +19,6 @@ Point* Light::getPoint(){
 }
 
 void Light::draw() {
-
     GLfloat pos[4] = {point->getX(), point->getY() , point->getZ(), isPoint};
 
     // light position

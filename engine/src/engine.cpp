@@ -475,9 +475,10 @@ void showHelp(){
 }
 
 
+
 int main(int argc, char** argv){
 // init GLUT and the window
-    glutInit(&argc, argv);
+ /*   glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(800,800);
@@ -489,7 +490,7 @@ int main(int argc, char** argv){
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY); */
 
     int xml=0;
 
@@ -510,7 +511,7 @@ int main(int argc, char** argv){
     }
 
     estruturas = lookFiles(argv[1]);
-
+/*
     cout << "Drawing." << endl;
 
 // Required callback registry
@@ -528,6 +529,6 @@ int main(int argc, char** argv){
 
 // enter GLUT's main cycle
     glutMainLoop();
-
+*/
     return 0;
 }

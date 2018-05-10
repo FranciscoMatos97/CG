@@ -15,15 +15,15 @@ class Material{
     float diffuse[4], ambient[4], diffuseANDambient[4], specular[4], emission[4], shininess;
 
 	public:
-		Material::Material();
-		Material::Material(Point*, Point*, Point*, Point*, Point*, float);
-		float* Material::getDiffuse();
-		float* Material::getAmbient();
-		float* Material::getDiffuseANDambient();
-		float* Material::getSpecular();
-		float* Material::getEmission();
-		float Material::getShininess();
-		void Material::draw();
+		Material();
+		Material(Point*, Point*, Point*, Point*, Point*, float);
+		float* getDiffuse();
+		float* getAmbient();
+		float* getDiffuseANDambient();
+		float* getSpecular();
+		float* getEmission();
+		float getShininess();
+		void draw();
 };
 
 #endif

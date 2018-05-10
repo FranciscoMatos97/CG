@@ -21,7 +21,7 @@ class Struct{
 
 	string file3d, fileTexture;
 	Material material;
-	Light light;
+	vector<Light*> lights;
 	vector<Transform*> refit;
 	vector<Point*> points, normals, textures;
 	GLuint buffer[3];
@@ -32,7 +32,7 @@ public:
 	string getFile3d();
 	string getFileTexture();
 	Material getMaterial();
-	Light getLight();
+	vector<Light*> getLights();
 	vector<Transform*> getRefit();
     vector<Point*> getPoints();
 	vector<Point*> getNormals();
@@ -44,7 +44,7 @@ public:
 	void setFile3d(string);
 	void setFileTexture(string);
 	void setMaterial(Material);
-	void setLight(Light);
+	void setLights(vector<Light*>);
 	void setRefit(vector<Transform*>);
     void setPoints(vector<Point*>);
 	void setNormals(vector<Point*>);

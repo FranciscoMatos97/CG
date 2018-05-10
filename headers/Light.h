@@ -16,11 +16,11 @@ class Light{
     Point* point;
 
 	public:
-		Light::Light();
-		Light::Light(int, Point*);
-		int Light::getIsPoint();
-		Point* Light::getPoint();
-        void Light::draw();
+		Light();
+		Light(int, Point*);
+		int getIsPoint();
+		Point* getPoint();
+        void draw();
 };
 
 #endif
