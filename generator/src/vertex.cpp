@@ -223,7 +223,8 @@ void Vertex::makeSphere(float radius, int slices, int stacks){
     for (int i = 0; i < slices; i++) {                                                                               
                                                                                                                      
         for (int j = 0; j < stacks; j++) {                                                                              
-                                                                                                                     
+
+
             float x2 = radius*cos((i+1)*h2)*sin(h);
             float y2 = radius*cos(h);                                                                                
             float z2 = radius*sin((i+1)*h2)*sin(h);
@@ -592,8 +593,8 @@ vector<Point*> Vertex::bezierTangent(int tess,vector<Patch*> patchList){
         vector<Point*> control_points = patchList[patches]->getControlPoints();
         aux = 0;
 
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 4; j++, aux++){
+        for(i = 0; i < 4; i++){
+            for( j = 0; j < 4; j++, aux++){
                 px[i][j] = control_points[aux]->getX();
                 py[i][j] = control_points[aux]->getY();
                 pz[i][j] = control_points[aux]->getZ();
@@ -608,7 +609,7 @@ vector<Point*> Vertex::bezierTangent(int tess,vector<Patch*> patchList){
 
 
 
-        for(i = 0; i<=tess ; i++){
+        for( i = 0; i<=tess ; i++){
             u = i * level;
             u2 = (i+1) * level;
 
