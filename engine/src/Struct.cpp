@@ -2,13 +2,13 @@
 
 string file3d, fileTexture;
 Material material;
-Light light;
+vector<Light*> lights;
 vector<Transform*> refit;
 vector<Point*> points, normals, textures;
 GLuint buffer[3];
 float *points_array, *normals_array, *textures_array;
 
-Struct::Struct() : Light(), Material(){}
+Struct::Struct(){}
 
 string Struct::getFile3d(){
 	return file3d;
@@ -22,8 +22,8 @@ Material Struct::getMaterial(){
     return material;
 }
 
-Light Struct::getLight(){
-    return light;
+vector<Light*> Struct::getLights(){
+    return lights;
 }
 
 vector<Transform*> Struct::getRefit(){
@@ -70,8 +70,8 @@ void Struct::setMaterial(Material m){
     material = m;
 }
 
-void Struct::setLight(Light l){
-    light = l;
+void Struct::setLights(vector<Light*> l){
+    lights = l;
 }
 
 void Struct::setRefit(vector<Transform*> l){
