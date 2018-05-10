@@ -3,9 +3,19 @@
 int isPoint;
 Point* point;
 
+Light::Light(){}
+
 Light::Light(int ip, Point* p){
     isPoint=ip;
     p=p;
+}
+
+int Light::getIsPoint(){
+    return isPoint;
+}
+
+Point* Light::getPoint(){
+    return point;
 }
 
 void Light::draw() {

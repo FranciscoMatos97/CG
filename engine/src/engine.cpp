@@ -486,7 +486,10 @@ int main(int argc, char** argv){
     #ifndef __APPLE__
         glewInit();
     #endif
+
     glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     int xml=0;
 

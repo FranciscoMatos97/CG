@@ -156,13 +156,13 @@ vector<Struct> lookAux(XMLElement* element){
                         cout << "-> " << file << endl;
                         vector<Point*> vp = readFile(file);
                         s3.setPoints(vp);
-                        s3.setFile(file);
+                        s3.setFile3d(file);
                         s3.fillBuffer();
                         s.push_back(s3);
                         if(c==1){
                             vt = s3.getRefit();
                         }
-                        s3.clear();
+                        s3 = *(new Struct());
                     }
                 }
             }
