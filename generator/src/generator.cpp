@@ -39,7 +39,7 @@ void saveFile(vector<Point*> v,vector<Point*> n, vector<Point*>t, string filenam
         }
         file << "----Textures----" << endl;
 
-        for (int j = 0; j < n.size(); ++j) {
+          for (int j = 0; j < n.size(); ++j) {
             file << t[j]->Point::getX() << ' ';
             file << t[j]->Point::getY() << ' ';
             file << t[j]->Point::getZ() << endl;
