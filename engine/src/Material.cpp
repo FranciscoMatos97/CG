@@ -58,6 +58,25 @@ float Material::getShininess(){
 }
 
 void Material::draw() {
+    float a, b, c;
+
+    if(diffuse[0]==0 && diffuse[1]==0 && diffuse[2]==0
+       && ambient[0]==0 && ambient[1]==0 && ambient[2]==0
+       && diffuseANDambient[0]==0 && diffuseANDambient[1]==0 && diffuseANDambient[2]==0){
+
+        srand(1024);
+
+        a = (float) rand() / (float) RAND_MAX;
+        b = (float) rand() / (float) RAND_MAX;
+        c = (float) rand() / (float) RAND_MAX;
+
+        if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
+
+        diffuseANDambient[0]=a;
+        diffuseANDambient[1]=b;
+        diffuseANDambient[2]=c;
+    }
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseANDambient);

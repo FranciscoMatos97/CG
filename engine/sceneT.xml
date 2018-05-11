@@ -1,6 +1,7 @@
 <scene>
     <lights>
         <light type="POINT" x="0" y="0" z="10" />
+        <light type="SPOT" x="1" y="0" z="0" />
     </lights>
     <group>
 		<translate x="35" y="0" z="0" />
@@ -10,7 +11,7 @@
  		</models>
  	</group>
     <lights>
-        <light type="DIRECTIONAL" x="0" y="10" z="0" />
+        <light type="DIRECTIONAL" x="0.0" y="10.0" z="0.0" />
     </lights>
     <group>
 	    <translate x="25" y="0" z="0" />
@@ -27,7 +28,7 @@
         </models>
  	</group>
     <lights>
-        <light type="SPOT" posX="10" posY="0" posZ="0" />
+        <light type="SPOT" x="10" y="0" z="0" />
     </lights>
     <group>
 	    <translate x="-32" y="0" z="0" />

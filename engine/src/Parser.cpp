@@ -1,10 +1,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <vector>
 #include <sstream>
-#include <math.h>
 #include <stdlib.h>
 
 #include "../../headers/tinyxml2.h"
@@ -12,12 +10,13 @@
 #include "../../headers/Struct.h"
 #include "../../headers/Light.h"
 #include "../../headers/Material.h"
+#include "../../headers/Scene.h"
 
 using namespace std;
 using namespace tinyxml2;
 
 Struct s3;
-
+vector<Light> lights;
 
 Struct readFile(string file_name, Struct s){
 
@@ -77,21 +76,6 @@ Struct readFile(string file_name, Struct s){
     s.setTextures(textures_list);
 
     return s;
-
-  /*  cout << "POINTS" << endl;
-    for(int i=0; i<points_list.size();i++){
-        cout << points_list.at(i)->getX() << " " << points_list.at(i)->getY() << " " << points_list.at(i)->getZ() << endl;
-    }
-
-    cout << "NORMALS" << endl;
-    for(int i=0; i<normals_list.size();i++){
-        cout << normals_list.at(i)->getX() << " " << normals_list.at(i)->getY() << " " <<normals_list.at(i)->getZ() << endl;
-    }
-
-    cout << "TEXTURES" << endl;
-    for(int i=0; i<textures_list.size();i++){
-        cout << textures_list.at(i)->getX() << " " << textures_list.at(i)->getY() << " " << textures_list.at(i)->getZ() << endl;
-    }*/
 }
 
 
@@ -180,27 +164,34 @@ Struct lookUpTransformation(XMLElement* element, Struct s){
 }
 
 
-Struct lookUpLight(XMLElement* element, Struct s) {
+void lookUpLight(XMLElement* element) {
     int isPoint=0;
-    Point* point;
+    float x, y, z;
 
-    vector<Light*> lights;
-
-    for(element = element->FirstChildElement(); element; element=element->NextSiblingElement()){
-        if(!strcmp(element->Name(), "light")) {
-            if(!strcmp(element->Attribute("type"),"POINT")) isPoint=1;
-            point->setX(atof(element->Attribute("x")));
-            point->setY(atof(element->Attribute("y")));
-            point->setZ(atof(element->Attribute("z")));
-
-            lights.push_back(new Light(isPoint,point));
-        }
-        isPoint=0;
+    if(element->Attribute("type")){
+        if(!strcmp(element->Attribute("type"),"POINT"))
+            isPoint=1;
     }
 
-    s.setLights(lights);
+    if(element->Attribute("x")){
+        x = atof( element->Attribute("x"));
+    }
+    else x = 0;
 
-    return s;
+    if(element->Attribute("y")){
+        y = atof(element->Attribute("y"));
+    }
+    else y=0;
+
+    if(element->Attribute("z")){
+        z = atof(element->Attribute("z"));
+    }
+    else z=0;
+
+    Point* p = new Point(x,y,z);
+    Light l = *(new Light(isPoint, p));
+
+    lights.push_back(l);
 }
 
 
@@ -230,11 +221,11 @@ Struct lookUpMaterial(XMLElement* element, Struct s) {
 
     // Diffuse and Ambient
     if(element->Attribute("diffuseANDambientX"))
-            diffuse->setX(atof(element->Attribute("diffuseANDambientX")));
+            diffuseANDambient->setX(atof(element->Attribute("diffuseANDambientX")));
     if(element->Attribute("diffuseANDambientY"))
-            diffuse->setY(atof(element->Attribute("diffuseANDambientY")));
+            diffuseANDambient->setY(atof(element->Attribute("diffuseANDambientY")));
     if(element->Attribute("diffuseANDambientZ"))
-            diffuse->setZ(atof(element->Attribute("diffuseANDambientZ")));
+            diffuseANDambient->setZ(atof(element->Attribute("diffuseANDambientZ")));
 
     // Specular
     if(element->Attribute("specularX"))
@@ -269,7 +260,7 @@ Struct lookUpModel(XMLElement* elementAux, Struct s) {
         string file3d = elementAux->Attribute("file");
         s.setFile3d(file3d);
         s = readFile(file3d,s);
-        //s.fillBuffer();
+        s.fillBuffer();
     }
 
     if(elementAux->Attribute("texture")){
@@ -277,6 +268,7 @@ Struct lookUpModel(XMLElement* elementAux, Struct s) {
         s.setFileTexture(fileTexture);
         s.prepareTexture(fileTexture);
     }
+    else s.setFileTexture("");
 
     s = lookUpMaterial(elementAux,s);
 
@@ -311,11 +303,11 @@ vector<Struct> lookAux(XMLElement* element){
                 }
             }
 
-            else if(!strcmp(element->Name(),"lights")){
-                s3 = lookUpLight(element, s3);
+            else if(!strcmp(element->Name(),"light")){
+                lookUpLight(element);
             }
 
-            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale") || !strcmp(element->Name(),"color")){
+            else if(!strcmp(element->Name(),"rotate") || !strcmp(element->Name(),"scale")){
                 s3 = lookUpTransformation(element, s3);
             }
 
@@ -337,8 +329,9 @@ vector<Struct> lookAux(XMLElement* element){
 }
 
 
-vector<Struct> lookFiles(char* file_name){
+Scene lookFiles(char* file_name){
 
+    Scene finalScene;
     vector<Struct> list, final;
     XMLDocument doc;
     XMLElement* element; 
@@ -351,12 +344,15 @@ vector<Struct> lookFiles(char* file_name){
 
     else cout << "Could not load XML file: " << file_name << "." << endl;
 
-    for(element = doc.FirstChildElement("scene")->FirstChildElement("group"); element; element=element->NextSiblingElement()){
+    for(element = doc.FirstChildElement("scene")->FirstChildElement(); element; element=element->NextSiblingElement()){
         list = lookAux(element);
         final.insert(final.end(), list.begin(), list.end());
     }
 
-    return final;
+    finalScene.setEstruturas(final);
+    finalScene.setLuzes(lights);
+
+    return finalScene;
 }
 
 

@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #endif
 
+#include <IL/il.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -17,10 +18,13 @@
 #include "../../headers/Point.h"
 #include "../../headers/Struct.h"
 #include "../../headers/Parser.h"
+#include "../../headers/Light.h"
+#include "../../headers/Material.h"
+#include "../../headers/Scene.h"
 
 using namespace std;
 
-vector<Struct> estruturas;
+Scene scene;
 
 float xr=0, yr=0, zr=0;
 float angle=0;
@@ -183,14 +187,11 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
     glMultMatrixf(M);
 }
 
-// glBindTexture(GL_TEXTURE_2D, estrutura.getTexture()); antes do desenho
-// glBindTexture(GL_TEXTURE_2D, 0); depois do desenho
 void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
     const char* nameTransf;
     float timeT, angle, x, y, z, te, gr;
-    bool cor=false;
 
     glPushMatrix();
 
@@ -217,10 +218,6 @@ void figuraPrimitiva(Struct s){
             else if (!strcmp(nameTransf,"scale")) {
                 glScalef(x,y,z);
             }
-            else if (!strcmp(nameTransf,"color")) {
-                glColor3f(x,y,z);
-                cor=true;
-            }
         }
         else{
             timeT = (*t)->Transform::getTime();
@@ -240,21 +237,11 @@ void figuraPrimitiva(Struct s){
         }
     }
 
-    float a, b, c;
+    s.getMaterial().draw();
 
-    if(cor==false) {
-        srand(1024);
-
-        a = (float) rand() / (float) RAND_MAX;
-        b = (float) rand() / (float) RAND_MAX;
-        c = (float) rand() / (float) RAND_MAX;
-
-        if (a <= 0.1 && b <= 0.1 && c <= 0.1) a = 1;
-
-        glColor3f(a, b, c);
-    }
-
+    glBindTexture(GL_TEXTURE_2D, s.getTexture());
     s.draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     glPopMatrix();
 }
@@ -275,11 +262,18 @@ void renderScene(void) {
     glTranslatef(xt,yt,zt);
 
 // put drawing instructions here
-    Struct s;
+    vector<Light> luzes = scene.getLuzes();
+    Light light;
+    for(vector<Light>::const_iterator f = luzes.begin(); f != luzes.end(); f++) {
+        light = (*f);
+        light.draw();
+    }
 
+    vector<Struct> estruturas = scene.getEstruturas();
+    Struct strucT;
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
-        s = (*f);
-        figuraPrimitiva(s);
+        strucT = (*f);
+        figuraPrimitiva(strucT);
     }
 
 // End of frame
@@ -479,7 +473,7 @@ void showHelp(){
 
 int main(int argc, char** argv){
 // init GLUT and the window
- /*   glutInit(&argc, argv);
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(800,800);
@@ -489,9 +483,15 @@ int main(int argc, char** argv){
         glewInit();
     #endif
 
+    //  OpenGL settings
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY); */
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_TEXTURE_2D);
 
     int xml=0;
 
@@ -511,8 +511,122 @@ int main(int argc, char** argv){
         return 0;
     }
 
-    estruturas = lookFiles(argv[1]);
-/*
+    scene = lookFiles(argv[1]);
+
+
+
+
+
+
+    //TESTE
+    /*vector<Light> l = scene.getLuzes();
+    vector<Struct> s = scene.getEstruturas();
+
+    for(int i=0; i < l.size(); i++){
+        Light luz = l.at(i);
+        cout << "is Point: " << luz.getIsPoint() <<  " X: " << luz.getPoint()->getX() << " Y: " << luz.getPoint()->getY() << " Z: " << luz.getPoint()->getZ() << endl;
+    }
+
+    for(int i=0; i < s.size(); i++){
+        Struct estrutura = s.at(i);
+
+        cout << "\n\t\t NEW \n" << endl;
+
+        cout << "File3d: " << estrutura.getFile3d() << endl;
+        cout << "FileTexture: " << estrutura.getFileTexture() << endl;
+
+        Material m = estrutura.getMaterial();
+        cout << "DIFFUSE " << *m.getDiffuse() << " " << *(m.getDiffuse()+1) << " " << *(m.getDiffuse()+2) << " " << *(m.getDiffuse()+3) << endl;
+        cout << "AMBIENT " << *m.getAmbient() << " " << *(m.getAmbient()+1) << " " << *(m.getAmbient()+2) << " " << *(m.getAmbient()+3) << endl;
+        cout << "DIFFUSE AND AMBIENT " << *m.getDiffuseANDambient() << " " << *(m.getDiffuseANDambient()+1) << " " << *(m.getDiffuseANDambient()+2) << " " << *(m.getDiffuseANDambient()+3) << endl;
+        cout << "SPECULAR " << *m.getSpecular() << " " << *(m.getSpecular()+1) << " " << *(m.getSpecular()+2) << " " << *(m.getSpecular()+3) << endl;
+        cout << "EMISSION " << *m.getEmission() << " " << *(m.getEmission()+1) << " " << *(m.getEmission()+2) << " " << *(m.getEmission()+3) << endl;
+        cout << "SHININESS " << m.getShininess() << endl;
+
+        vector<Transform*> transformacoes = estrutura.getRefit();
+        for(int j=0; j<transformacoes.size(); j++){
+            Transform* t = transformacoes.at(j);
+
+            cout << "Transformação Nome: " << t->getName() << endl;
+            cout << "\t Time: " << t->getTime() << endl;
+            cout << "\t Angle: " << t->getAngle() << endl;
+
+            vector<Point*> pointsL = t->getPoints();
+            cout << "\t Points: " << endl;
+            for(int k=0; k<pointsL.size(); k++){
+                Point* p = pointsL.at(k);
+                cout << "\t\t X: " << p->getX() << " Y: " << p->getY() << " Z: " << p->getZ() << endl;
+            }
+        }
+
+        vector<Point*> points = estrutura.getPoints();
+        vector<Point*> normals = estrutura.getNormals();
+        vector<Point*> textures = estrutura.getTextures();
+
+        ofstream file;
+        string f = "pontosLidosD" + estrutura.getFile3d();
+        file.open(f.c_str(), ios_base::app);
+
+        file << "--- BEGIN ---" << endl;
+
+        file << "----Points----" << endl;
+        for(int j=0; j<points.size(); ++j){
+            file << points[j]->Point::getX() << ' ';
+            file << points[j]->Point::getY() << ' ';
+            file << points[j]->Point::getZ() << endl;
+        }
+        file << "----Normals----" << endl;
+        for(int j=0; j<normals.size(); ++j){
+            file << normals[j]->Point::getX() << ' ';
+            file << normals[j]->Point::getY() << ' ';
+            file << normals[j]->Point::getZ() << endl;
+        }
+        file << "----Textures----" << endl;
+        for (int j = 0; j < textures.size(); ++j) {
+            file << textures[j]->Point::getX() << ' ';
+            file << textures[j]->Point::getY() << ' ';
+            file << textures[j]->Point::getZ() << endl;
+        }
+
+        //GLuint buffer[3];
+        float *points_array = estrutura.getPointsArray();
+        float *normals_array = estrutura.getNormalsArray();
+        float *textures_array = estrutura.getTexturesArray();
+
+        //não consigo imprimir aqui mas imprimido na struct os valores estão corretos
+        //file << "----POINTS_ARRAY----" << endl;
+        //for (int j = 0; j < points.size()*3; j+=3) {
+        //    file << *points_array << ' ';
+        //    file << *points_array << ' ';
+        //    file << *points_array << endl;
+        //}
+        //file << "----NORMALS_ARRAY----" << endl;
+        //for (int j = 0; j < normals.size()*3 ; j+=3) {
+        //    file << normals_array[j] << ' ';
+        //    file << normals_array[j+1] << ' ';
+        //    file << normals_array[j+2] << endl;
+        //}
+        //file << "----TEXTURES_ARRAY----" << endl;
+        //for (int j = 0; j < textures.size()*3 ; j+=3) {
+        //    file << textures_array[j] << ' ';
+        //    file << textures_array[j+1] << ' ';
+        //    file << textures_array[j+2] << endl;
+        //}
+        file << "--- END ---" << endl;
+        file.close();
+    }*/
+    //FIM DO TESTE
+
+
+
+
+
+
+
+
+
+
+
     cout << "Drawing." << endl;
 
 // Required callback registry
@@ -524,12 +638,8 @@ int main(int argc, char** argv){
     glutKeyboardFunc(processKeys);
     glutSpecialFunc(processSpecialKeys);
 
-//  OpenGL settings
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
 // enter GLUT's main cycle
     glutMainLoop();
-*/
+
     return 0;
 }
