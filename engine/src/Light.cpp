@@ -6,8 +6,8 @@ Point* point;
 Light::Light(){}
 
 Light::Light(int ip, Point* p){
-    isPoint=ip;
-    p=p;
+    isPoint = ip;
+    point = p;
 }
 
 int Light::getIsPoint(){

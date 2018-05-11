@@ -3,10 +3,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <vector>
 #include <sstream>
-#include <math.h>
 #include <stdlib.h>
 
 #include "tinyxml2.h"
@@ -14,6 +12,7 @@
 #include "Struct.h"
 #include "Light.h"
 #include "Material.h"
+#include "Scene.h"
 
 using namespace std;
 using namespace tinyxml2;
@@ -21,11 +20,11 @@ using namespace tinyxml2;
 Struct readFile(string, Struct);
 Struct lookUpTranslate(XMLElement*, Struct);
 Struct lookUpTransformation(XMLElement*, Struct);
-Struct lookUpLight(XMLElement*, Struct);
+void lookUpLight(XMLElement*);
 Struct lookUpMaterial(XMLElement*, Struct);
 Struct lookUpModel(XMLElement*, Struct);
 vector<Struct> lookAux(XMLElement*);
-vector<Struct> lookFiles(char*);
+Scene lookFiles(char*);
 int parseXML(char*);
 
 #endif
