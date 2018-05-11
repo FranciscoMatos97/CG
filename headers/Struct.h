@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #endif
 
+#include <IL/il.h>
 #include <string.h>
 #include <vector>
 #include "Transform.h"
@@ -25,6 +26,7 @@ class Struct{
 	vector<Transform*> refit;
 	vector<Point*> points, normals, textures;
 	GLuint buffer[3];
+	GLuint texture;
 	float *points_array, *normals_array, *textures_array;
 
 public:
@@ -38,6 +40,7 @@ public:
 	vector<Point*> getNormals();
 	vector<Point*> getTextures();
     GLuint getBuffer();
+    GLuint getTexture();
 	float* getPointsArray();
 	float* getNormalsArray();
 	float* getTexturesArray();
@@ -49,13 +52,14 @@ public:
     void setPoints(vector<Point*>);
 	void setNormals(vector<Point*>);
 	void setTextures(vector<Point*>);
-	void setBuffer(GLuint);
+    void setBuffer(GLuint);
+    void setTexture(GLuint);
 	void setPointsArray(float*);
 	void setNormalsArray(float*);
 	void setTexturesArray(float*);
 	void addTransform(Transform*);
 	void addTransform(vector<Transform*>);
-	void prepareTexture();
+	void prepareTexture(string s);
     void fillBuffer();
     void draw();
 };

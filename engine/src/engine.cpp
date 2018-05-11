@@ -183,7 +183,8 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
     glMultMatrixf(M);
 }
 
-
+// glBindTexture(GL_TEXTURE_2D, estrutura.getTexture()); antes do desenho
+// glBindTexture(GL_TEXTURE_2D, 0); depois do desenho
 void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
