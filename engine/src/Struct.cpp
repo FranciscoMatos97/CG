@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../../headers/Struct.h"
 
 string file3d, fileTexture;
@@ -126,6 +127,8 @@ void Struct::prepareTexture(string s) {
         ilLoadImage((ILstring)s.c_str());
         tw = ilGetInteger(IL_IMAGE_WIDTH);
         th = ilGetInteger(IL_IMAGE_HEIGHT);
+        cout<<th<<endl;
+
         ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
         texData = ilGetData();
 
@@ -175,8 +178,7 @@ void Struct::fillBuffer(){
         p = **i;
         textures_array[index] = p.getX();
         textures_array[index+1] = p.getY();
-        textures_array[index+2] = p.getZ();
-        index+=3;
+        index+=2;
     }
 
     glGenBuffers(3, buffer);
@@ -185,7 +187,7 @@ void Struct::fillBuffer(){
     glBindBuffer(GL_ARRAY_BUFFER,buffer[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normals.size() * 3, normals_array, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * textures.size() * 3, textures_array, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * textures.size() * 2, textures_array, GL_STATIC_DRAW);
 
     free(points_array); free(normals_array); free(textures_array);
 }
