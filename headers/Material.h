@@ -9,10 +9,12 @@
 #endif
 
 #include "Point.h"
+#include <time.h>
 
 class Material{
 
     float diffuse[4], ambient[4], diffuseANDambient[4], specular[4], emission[4], shininess;
+	bool notDiffuse, notAmbient, notDiffuseANDambient, notEmission, notSpecular;
 
 	public:
 		Material();

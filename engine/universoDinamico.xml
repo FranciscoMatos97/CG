@@ -1,9 +1,9 @@
 <scene>
+    <lights>
+		<light type="POINT" x="0" y="0" z="0"/>
+    </lights>
 	<group>
         <!--Sol-->
-            <lights>
-      			<light type="POINT" x="0" y="0" z="0"/>
-            </lights>
             <rotate time="1" x="0" y="1" z="0" />
 		    <models>
 		    	<model file="sol.3d" texture="../files/sun.jpg" emissionX="0.8" emissionY="0.2" emissionZ="0.0" />
