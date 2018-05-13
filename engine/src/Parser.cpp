@@ -265,6 +265,7 @@ Struct lookUpModel(XMLElement* elementAux, Struct s) {
 
     if(elementAux->Attribute("texture")){
         string fileTexture = elementAux->Attribute("texture");
+        s.setFileTexture(fileTexture);
         s.prepareTexture(fileTexture);
 
     }
