@@ -38,7 +38,8 @@ void Vertex::makePlane(float size){
 
 	float h = size/2;
 
-	pointsList.push_back(new Point(h, 0, h));
+
+    pointsList.push_back(new Point(h, 0, h));
     pointsList.push_back(new Point(h, 0, -h));
     pointsList.push_back(new Point(-h, 0, -h));
     normalsList.push_back(new Point(0,1,0));
@@ -57,6 +58,7 @@ void Vertex::makePlane(float size){
     texturesList.push_back(new Point(1,1,0));
     texturesList.push_back(new Point(0,0,0));
     texturesList.push_back(new Point(0,1,0));
+
 
 }
 
@@ -95,7 +97,7 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
             texturesList.push_back(new Point(texX1+(j*texDivX),(texY2 - texDivY)-(i*texDivY),0));
             texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
 
-			pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv) , nz));
+            pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv) , nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny - (i * yDiv), nz));
             normalsList.push_back(new Point(0,0,1));
@@ -116,6 +118,7 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
             texturesList.push_back(new Point(1-(j*texDivX),(texY2-texDivY)-(i*texDivY),0));
             texturesList.push_back(new Point(1-(j*texDivX),texY2-(i*texDivY),0));
 
+
             pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), (ny - yDiv) - (i * yDiv), -nz));
 			pointsList.push_back(new Point(-nx + (j * xDiv), ny - (i * yDiv) , -nz));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), ny - (i * yDiv), -nz));
@@ -126,7 +129,8 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
             texturesList.push_back(new Point(1-(j*texDivX),texY2-(i*texDivY),0));
             texturesList.push_back(new Point((1-texDivX)-(j*texDivX),texY2-(i*texDivY),0));
 
-			//face lateral esquerda
+
+            //face lateral esquerda
             pointsList.push_back(new Point(-nx, ny - (i * yDiv), -nz + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, (ny - yDiv) - (i * yDiv), -nz + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, (ny - yDiv) - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
@@ -137,7 +141,8 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
             texturesList.push_back(new Point(j*texDivZ,(texY2-texDivY)-(i*texDivY),0));
             texturesList.push_back(new Point(texDivZ+(j*texDivZ),(texY2-texDivY)-(i*texDivY),0));
 
-			pointsList.push_back(new Point(-nx, ny - (i * yDiv), -nz + (j * zDiv)));
+
+            pointsList.push_back(new Point(-nx, ny - (i * yDiv), -nz + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, (ny - yDiv) - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
 			pointsList.push_back(new Point(-nx, ny - (i * yDiv), (-nz + zDiv) + (j * zDiv)));
             normalsList.push_back(new Point(-1,0,0));
@@ -168,7 +173,8 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
             texturesList.push_back(new Point((texX2+texDivZ)+(j*texDivX),texY2-(i*texDivY),0));
             texturesList.push_back(new Point(texX2+(j*texDivZ),texY2-(i*texDivY),0));
 
-			//base inferior
+
+            //base inferior
             pointsList.push_back(new Point(-nx + (j * xDiv), -ny, (-nz + zDiv) + (i * zDiv)));
 			pointsList.push_back(new Point(-nx + (j * xDiv), -ny, -nz + (i * zDiv)));
 			pointsList.push_back(new Point((-nx + xDiv) + (j * xDiv), -ny, -nz + (i * zDiv)));
@@ -211,10 +217,12 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
             texturesList.push_back(new Point((texX1+texDivX)+(j*texDivX),1-(i*texDivZ),0));
 		}
 	}
-	
+
+
 }
 
 void Vertex::makeSphere(float radius, int slices, int stacks){
+
     vector<Point*> v;
 
     float h = (M_PI) / stacks;                                                                                       
@@ -279,6 +287,7 @@ void Vertex::makeSphere(float radius, int slices, int stacks){
                 x3 = (-atan2(-pointsList[i+2]->getX(),pointsList[i+2]->getZ())+ M_PI) /  (2*M_PI);
                 y3 = 1-(((-(pointsList[i+2]->getY()/radius))+1)/2.0);
 
+
                 if(x > x2 && fabs(x - x2) > 0.8)
                     x2 = 1.0;
                 if(x > x3 && fabs(x - x3) > 0.8)
@@ -301,6 +310,97 @@ void Vertex::makeSphere(float radius, int slices, int stacks){
     }                                                                                                     
 
     cout << pointsList.size() << endl;
+     /*
+    int i, j;
+    float actX, actZ, nexX, nexZ, cimaActX, cimaActZ, cimaNexX, cimaNexZ;
+    float passoH = (2*M_PI)/slices; // deslocamento na horizontal (angulo)
+    float passoV = M_PI/stacks; // deslocamento na vertical (angulo)
+    float altura = radius * sin((M_PI/2) - passoV); // altura das camadas (stacks) (começa por cima)
+    float alturaCima = radius;
+
+    for (i = 0; i < slices; i++) {
+        //A esfera é desenhada fatia a fatia (slice)
+
+        //Ponto actual (coord X e Z)
+        float actualX = radius * sin(i*passoH);
+        float actualZ = radius * cos(i*passoH);
+
+        //Ponto seguinte (coord X e Z)
+        float nextX = radius * sin((i+1)*passoH);
+        float nextZ = radius * cos((i+1)*passoH);
+
+        for (j = 1; j < stacks + 2; j++){
+            // Inicia-se por desenhar os triangulos do topo da esfera, até ao fundo, seguindo uma "fatia" (slice)
+
+            // Pontos inferiores do triangulo
+            float aux = cos(asin(altura/radius));
+            actX = actualX * aux;
+            actZ = actualZ * aux;
+            nexX = nextX * aux;
+            nexZ = nextZ * aux;
+
+            //valor do cos vai aumentado (e certa altura diminuir), com a interaçao do ciclo, fazendo a fatia ganhar uma curvatura.
+
+            //Pontos superiores do triangulo
+            float aux2 = cos(asin(alturaCima/radius));
+            cimaActX = actualX * aux2;
+            cimaActZ = actualZ * aux2;
+            cimaNexX = nextX * aux2;
+            cimaNexZ = nextZ * aux2;
+
+            pointsList.push_back(new Point(actX,altura,actZ));
+            pointsList.push_back(new Point(nexX,altura,nexZ));
+            pointsList.push_back(new Point(cimaActX,alturaCima,cimaActZ));
+            normalsList.push_back(new Point(sin(i*passoH),altura/radius,cos(i*passoH)));
+            normalsList.push_back(new Point(sin((i+1)*passoH),altura/radius,cos((i+1)*passoH)));
+            normalsList.push_back(new Point(sin(i*passoH),alturaCima/radius,cos(i*passoH)));
+
+            pointsList.push_back(new Point(cimaActX,alturaCima,cimaActZ));
+            pointsList.push_back(new Point(nexX,altura,nexZ));
+            pointsList.push_back(new Point(cimaNexX,alturaCima,cimaNexZ));
+            normalsList.push_back(new Point(sin(i*passoH),alturaCima/radius,cos(i*passoH)));
+            normalsList.push_back(new Point(sin((i+1)*passoH),altura/radius,cos((i+1)*passoH)));
+            normalsList.push_back(new Point(sin((i+1)*passoH),alturaCima/radius,cos((i+1)*passoH)));
+
+            //Passa o valor de altura para alturaCima, e actualiza o valor de altura, para desenhar os triangulos abaixo.
+            alturaCima = altura;
+            altura = radius * sin((M_PI/2) - (passoV*j));
+        }
+        //Repoes as alturas iniciais iniciais
+        altura = radius * sin((M_PI/2) - passoV);
+        alturaCima = radius;
+    }
+
+    for(int i = 0; i < pointsList.size(); i+=3){
+        float x,y,x2,y2,x3,y3;
+
+        x = (-atan2(-pointsList[i]->getX(),pointsList[i]->getZ())+ M_PI) /  (2*M_PI);
+        y = 1-(((-(pointsList[i]->getY()/radius))+1)/2.0);
+
+        x2 = (-atan2(-pointsList[i+1]->getX(),pointsList[i+1]->getZ())+ M_PI) /  (2*M_PI);
+        y2 = 1-(((-(pointsList[i+1]->getY()/radius))+1)/2.0);
+
+        x3 = (-atan2(-pointsList[i+2]->getX(),pointsList[i+2]->getZ())+ M_PI) /  (2*M_PI);
+        y3 = 1-(((-(pointsList[i+2]->getY()/radius))+1)/2.0);
+
+        if(x > x2 && fabs(x - x2) > 0.8)
+            x2 = 1.0;
+        if(x > x3 && fabs(x - x3) > 0.8)
+            x3 = 1.0;
+        if (x2 > x && fabs(x2 - x) > 0.8)
+            x = 1.0;
+        if (x2 > x3 && fabs(x2 - x3) > 0.8)
+            x3 = 1.0;
+        if (x3 > x && fabs(x3 - x) > 0.8)
+            x = 1.0;
+        if (x3 > x2 && fabs(x3 - x2) > 0.8)
+            x2 = 1.0;
+
+        texturesList.push_back(new Point(x,y,0));
+        texturesList.push_back(new Point(x2,y2,0));
+        texturesList.push_back(new Point(x3,y3,0));
+    }
+      */
 }
 
 void Vertex::makeCone(float radius, float height, int slices, int stacks) {

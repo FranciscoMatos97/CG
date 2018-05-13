@@ -16,6 +16,5 @@ public:
     vector<Struct> getEstruturas();
     void setLuzes(vector<Light>);
     void setEstruturas(vector<Struct>);
-    void draw();
 };
 #endif
