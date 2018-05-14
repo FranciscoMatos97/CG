@@ -195,7 +195,7 @@ void lookUpLight(XMLElement* element) {
 }
 
 
-Struct lookUpMaterial(XMLElement* element, Struct s) {
+Struct lookUpMaterial(bool texture, XMLElement* element, Struct s) {
     Point* diffuse = new Point(0.0, 0.0, 0.0);
     Point* ambient = new Point(0.0, 0.0, 0.0);
     Point* diffuseANDambient = new Point(0.0, 0.0, 0.0);
@@ -247,7 +247,7 @@ Struct lookUpMaterial(XMLElement* element, Struct s) {
     if(element->Attribute("shininess"))
         shininess = atof(element->Attribute("shininess"));
 
-    Material* m = new Material(diffuse, ambient, diffuseANDambient, specular, emission, shininess);
+    Material* m = new Material(diffuse, ambient, diffuseANDambient, specular, emission, shininess, texture);
     s.setMaterial(*m);
 
     return s;
@@ -255,6 +255,7 @@ Struct lookUpMaterial(XMLElement* element, Struct s) {
 
 
 Struct lookUpModel(XMLElement* elementAux, Struct s) {
+    bool texture;
 
     if(elementAux->Attribute("file")){
         string file3d = elementAux->Attribute("file");
@@ -264,14 +265,18 @@ Struct lookUpModel(XMLElement* elementAux, Struct s) {
     }
 
     if(elementAux->Attribute("texture")){
+        texture=true;
         string fileTexture = elementAux->Attribute("texture");
         s.setFileTexture(fileTexture);
         s.prepareTexture(fileTexture);
 
     }
-    else s.setFileTexture("");
+    else {
+        texture=false;
+        s.setFileTexture("");
+    }
 
-    s = lookUpMaterial(elementAux,s);
+    s = lookUpMaterial(texture,elementAux,s);
 
     return s;
 }

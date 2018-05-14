@@ -18,7 +18,7 @@ class Material{
 
 	public:
 		Material();
-		Material(Point*, Point*, Point*, Point*, Point*, float);
+		Material(Point*, Point*, Point*, Point*, Point*, float, bool);
 		float* getDiffuse();
 		float* getAmbient();
 		float* getDiffuseANDambient();
