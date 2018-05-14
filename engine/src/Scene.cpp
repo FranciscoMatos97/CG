@@ -20,7 +20,3 @@ void Scene::setLuzes(vector<Light> l){
 void Scene::setEstruturas(vector<Struct> s){
     estruturas = s;
 }
-
-void Scene::draw(){
-
-}

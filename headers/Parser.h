@@ -21,7 +21,7 @@ Struct readFile(string, Struct);
 Struct lookUpTranslate(XMLElement*, Struct);
 Struct lookUpTransformation(XMLElement*, Struct);
 void lookUpLight(XMLElement*);
-Struct lookUpMaterial(XMLElement*, Struct);
+Struct lookUpMaterial(bool, XMLElement*, Struct);
 Struct lookUpModel(XMLElement*, Struct);
 vector<Struct> lookAux(XMLElement*);
 Scene lookFiles(char*);

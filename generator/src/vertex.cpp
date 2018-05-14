@@ -224,14 +224,17 @@ void Vertex::makeBox(float x, float y, float z, int divisions) {
 void Vertex::makeSphere(float radius, int slices, int stacks){
 
     vector<Point*> v;
+    float texDivY = 1.0/stacks;
+    float texDivX = 1.0/slices;
+    float texYcima, texYbaixo;
+    float texXesq = 0, texXdir = 0+texDivX;
 
     float h = (M_PI) / stacks;                                                                                       
     float h2 = (2 * M_PI) / slices;
                                                                                                                      
-    for (int i = 0; i < slices; i++) {                                                                               
-                                                                                                                     
-        for (int j = 0; j < stacks; j++) {                                                                              
+    for (int i = 0; i < slices ; i++, texXesq+=texDivX, texXdir+=texDivX) {
 
+        for (int j = 0; j < stacks; j++) {
 
             float x2 = radius*cos((i+1)*h2)*sin(h);
             float y2 = radius*cos(h);                                                                                
@@ -241,166 +244,64 @@ void Vertex::makeSphere(float radius, int slices, int stacks){
             float y3 = radius*cos(h);                                                                                
             float z3 = radius*sin(i*h2)*sin(h);
                                                                                                                      
-            if (j == 0) {                                                                                            
+            if (j == 0) {
+                texYcima = 1.0;
+                texYbaixo = 1.0-texDivY;
+
                 pointsList.push_back(new Point(0, radius, 0));                                                                            
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));
                 normalsList.push_back(new Point(0,1,0));
                 normalsList.push_back(new Point(sin((i+1)*h2),cos((j+1)*h),cos((i+1)*h2)));
                 normalsList.push_back(new Point(sin(i*h2),cos((j+1)*h),cos(i*h2)));
+                texturesList.push_back(new Point(texXdir,texYbaixo,0));
+                texturesList.push_back(new Point(texXesq,texYbaixo,0));
+                texturesList.push_back(new Point(texXesq+texDivX/2,texYcima,0));
             }
                                                                                        
-            if(j == stacks-1){                                                               
+            if(j == stacks-1){
+                texYcima = 0.0+texDivY;
+                texYbaixo = 0.0;
+
                 pointsList.push_back(new Point(0, -radius, 0));
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h) + x3, -y2, radius*sin(i*h2)*sin((j+1)*h) + z3));
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h) + x2, -y3, radius*sin((i+1)*h2)*sin((j+1)*h) + z2));
                 normalsList.push_back(new Point(0,-1,0));
                 normalsList.push_back(new Point(sin(i*h2),-cos(h),cos(i*h2)));
                 normalsList.push_back(new Point(sin((i+1)*h2),-cos(h),cos((i+1)*h2)));
+                texturesList.push_back(new Point(texXesq,texYcima,0));
+                texturesList.push_back(new Point(texXdir,texYcima,0));
+                texturesList.push_back(new Point(texXesq+texDivX/2,texYbaixo,0));
             }                                                                                                        
                                                                                                                      
-            else{                                                                                                                                                                           
+            else{
+                texYcima = 1.0-j*texDivY;
+                texYbaixo = 1.0-(j+1.0)*texDivY;
+
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin((i+1)*h2)*sin((j+1)*h)));
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));
                 normalsList.push_back(new Point(sin((i+1)*h2),cos((j+1)*h),cos((i+1)*h2)));
                 normalsList.push_back(new Point(sin((i+1)*h2),cos((j+2)*h),cos((i+1)*h2)));
                 normalsList.push_back(new Point(sin(i*h2),cos((j+1)*h),cos(i*h2)));
-                                                                            
+                texturesList.push_back(new Point(texXdir,texYcima,0));
+                texturesList.push_back(new Point(texXdir,texYbaixo,0));
+                texturesList.push_back(new Point(texXesq,texYcima,0));
+
+
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+1)*h), radius*cos((j+1)*h), radius*sin(i*h2)*sin((j+1)*h)));       
                 pointsList.push_back(new Point(radius*cos((i+1)*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin((i+1)*h2)*sin((j+2)*h)));
                 pointsList.push_back(new Point(radius*cos(i*h2)*sin((j+2)*h), radius*cos((j+2)*h), radius*sin(i*h2)*sin((j+2)*h)));
                 normalsList.push_back(new Point(sin(i*h2),cos((j+1)*h),cos(i*h2)));
                 normalsList.push_back(new Point(sin((i+1)*h2),cos((j+2)*h),cos((i+1)*h2)));
                 normalsList.push_back(new Point(sin(i*h2),cos((j+2)*h),cos(i*h2)));
+                texturesList.push_back(new Point(texXesq,texYcima,0));
+                texturesList.push_back(new Point(texXdir,texYbaixo,0));
+                texturesList.push_back(new Point(texXesq,texYbaixo,0));
+
             }
-
-            for(int i = 0; i < pointsList.size(); i+=3){
-                float x,y,x2,y2,x3,y3;
-
-                x = (-atan2(-pointsList[i]->getX(),pointsList[i]->getZ())+ M_PI) /  (2*M_PI);
-                y = 1-(((-(pointsList[i]->getY()/radius))+1)/2.0);
-
-                x2 = (-atan2(-pointsList[i+1]->getX(),pointsList[i+1]->getZ())+ M_PI) /  (2*M_PI);
-                y2 = 1-(((-(pointsList[i+1]->getY()/radius))+1)/2.0);
-
-                x3 = (-atan2(-pointsList[i+2]->getX(),pointsList[i+2]->getZ())+ M_PI) /  (2*M_PI);
-                y3 = 1-(((-(pointsList[i+2]->getY()/radius))+1)/2.0);
-
-
-                if(x > x2 && fabs(x - x2) > 0.8)
-                    x2 = 1.0;
-                if(x > x3 && fabs(x - x3) > 0.8)
-                    x3 = 1.0;
-                if (x2 > x && fabs(x2 - x) > 0.8)
-                    x = 1.0;
-                if (x2 > x3 && fabs(x2 - x3) > 0.8)
-                    x3 = 1.0;
-                if (x3 > x && fabs(x3 - x) > 0.8)
-                    x = 1.0;
-                if (x3 > x2 && fabs(x3 - x2) > 0.8)
-                    x2 = 1.0;
-
-                texturesList.push_back(new Point(x,y,0));
-                texturesList.push_back(new Point(x2,y2,0));
-                texturesList.push_back(new Point(x3,y3,0));
-            }
-
-        }    
-    }                                                                                                     
-
-    cout << pointsList.size() << endl;
-     /*
-    int i, j;
-    float actX, actZ, nexX, nexZ, cimaActX, cimaActZ, cimaNexX, cimaNexZ;
-    float passoH = (2*M_PI)/slices; // deslocamento na horizontal (angulo)
-    float passoV = M_PI/stacks; // deslocamento na vertical (angulo)
-    float altura = radius * sin((M_PI/2) - passoV); // altura das camadas (stacks) (começa por cima)
-    float alturaCima = radius;
-
-    for (i = 0; i < slices; i++) {
-        //A esfera é desenhada fatia a fatia (slice)
-
-        //Ponto actual (coord X e Z)
-        float actualX = radius * sin(i*passoH);
-        float actualZ = radius * cos(i*passoH);
-
-        //Ponto seguinte (coord X e Z)
-        float nextX = radius * sin((i+1)*passoH);
-        float nextZ = radius * cos((i+1)*passoH);
-
-        for (j = 1; j < stacks + 2; j++){
-            // Inicia-se por desenhar os triangulos do topo da esfera, até ao fundo, seguindo uma "fatia" (slice)
-
-            // Pontos inferiores do triangulo
-            float aux = cos(asin(altura/radius));
-            actX = actualX * aux;
-            actZ = actualZ * aux;
-            nexX = nextX * aux;
-            nexZ = nextZ * aux;
-
-            //valor do cos vai aumentado (e certa altura diminuir), com a interaçao do ciclo, fazendo a fatia ganhar uma curvatura.
-
-            //Pontos superiores do triangulo
-            float aux2 = cos(asin(alturaCima/radius));
-            cimaActX = actualX * aux2;
-            cimaActZ = actualZ * aux2;
-            cimaNexX = nextX * aux2;
-            cimaNexZ = nextZ * aux2;
-
-            pointsList.push_back(new Point(actX,altura,actZ));
-            pointsList.push_back(new Point(nexX,altura,nexZ));
-            pointsList.push_back(new Point(cimaActX,alturaCima,cimaActZ));
-            normalsList.push_back(new Point(sin(i*passoH),altura/radius,cos(i*passoH)));
-            normalsList.push_back(new Point(sin((i+1)*passoH),altura/radius,cos((i+1)*passoH)));
-            normalsList.push_back(new Point(sin(i*passoH),alturaCima/radius,cos(i*passoH)));
-
-            pointsList.push_back(new Point(cimaActX,alturaCima,cimaActZ));
-            pointsList.push_back(new Point(nexX,altura,nexZ));
-            pointsList.push_back(new Point(cimaNexX,alturaCima,cimaNexZ));
-            normalsList.push_back(new Point(sin(i*passoH),alturaCima/radius,cos(i*passoH)));
-            normalsList.push_back(new Point(sin((i+1)*passoH),altura/radius,cos((i+1)*passoH)));
-            normalsList.push_back(new Point(sin((i+1)*passoH),alturaCima/radius,cos((i+1)*passoH)));
-
-            //Passa o valor de altura para alturaCima, e actualiza o valor de altura, para desenhar os triangulos abaixo.
-            alturaCima = altura;
-            altura = radius * sin((M_PI/2) - (passoV*j));
         }
-        //Repoes as alturas iniciais iniciais
-        altura = radius * sin((M_PI/2) - passoV);
-        alturaCima = radius;
     }
-
-    for(int i = 0; i < pointsList.size(); i+=3){
-        float x,y,x2,y2,x3,y3;
-
-        x = (-atan2(-pointsList[i]->getX(),pointsList[i]->getZ())+ M_PI) /  (2*M_PI);
-        y = 1-(((-(pointsList[i]->getY()/radius))+1)/2.0);
-
-        x2 = (-atan2(-pointsList[i+1]->getX(),pointsList[i+1]->getZ())+ M_PI) /  (2*M_PI);
-        y2 = 1-(((-(pointsList[i+1]->getY()/radius))+1)/2.0);
-
-        x3 = (-atan2(-pointsList[i+2]->getX(),pointsList[i+2]->getZ())+ M_PI) /  (2*M_PI);
-        y3 = 1-(((-(pointsList[i+2]->getY()/radius))+1)/2.0);
-
-        if(x > x2 && fabs(x - x2) > 0.8)
-            x2 = 1.0;
-        if(x > x3 && fabs(x - x3) > 0.8)
-            x3 = 1.0;
-        if (x2 > x && fabs(x2 - x) > 0.8)
-            x = 1.0;
-        if (x2 > x3 && fabs(x2 - x3) > 0.8)
-            x3 = 1.0;
-        if (x3 > x && fabs(x3 - x) > 0.8)
-            x = 1.0;
-        if (x3 > x2 && fabs(x3 - x2) > 0.8)
-            x2 = 1.0;
-
-        texturesList.push_back(new Point(x,y,0));
-        texturesList.push_back(new Point(x2,y2,0));
-        texturesList.push_back(new Point(x3,y3,0));
-    }
-      */
 }
 
 void Vertex::makeCone(float radius, float height, int slices, int stacks) {

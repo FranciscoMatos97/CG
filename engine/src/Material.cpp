@@ -5,7 +5,7 @@ bool notDiffuse, notAmbient, notDiffuseANDambient, notEmission, notSpecular;
 
 Material::Material(){}
 
-Material::Material(Point* d, Point* a, Point* dAa, Point* s, Point* e, float shi){
+Material::Material(Point* d, Point* a, Point* dAa, Point* s, Point* e, float shi, bool texture){
     diffuse[0] = d->getX();
     diffuse[1] = d->getY();
     diffuse[2] = d->getZ();
@@ -40,7 +40,7 @@ Material::Material(Point* d, Point* a, Point* dAa, Point* s, Point* e, float shi
     notEmission = emission[0]==0 && emission[1]==0 && emission[2]==0;
     notSpecular = specular[0]==0 && specular[1]==0 && specular[2]==0;
 
-    if(notDiffuse && notAmbient && notDiffuseANDambient && notEmission && notSpecular){
+    if(notDiffuse && notAmbient && notDiffuseANDambient && notEmission && notSpecular && !texture){
         srand(time(NULL));
 
         red = (float) rand() / (float) RAND_MAX;
@@ -52,6 +52,11 @@ Material::Material(Point* d, Point* a, Point* dAa, Point* s, Point* e, float shi
         diffuseANDambient[0]=red;
         diffuseANDambient[1]=green;
         diffuseANDambient[2]=blue;
+    }
+    if(texture) {
+        diffuseANDambient[0]=1;
+        diffuseANDambient[1]=1;
+        diffuseANDambient[2]=1;
     }
 }
 
