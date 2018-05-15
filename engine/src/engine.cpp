@@ -455,6 +455,8 @@ void showHelp(){
     cout << "|                                                                      |" << endl;
     cout << "|        -> a: Reset the angle and axis.                               |" << endl;
     cout << "|                                                                      |" << endl;
+    cout << "|        -> b: Reset the camera.                                       |" << endl;
+    cout << "|                                                                      |" << endl;
     cout << "|        -> i or k: Zoom out and Zoom in.                              |" << endl;
     cout << "|                                                                      |" << endl;
     cout << "|        -> m or n: Move camera upwards and downwards.                 |" << endl;

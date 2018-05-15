@@ -127,7 +127,6 @@ void Struct::prepareTexture(string s) {
         ilLoadImage((ILstring)s.c_str());
         tw = ilGetInteger(IL_IMAGE_WIDTH);
         th = ilGetInteger(IL_IMAGE_HEIGHT);
-        cout<<th<<endl;
 
         ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
         texData = ilGetData();
