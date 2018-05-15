@@ -34,7 +34,7 @@ class Vertex{
         vector<Point*> bezierPatchTriangles(int, vector<Patch*>);
         void cross(float*, float*, float*);
         void normalize(float*);
-        float bezierPointTangent(float u, float v, float m[4][4] , float t[4][4], int d);
+        float getBezierPointTangent(float u, float v, float m[4][4] , float t[4][4], int d);
         vector<Point*> bezierTangent(int,vector<Patch*>);
 };
 
