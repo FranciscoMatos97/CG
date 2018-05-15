@@ -14,20 +14,22 @@
         </models>
  	</group>
     <group>
-		<translate x="12" y="0" z="0" />
+		<translate x="10" y="0" z="0" />
 		<scale x="5" y="5" z="5" />
         <models>
 	        <model file = "sphere.3d" />
         </models>
  	</group>
     <group>
+        <translate x="-5" y="0" z="0" />
 		<rotate angle="90" x="0" y="0" z="1" />
         <models>
 	        <model file = "cone.3d" />
         </models>
  	</group>
     <group>
-	    <translate x="-32" y="0" z="0" />
+	    <translate x="-40" y="0" z="0" />
+		<scale x="1" y="1" z="1" />
         <models>
 	        <model file = "torus.3d" />
         </models>
