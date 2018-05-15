@@ -7,7 +7,7 @@
 		<translate x="35" y="0" z="0" />
 		<scale x="5" y="10" z="15" />
         <models>
-	        <model file = "planeT.3d" texture="../files/plane.jpg" />
+	        <model file = "plane.3d" texture="../files/plane.jpg" />
  		</models>
  	</group>
     <lights>
@@ -22,7 +22,7 @@
  	</group>
     <group>
 		<translate x="12" y="0" z="0" />
-		<scale x="5" y="5" z="5" />
+		<scale x="3" y="3" z="3" />
         <models>
 	        <model file = "sphere.3d" ambientX="0.8" ambientY="0.2" ambientZ="0.1" />
         </models>
@@ -38,6 +38,7 @@
     </lights>
     <group>
 	    <translate x="-32" y="0" z="0" />
+        <scale x="0.2" y="0.2" z="0.2" />
         <models>
 	        <model file = "torus.3d" diffuseX="0.1" diffuseY="0.8" diffuseZ="0.1" />
         </models>
