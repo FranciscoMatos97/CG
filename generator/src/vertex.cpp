@@ -522,7 +522,7 @@ Point* Vertex::bezierPatch(float u, float v, vector<Point*> control_points) {
 /**
  * triangulos de bezier para o engine
  */
-vector<Point*> Vertex::bezierPatchTriangles(int divs, vector<Patch*> patch_list){
+void Vertex::bezierPatchTriangles(int divs, vector<Patch*> patch_list){
 
     vector<Point*> point_list;
     float u, uu, v, vv;
@@ -544,187 +544,26 @@ vector<Point*> Vertex::bezierPatchTriangles(int divs, vector<Patch*> patch_list)
                 Point* p2 = bezierPatch(uu, v, control_points);
                 Point* p3 = bezierPatch(uu, vv, control_points);
 
-                point_list.push_back(p0);
-                point_list.push_back(p2);
-                point_list.push_back(p3);
+                pointsList.push_back(p0);
+                pointsList.push_back(p2);
+                pointsList.push_back(p3);
+                normalsList.push_back(p0);
+                normalsList.push_back(p2);
+                normalsList.push_back(p3);
+                texturesList.push_back(new Point(u, v, 0));
+                texturesList.push_back(new Point(uu, v, 0));
+                texturesList.push_back(new Point(uu, vv, 0));
 
-                point_list.push_back(p0);
-                point_list.push_back(p3);
-                point_list.push_back(p1);
+                pointsList.push_back(p0);
+                pointsList.push_back(p3);
+                pointsList.push_back(p1);
+                normalsList.push_back(p0);
+                normalsList.push_back(p3);
+                normalsList.push_back(p1);
+                texturesList.push_back(new Point(u, v, 0));
+                texturesList.push_back(new Point(uu, vv, 0));
+                texturesList.push_back(new Point(u, vv, 0));
             }
         }
     }
-
-    return point_list;
-}
-
-
-void Vertex::cross(float *a, float *b, float *res) {
-    res[0] = a[1]*b[2] - a[2]*b[1];
-    res[1] = a[2]*b[0] - a[0]*b[2];
-    res[2] = a[0]*b[1] - a[1]*b[0];
-}
-
-
-void Vertex::normalize(float *a) {
-    float l = sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
-    if(l!=0) {
-        a[0] = a[0]/l;
-        a[1] = a[1]/l;
-        a[2] = a[2]/l;
-    } else {
-        a[0] = 0;
-        a[1] = 0;
-        a[2] = 0;
-    }
-}
-
-
-float Vertex::getBezierPointTangent(float u, float v, float m[4][4] , float p[4][4], int derivada) {
-    float pointValue = 0;
-    float aux[4], aux2[4];
-
-    //derivada de u
-    if(derivada == 0){
-        //bu*M
-        for(int i = 0; i<4; i++){
-            aux[i] = (3 * powf(u,2.0)*m[0][i]) + (2*u*m[1][i]) + (1*m[2][i]);
-        }
-    } else {
-        for(int i = 0; i<4; i++){
-            aux[i] = (powf(u,3.0)*m[0][i]) + (powf(u,2.0)*m[1][i]) + (u*m[2][i]) + m[3][i];
-        }
-    }
-
-    //(bu*M)*P
-    for(int i = 0; i<4; i++){
-        aux2[i] = (aux[0]*p[0][i]) + (aux[1]*p[1][i]) + (aux[2]*p[2][i]) + (aux[3]*p[3][i]);
-    }
-
-    //((bu*M)*P)*MT
-    for(int i = 0; i<4; i++){
-        aux[i] = (aux2[0]*m[0][i]) + (aux2[1]*m[1][i]) + (aux2[2]*m[2][i]) + (aux2[3]*m[3][i]);
-    }
-
-    if(derivada == 0) {
-        //(((bu*M)*P)*MT)*bv
-        pointValue = aux[0] * powf(v,3.0);
-        pointValue += aux[1] * powf(v,2.0);
-        pointValue += aux[2] * v;
-        pointValue += aux[3];
-        //derivada de v
-    } else {
-        //(((bu*M)*P)*MT)*bv
-        pointValue = aux[0] * (3 * powf(v,2.0));
-        pointValue += aux[1] * (2 * v);
-        pointValue += aux[2];
-    }
-
-    return pointValue;
-}
-
-
-vector<Point*> Vertex::bezierTangent(int tessellation,vector<Patch*> patch_list){
-    vector<Point*> derivada;
-    int i, j, aux;
-    float * ma[16], mT[3][16], px[4][4], py[4][4], pz[4][4], resU[3], resV[3], res[3];
-    float u, v, u2, v2, level = (float)1.0/(float)tessellation;
-
-    for(int n_patches = 0; n_patches < patch_list.size(); n_patches++){
-        vector<Point*> control_points = patch_list[n_patches]->getControlPoints();
-        aux = 0;
-
-        for(i = 0; i < 4; i++){
-            for(j = 0; j < 4; j++, aux++){
-                px[i][j] = control_points[aux]->getX();
-                py[i][j] = control_points[aux]->getY();
-                pz[i][j] = control_points[aux]->getZ();
-            }
-        }
-
-        //Matriz M
-        float m[4][4] = {{-1, 3, -3, 1},
-                         {3, -6, 3, 0 },
-                         {-3, 3, 0, 0},
-                         {1, 0, 0, 0}};
-
-
-
-        for(i = 0; i<=tessellation ; i++){
-            u = i * level;
-            u2 = (i+1) * level;
-
-            for(j = 0; j<=tessellation ; j++){
-                v = j * level;
-                v2 = (j+1) * level;
-
-                resU[0] = getBezierPointTangent(u, v, m, px,0);
-                resU[1] = getBezierPointTangent(u, v, m, py,0);
-                resU[2] = getBezierPointTangent(u, v, m, pz,0);
-                normalize(resU);
-                resV[0] = getBezierPointTangent(u, v, m, px,1);
-                resV[1] = getBezierPointTangent(u, v, m, py,1);
-                resV[2] = getBezierPointTangent(u, v, m, pz,1);
-                normalize(resV);
-                cross(resV,resU,res);
-                derivada.push_back(new Point(res[0],res[1],res[2]));
-
-                resU[0] = getBezierPointTangent (u2,v, m, px,0);
-                resU[1] = getBezierPointTangent (u2,v, m, py,0);
-                resU[2] = getBezierPointTangent (u2,v, m, pz,0);
-                normalize(resU);
-                resV[0] = getBezierPointTangent (u2,v, m, px,1);
-                resV[1] = getBezierPointTangent (u2,v, m, py,1);
-                resV[2] = getBezierPointTangent (u2,v, m, pz,1);
-                normalize(resV);
-                cross(resV,resU,res);
-                derivada.push_back(new Point(res[0],res[1],res[2]));
-
-                resU[0] = getBezierPointTangent (u2,v2, m, px,0);
-                resU[1] = getBezierPointTangent (u2,v2, m, py,0);
-                resU[2] = getBezierPointTangent (u2,v2, m, pz,0);
-                normalize(resU);
-                resV[0] = getBezierPointTangent (u2,v2, m, px,1);
-                resV[1] = getBezierPointTangent (u2,v2, m, py,1);
-                resV[2] = getBezierPointTangent (u2,v2, m, pz,1);
-                normalize(resV);
-                cross(resV,resU,res);
-                derivada.push_back(new Point(res[0],res[1],res[2]));
-
-                resU[0] = getBezierPointTangent(u, v, m, px,0);
-                resU[1] = getBezierPointTangent(u, v, m, py,0);
-                resU[2] = getBezierPointTangent(u, v, m, pz,0);
-                normalize(resU);
-                resV[0] = getBezierPointTangent(u, v, m, px,1);
-                resV[1] = getBezierPointTangent(u, v, m, py,1);
-                resV[2] = getBezierPointTangent(u, v, m, pz,1);
-                normalize(resV);
-                cross(resV,resU,res);
-                derivada.push_back(new Point(res[0],res[1],res[2]));
-
-                resU[0] = getBezierPointTangent (u2,v2, m, px,0);
-                resU[1] = getBezierPointTangent (u2,v2, m, py,0);
-                resU[2] = getBezierPointTangent (u2,v2, m, pz,0);
-                normalize(resU);
-                resV[0] = getBezierPointTangent (u2,v2, m, px,1);
-                resV[1] = getBezierPointTangent (u2,v2, m, py,1);
-                resV[2] = getBezierPointTangent (u2,v2, m, pz,1);
-                normalize(resV);
-                cross(resV,resU,res);
-                derivada.push_back(new Point(res[0],res[1],res[2]));
-
-                resU[0] = getBezierPointTangent (u,v2, m, px,0);
-                resU[1] = getBezierPointTangent (u,v2, m, py,0);
-                resU[2] = getBezierPointTangent (u,v2, m, pz,0);
-                normalize(resU);
-                resV[0] = getBezierPointTangent (u,v2, m, px,1);
-                resV[1] = getBezierPointTangent (u,v2, m, py,1);
-                resV[2] = getBezierPointTangent (u,v2, m, pz,1);
-                normalize(resV);
-                cross(resV,resU,res);
-                derivada.push_back(new Point(res[0],res[1],res[2]));
-            }
-        }
-    }
-    return derivada;
 }

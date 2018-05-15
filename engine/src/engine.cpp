@@ -187,6 +187,7 @@ void orbitaCatmullRom(vector<Point*> vp, float gr){
     glMultMatrixf(M);
 }
 
+
 void figuraPrimitiva(Struct s){
 
     vector<Transform*> vt = s.getRefit();
@@ -231,7 +232,10 @@ void figuraPrimitiva(Struct s){
             else{
                 te = glutGet(GLUT_ELAPSED_TIME) % (int)(timeT * 1000);
                 gr = te / (timeT * 1000);
-                glColor3f(1,1,1);
+                Point* black = new Point(0,0,0);
+                Point* white = new Point(1,1,1);
+                Material* m = new Material(black, white, black, black, black, 128, false);
+                m->draw();
                 orbitaCatmullRom((*t)->Transform::getPoints(), gr);
             }
         }
@@ -515,120 +519,6 @@ int main(int argc, char** argv){
     }
 
     scene = lookFiles(argv[1]);
-
-
-
-
-
-
-    //TESTE
-    /*vector<Light> l = scene.getLuzes();
-    vector<Struct> s = scene.getEstruturas();
-
-    for(int i=0; i < l.size(); i++){
-        Light luz = l.at(i);
-        cout << "is Point: " << luz.getIsPoint() <<  " X: " << luz.getPoint()->getX() << " Y: " << luz.getPoint()->getY() << " Z: " << luz.getPoint()->getZ() << endl;
-    }
-
-    for(int i=0; i < s.size(); i++){
-        Struct estrutura = s.at(i);
-
-        cout << "\n\t\t NEW \n" << endl;
-
-        cout << "File3d: " << estrutura.getFile3d() << endl;
-        cout << "FileTexture: " << estrutura.getFileTexture() << endl;
-
-        Material m = estrutura.getMaterial();
-        cout << "DIFFUSE " << *m.getDiffuse() << " " << *(m.getDiffuse()+1) << " " << *(m.getDiffuse()+2) << " " << *(m.getDiffuse()+3) << endl;
-        cout << "AMBIENT " << *m.getAmbient() << " " << *(m.getAmbient()+1) << " " << *(m.getAmbient()+2) << " " << *(m.getAmbient()+3) << endl;
-        cout << "DIFFUSE AND AMBIENT " << *m.getDiffuseANDambient() << " " << *(m.getDiffuseANDambient()+1) << " " << *(m.getDiffuseANDambient()+2) << " " << *(m.getDiffuseANDambient()+3) << endl;
-        cout << "SPECULAR " << *m.getSpecular() << " " << *(m.getSpecular()+1) << " " << *(m.getSpecular()+2) << " " << *(m.getSpecular()+3) << endl;
-        cout << "EMISSION " << *m.getEmission() << " " << *(m.getEmission()+1) << " " << *(m.getEmission()+2) << " " << *(m.getEmission()+3) << endl;
-        cout << "SHININESS " << m.getShininess() << endl;
-
-        vector<Transform*> transformacoes = estrutura.getRefit();
-        for(int j=0; j<transformacoes.size(); j++){
-            Transform* t = transformacoes.at(j);
-
-            cout << "Transformação Nome: " << t->getName() << endl;
-            cout << "\t Time: " << t->getTime() << endl;
-            cout << "\t Angle: " << t->getAngle() << endl;
-
-            vector<Point*> pointsL = t->getPoints();
-            cout << "\t Points: " << endl;
-            for(int k=0; k<pointsL.size(); k++){
-                Point* p = pointsL.at(k);
-                cout << "\t\t X: " << p->getX() << " Y: " << p->getY() << " Z: " << p->getZ() << endl;
-            }
-        }
-
-        vector<Point*> points = estrutura.getPoints();
-        vector<Point*> normals = estrutura.getNormals();
-        vector<Point*> textures = estrutura.getTextures();
-
-        ofstream file;
-        string f = "pontosLidosD" + estrutura.getFile3d();
-        file.open(f.c_str(), ios_base::app);
-
-        file << "--- BEGIN ---" << endl;
-
-        file << "----Points----" << endl;
-        for(int j=0; j<points.size(); ++j){
-            file << points[j]->Point::getX() << ' ';
-            file << points[j]->Point::getY() << ' ';
-            file << points[j]->Point::getZ() << endl;
-        }
-        file << "----Normals----" << endl;
-        for(int j=0; j<normals.size(); ++j){
-            file << normals[j]->Point::getX() << ' ';
-            file << normals[j]->Point::getY() << ' ';
-            file << normals[j]->Point::getZ() << endl;
-        }
-        file << "----Textures----" << endl;
-        for (int j = 0; j < textures.size(); ++j) {
-            file << textures[j]->Point::getX() << ' ';
-            file << textures[j]->Point::getY() << ' ';
-            file << textures[j]->Point::getZ() << endl;
-        }
-
-        //GLuint buffer[3];
-        float *points_array = estrutura.getPointsArray();
-        float *normals_array = estrutura.getNormalsArray();
-        float *textures_array = estrutura.getTexturesArray();
-
-        //não consigo imprimir aqui mas imprimido na struct os valores estão corretos
-        //file << "----POINTS_ARRAY----" << endl;
-        //for (int j = 0; j < points.size()*3; j+=3) {
-        //    file << *points_array << ' ';
-        //    file << *points_array << ' ';
-        //    file << *points_array << endl;
-        //}
-        //file << "----NORMALS_ARRAY----" << endl;
-        //for (int j = 0; j < normals.size()*3 ; j+=3) {
-        //    file << normals_array[j] << ' ';
-        //    file << normals_array[j+1] << ' ';
-        //    file << normals_array[j+2] << endl;
-        //}
-        //file << "----TEXTURES_ARRAY----" << endl;
-        //for (int j = 0; j < textures.size()*3 ; j+=3) {
-        //    file << textures_array[j] << ' ';
-        //    file << textures_array[j+1] << ' ';
-        //    file << textures_array[j+2] << endl;
-        //}
-        file << "--- END ---" << endl;
-        file.close();
-    }*/
-    //FIM DO TESTE
-
-
-
-
-
-
-
-
-
-
 
     cout << "Drawing." << endl;
 
