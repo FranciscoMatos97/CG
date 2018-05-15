@@ -77,7 +77,7 @@
             </translate>
             <rotate time="1" x="0" y="1" z="0" />
 		    <models>
-			    <model file="terra.3d" texture="../files/mercury.jpg" diffuseX="0.0" diffuseY="0.0" diffuseZ="0.9" />
+			    <model file="terra.3d" texture="../files/earth.jpg" diffuseX="0.0" diffuseY="0.0" diffuseZ="0.9" />
 	    	</models>
 		<group>
             <translate time="20" >

@@ -1,7 +1,11 @@
 <scene>
+    <lights>
+        <light type="POINT" x="0" y="-2.5" z="0" />
+    </lights>
     <group>
-        <models>
-	        <model file = "boxT.3d" />
-        </models>
+    <!--Saturno-->
+		<models>
+			<model file="torusTeste.3d" texture="../files/saturn.jpg" />
+		</models>
  	</group>
 </scene>

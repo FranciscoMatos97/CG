@@ -1,44 +1,41 @@
 <scene>
+    <lights>
+        <light type="DIRECTIONAL" x="0" y="27" z="10" />
+    </lights>
     <group>
-        <color x="1.0" y="1.0" z="1.0" />
         <models>
-	        <model file = "bonecoC1.3d"/>
+	        <model file="bonecoCorpo1.3d" diffuseANDambientX="1.0" diffuseANDambientY="1.0" diffuseANDambientZ="1.0"/>
  		</models>
  	</group>
     <group>
-        <color x="1.0" y="1.0" z="1.0" />
         <translate x="0" y="17" z="0"/>
         <models>
-	        <model file = "bonecoC2.3d"/>
+	        <model file="bonecoCorpo2.3d" diffuseANDambientX="1.0" diffuseANDambientY="1.0" diffuseANDambientZ="1.0"/>
         </models>
  	</group>
     <group>
-        <color x="1.0" y="1.0" z="1.0" />
         <translate x="0" y="27" z="0"/>
         <models>
-	        <model file = "bonecoC3.3d"/>
-        </models>
- 	</group>
-    <group>       
-        <color x="0.8" y="0.2" z="0.0" />
-        <translate x="0" y="27" z="2.75"/>
-		<rotate angle="90" x="1" y="0" z="0" /> 
-        <models>
-	        <model file = "bonecoN.3d"/>
+	        <model file="bonecoCorpo3.3d" diffuseANDambientX="1.0" diffuseANDambientY="1.0" diffuseANDambientZ="1.0"/>
         </models>
  	</group>
     <group>
-        <color x="0.3" y="0.2" z="0.1" />
+        <translate x="0" y="27" z="2.75"/>
+		<rotate angle="90" x="1" y="0" z="0"/> 
+        <models>
+	        <model file="bonecoNariz.3d" texture="../files/coneTransito.jpg"/>
+        </models>
+ 	</group>
+    <group>
         <translate x="1.5" y="28" z="2.75"/>
         <models>
-	        <model file = "bonecoO1.3d"/>
+	        <model file="bonecoOlho.3d" texture="../files/boxOlho.jpg"/>
         </models>
  	</group>
     <group>
-        <color x="0.3" y="0.2" z="0.1" />
         <translate x="-1.5" y="28" z="2.75"/>
         <models>        
-	        <model file = "bonecoO2.3d"/>
+	        <model file="bonecoOlho.3d" texture="../files/boxOlho.jpg"/>
         </models>
  	</group>
 </scene>
