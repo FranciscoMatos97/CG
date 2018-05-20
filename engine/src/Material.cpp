@@ -1,7 +1,6 @@
 #include "../../headers/Material.h"
 
 float diffuse[4], ambient[4], diffuseANDambient[4], specular[4], emission[4], shininess;
-bool notDiffuse, notAmbient, notDiffuseANDambient, notEmission, notSpecular;
 
 Material::Material(){}
 
@@ -34,11 +33,11 @@ Material::Material(Point* d, Point* a, Point* dAa, Point* s, Point* e, float shi
     shininess = shi;
 
     float red, green, blue;
-    notDiffuse = diffuse[0]==0 && diffuse[1]==0 && diffuse[2]==0;
-    notAmbient = ambient[0]==0 && ambient[1]==0 && ambient[2]==0;
-    notDiffuseANDambient = diffuseANDambient[0]==0 && diffuseANDambient[1]==0 && diffuseANDambient[2]==0;
-    notEmission = emission[0]==0 && emission[1]==0 && emission[2]==0;
-    notSpecular = specular[0]==0 && specular[1]==0 && specular[2]==0;
+    bool notDiffuse = diffuse[0]==0 && diffuse[1]==0 && diffuse[2]==0;
+    bool notAmbient = ambient[0]==0 && ambient[1]==0 && ambient[2]==0;
+    bool notDiffuseANDambient = diffuseANDambient[0]==0 && diffuseANDambient[1]==0 && diffuseANDambient[2]==0;
+    bool notEmission = emission[0]==0 && emission[1]==0 && emission[2]==0;
+    bool notSpecular = specular[0]==0 && specular[1]==0 && specular[2]==0;
 
     if(notDiffuse && notAmbient && notDiffuseANDambient && notEmission && notSpecular && !texture){
         srand(time(NULL));
