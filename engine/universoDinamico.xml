@@ -211,6 +211,7 @@
 			    <model file="saturno.3d" texture="../files/saturn.jpg" diffuseX="0.8" diffuseY="0.6" diffuseZ="0.4" />
 		    </models>
         <group>
+            <translate x="0" y="-3" z="0" /> 
             <rotate angle="-70" x="1" y="0" z="0" /> 
             <models>
 				<model file="anel.3d" texture="../files/ring.jpg" diffuseX="0.8" diffuseY="0.6" diffuseZ="0.0"  />

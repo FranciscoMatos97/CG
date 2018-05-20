@@ -21,39 +21,36 @@ using namespace std;
 class Struct{
 
 	string file3d, fileTexture;
-	Material material;
-	vector<Light*> lights;
 	vector<Transform*> refit;
+	Material material;
+	GLuint texture;
 	vector<Point*> points, normals, textures;
 	GLuint buffer[3];
-	GLuint texture;
 	float *points_array, *normals_array, *textures_array;
 
 public:
 	Struct();
 	string getFile3d();
 	string getFileTexture();
-	Material getMaterial();
-	vector<Light*> getLights();
 	vector<Transform*> getRefit();
+	Material getMaterial();
+    GLuint getTexture();
     vector<Point*> getPoints();
 	vector<Point*> getNormals();
 	vector<Point*> getTextures();
     GLuint getBuffer();
-    GLuint getTexture();
 	float* getPointsArray();
 	float* getNormalsArray();
 	float* getTexturesArray();
 	void setFile3d(string);
 	void setFileTexture(string);
-	void setMaterial(Material);
-	void setLights(vector<Light*>);
 	void setRefit(vector<Transform*>);
+	void setMaterial(Material);
+    void setTexture(GLuint);
     void setPoints(vector<Point*>);
 	void setNormals(vector<Point*>);
 	void setTextures(vector<Point*>);
     void setBuffer(GLuint);
-    void setTexture(GLuint);
 	void setPointsArray(float*);
 	void setNormalsArray(float*);
 	void setTexturesArray(float*);

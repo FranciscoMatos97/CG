@@ -2,8 +2,9 @@
 #include "../../headers/Struct.h"
 
 string file3d, fileTexture;
-Material material;
 vector<Transform*> refit;
+Material material;
+GLuint texture;
 vector<Point*> points, normals, textures;
 GLuint buffer[3];
 float *points_array, *normals_array, *textures_array;
@@ -18,12 +19,16 @@ string Struct::getFileTexture(){
     return fileTexture;
 }
 
+vector<Transform*> Struct::getRefit(){
+	return refit;
+}
+
 Material Struct::getMaterial(){
     return material;
 }
 
-vector<Transform*> Struct::getRefit(){
-	return refit;
+GLuint Struct::getTexture(){
+    return texture;
 }
 
 vector<Point*> Struct::getPoints(){
@@ -40,10 +45,6 @@ vector<Point*> Struct::getTextures(){
 
 GLuint Struct::getBuffer(){
     return *buffer;
-}
-
-GLuint Struct::getTexture(){
-    return texture;
 }
 
 float* Struct::getPointsArray(){
@@ -66,12 +67,16 @@ void Struct::setFileTexture(string s){
     fileTexture = s;
 }
 
+void Struct::setRefit(vector<Transform*> l){
+	refit = l;
+}
+
 void Struct::setMaterial(Material m){
     material = m;
 }
 
-void Struct::setRefit(vector<Transform*> l){
-	refit = l;
+void Struct::setTexture(GLuint t){
+    texture = t;
 }
 
 void Struct::setPoints(vector<Point*> p){
@@ -88,10 +93,6 @@ void Struct::setTextures(vector<Point*> t){
 
 void Struct::setBuffer(GLuint b){
     *buffer = b;
-}
-
-void Struct::setTexture(GLuint t){
-    texture = t;
 }
 
 void Struct::setPointsArray(float* p){

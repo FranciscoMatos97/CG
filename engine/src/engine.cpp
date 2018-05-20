@@ -278,7 +278,6 @@ void renderScene(void) {
     for(vector<Struct>::const_iterator f = estruturas.begin(); f != estruturas.end(); f++) {
         strucT = (*f);
         figuraPrimitiva(strucT);
-
     }
 
 // End of frame
